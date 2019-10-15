@@ -4,6 +4,7 @@ Author: Christian Parpart & Kei Thoma
 Date:
 """
 
+import math
 
 class FiniteDifference:
     """ Represents the first and second order finite difference approximation
@@ -69,16 +70,32 @@ class FiniteDifference:
         if self.d_f == None and self.dd_f == None:
             raise ValueError("No analytic derivative was provided by the user.")
 
+        # TODO: what happens if p is 0 or negative
+
+        # if a is larger than b, swap a and b
+        if a > b:
+            a, b = b, a
+
+        # TODO: what happens if a = b?
+
         # we will fill this list with points we want to consider
         list_of_points = []
         # for that, we need the distance between each point
-        dis = abs(a - b) / p
+        dis = (b - a) / p
         # now fill the list
-        # TODO: does not consider if a > b
         for i in range(0, p):
-            list_of_points.append(a + dis * i)
-        def max_error(analytic_f, approximated_f, a, b, p):
-            pass
+            list_of_points.append(a + (i * dis))
+
+        def max_error(analytic_f, approximated_f, _list_of_points):
+            error_list = []
+            for value in _list_of_points:
+                error = abs(analytic_f(value) - approximated_f(value))
+                error_list.append(error)
+            return max(error_list)
+
+        first_error  = max_error(self.d_f, self.calculate_derivative, list_of_points)
+        second_error = max_error(self.dd_f, self.calculate_second_derivative, list_of_points)
+        return first_error, second_error
 
 
 
@@ -87,9 +104,16 @@ def main():
 
     """
     def a_function(x):
-        return x ** 2
-    a_class = FiniteDifference(0.01, a_function)
-    print(a_class.calculate_derivative(5))
+        return math.log(x)
+
+    def derivative(x):
+        return 1 / x
+
+    def second_derivative(x):
+        return -1 / (2 * x ** 2)
+
+    a_class = FiniteDifference(0.01, a_function, derivative, second_derivative)
+    print(a_class.compute_errors(1, 11, 11))
 
 
 if __name__ == "__main__":
