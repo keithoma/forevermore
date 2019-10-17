@@ -75,7 +75,7 @@ class FiniteDifference:
         return (self.f(x + self.h) - self.f(x)) / self.h
 
     def approximate_second_derivative(self, x):
-        return self.f(x + self.h) - 2 * self.f(x) + self.f(x - self.h)
+        return self.f(x + self.h) - 2 * self.f(x) + self.f(x - self.h) / self.h **
 
     def compute_errors(self, _interval, _number_of_points):  # pylint: disable=invalid-name
         # if of the analytic derivatives was not provided by the user, raise alarm
