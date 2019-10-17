@@ -62,7 +62,7 @@ class FiniteDifference:
         partition = []
         dist = (_interval[1] - _interval[0]) / _number_of_points
         for integer in range(0, _number_of_points):
-            partition.append(_interval[0] + integer * dist)
+            partition.append(float(_interval[0]) + integer * dist)
 
         return partition
 
@@ -94,8 +94,34 @@ class FiniteDifference:
         second_error = max([abs(a_i - b_i) for a_i, b_i in zip(d2_analytic_values, d2_approx_values)])
         return first_error, second_error
 
-    def draw_functions(self, interval_, number_of_points_):
-        pass
+    def draw_functions(self, _interval, _number_of_points):
+
+        # create a private function for the following 5 lines TODO
+        partition = self.partition_interval_(_interval, _number_of_points)
+
+        print(partition)
+
+        d1_analytic_values = self.create_value_table_(self.d_f, partition)
+        d1_approx_values = self.create_value_table_(self.approximate_first_derivative, partition)
+        d2_analytic_values = self.create_value_table_(self.dd_f, partition)
+        d2_approx_values = self.create_value_table_(self.approximate_second_derivative, partition)
+
+        print(d1_analytic_values)
+
+
+        plt.plot(partition, d1_analytic_values, label="d1 analytic")
+
+        #fig = plt.figure()
+
+        plt.xlabel('x label')
+        plt.ylabel('y label')
+
+        plt.title("Simple Plot")
+
+        plt.legend()
+
+
+        plt.show()
 
 
 
@@ -113,6 +139,7 @@ def main():
 
     a_class = FiniteDifference(0.01, a_function, derivative, second_derivative)
     print(a_class.compute_errors((1, 11), 11))
+    a_class.draw_functions((1, 11), 11)
 
 
 if __name__ == "__main__":
