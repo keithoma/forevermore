@@ -2,19 +2,14 @@
 """
 Author: Christian Parpart & Kei Thoma
 Date:
-
 Naming Convention:
 * prefix underscore denotes parameters
 * subfix underscore denotes private functions
-
 # TODO:
 * missing the plots of h -> h; h -> h^2 and h -> h^3
-
+* runtime # WARNING:
 """
 
-
-
-import math
 import numpy as np
 
 import matplotlib
@@ -41,6 +36,8 @@ class FiniteDifference:
         Stepzise of the approximation.
     """
 
+
+
     def __init__(self, h, f, d_f=None, dd_f=None):
         # save parameters as attributes
         self.h = h
@@ -50,6 +47,8 @@ class FiniteDifference:
 
         matplotlib.pyplot.grid(which="major")
 
+
+
     def partition_interval_(self, _interval, _number_of_points):
         # todo: what happens if a = b?
 
@@ -58,12 +57,12 @@ class FiniteDifference:
             _interval[0], _interval[1] = _interval[0], _interval[1]
 
         # create partition
-        partition = []
         dist = (_interval[1] - _interval[0]) / float(_number_of_points)
-        for integer in range(0, _number_of_points):
-            partition.append(_interval[0] + integer * dist)
+        partition = [_interval[0] + integer * dist for integer in range(0, _number_of_points)]
 
         return partition
+
+
 
     def create_value_table_(self, _function, _partition):
         value_table = []
@@ -71,11 +70,17 @@ class FiniteDifference:
             value_table.append(_function(number))
         return value_table
 
+
+
     def approximate_first_derivative(self, x):
         return (self.f(x + self.h) - self.f(x)) / self.h
 
+
+
     def approximate_second_derivative(self, x):
-        return self.f(x + self.h) - 2 * self.f(x) + self.f(x - self.h) / self.h **
+        return (self.f(x + self.h) - 2 * self.f(x) + self.f(x - self.h)) / self.h ** 2
+
+
 
     def compute_errors(self, _interval, _number_of_points):  # pylint: disable=invalid-name
         # if of the analytic derivatives was not provided by the user, raise alarm
@@ -92,6 +97,8 @@ class FiniteDifference:
         first_error  = max([abs(a_i - b_i) for a_i, b_i in zip(d1_analytic_values, d1_approx_values)])
         second_error = max([abs(a_i - b_i) for a_i, b_i in zip(d2_analytic_values, d2_approx_values)])
         return first_error, second_error
+
+
 
     def draw_functions(self, _interval, _number_of_points):
         # create a private function for the following 5 lines TODO
@@ -119,18 +126,25 @@ class FiniteDifference:
 
         plt.show()
 
+
+
     def draw_errors(self, _interval, _number_of_points, _h_values):
         # double log scale
         partition = self.partition_interval_(_interval, _number_of_points)
 
         d1_error_values = []
         d2_error_values = []
+
         for new_h in _h_values:
             self.h = new_h
             d1_error_values.append(self.compute_errors(_interval, _number_of_points)[0])
             d2_error_values.append(self.compute_errors(_interval, _number_of_points)[1])
 
         plt.figure(2)
+
+        plt.loglog(_h_values, _h_values, label="h")
+        plt.loglog(_h_values, _h_values ** 2, label="h^2")
+        plt.loglog(_h_values, _h_values ** 3, label="h^3")
 
         plt.loglog(_h_values, d1_error_values, label="d1 error")
         plt.loglog(_h_values, d2_error_values, label="d2 error")
@@ -142,41 +156,30 @@ class FiniteDifference:
 
         plt.show()
 
-"""
-def main():
-    def a_function(x):
-        return math.log(1 + x)
 
-    def derivative(x):
-        return 1 / (x + 1)
-
-    def second_derivative(x):
-        return -1 / (1 + x) ** 2
-
-    a_class = FiniteDifference(0.01, a_function, derivative, second_derivative)
-    print(a_class.compute_errors((2, 12), 10))
-    #a_class.draw_functions((1, 10), 3000)
-
-    h_values = np.arange(0.0001, 2, 0.0001)
-    print(h_values)
-    a_class.draw_errors((2, 12), 10, h_values)
-"""
 
 def main():
+    """
+    The plot drawn with Desmos:
+    https://www.desmos.com/calculator/eiacy1i3nk
+    """
     def g_1(x):
-        return math.sin(x) / x
+        return np.sin(x) / x
 
     def dg_1(x):
-        return (x * math.cos(x) - math.sin(x)) / x ** 2
+        return (x * np.cos(x) - np.sin(x)) / x ** 2
 
     def ddg_1(x):
-        return ((x ** 2 - 2) * math.sin(x) + 2 * x * math.cos(x)) / x ** 3
+        # return -((x ** 2 - 2) * np.sin(x) + 2 * x * np.cos(x)) / x ** 3
+        numerator = (x ** 2 - 2) * np.sin(x) + 2 * x * np.cos(x)
+        denominator = x ** 3
+        return - numerator / denominator
 
-    number_of_points = 3000
+    number_of_points = 1000
     h_values = np.arange(0.001, 1, 0.001)
 
     test_class = FiniteDifference(0.5, g_1, dg_1, ddg_1)
-    test_class.draw_functions((0.1, 20), number_of_points)
+    test_class.draw_functions((np.pi, np.pi * 3), number_of_points)
     # runtime warning below
     test_class.draw_errors((0.1, 20), number_of_points, h_values)
 
