@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """
-Author: Christian Parpart & Kei Thoma
+Authors: Christian Parpart () & Kei Thoma (574613)
 Date:
-Naming Convention:
-* prefix underscore denotes parameters
-* subfix underscore denotes private functions
-# TODO:
-* missing the plots of h -> h; h -> h^2 and h -> h^3
-* runtime # WARNING:
+
+ToDo:
+* write doc string
+* pylint
+* create developer version and final version (that is delete some comments that are marked as such)
+
 """
 
 import numpy as np
@@ -45,20 +45,17 @@ class FiniteDifference:
         self.d_f = d_f
         self.dd_f = dd_f
 
-        matplotlib.pyplot.grid(which="major")
 
 
-
-    def partition_interval_(self, _interval, _number_of_points):
-        # todo: what happens if a = b?
-
+    def partition_interval_(self, interval, number_of_points):
         # if a > b, swap a and b
-        if _interval[0] > _interval[1]:
-            _interval[0], _interval[1] = _interval[0], _interval[1]
+        if interval[0] > interval[1]:
+            interval[0], interval[1] = interval[0], interval[1]
+            print("Warning: Input interval [a, b] seems to have a > b.")
 
         # create partition
-        dist = (_interval[1] - _interval[0]) / float(_number_of_points)
-        partition = [_interval[0] + integer * dist for integer in range(0, _number_of_points)]
+        dist = (interval[1] - interval[0]) / float(number_of_points)
+        partition = [interval[0] + integer * dist for integer in range(0, number_of_points)]
 
         return partition
 
@@ -82,41 +79,60 @@ class FiniteDifference:
 
 
 
-    def compute_errors(self, _interval, _number_of_points):  # pylint: disable=invalid-name
+    def compute_errors(self, a, b, p): # pylint: disable=invalid-name
         # if of the analytic derivatives was not provided by the user, raise alarm
         if self.d_f == None or self.dd_f == None:
             raise ValueError("Not both analytic derivative was provided by the user.")
 
-        partition = self.partition_interval_(_interval, _number_of_points)
+        # partition the interval [a, b]
+        interval = (a, b)
+        partition = self.partition_interval_(interval, p)
 
+        # compute the values on these partition points
         d1_analytic_values = self.create_value_table_(self.d_f, partition)
         d1_approx_values = self.create_value_table_(self.approximate_first_derivative, partition)
         d2_analytic_values = self.create_value_table_(self.dd_f, partition)
         d2_approx_values = self.create_value_table_(self.approximate_second_derivative, partition)
 
+        # finally, find the largest difference
         first_error  = max([abs(a_i - b_i) for a_i, b_i in zip(d1_analytic_values, d1_approx_values)])
         second_error = max([abs(a_i - b_i) for a_i, b_i in zip(d2_analytic_values, d2_approx_values)])
+
+        # and return
         return first_error, second_error
 
 
 
-    def draw_functions(self, _interval, _number_of_points):
-        # create a private function for the following 5 lines TODO
-        partition = self.partition_interval_(_interval, _number_of_points)
+    def draw_functions(self, a, b, p): # pylint: disable=invalid-name
+        # partition the interval [a, b]
+        interval = (a, b)
+        partition = self.partition_interval_(interval, p)
 
+        # compute the values on these partition points
         the_function_values = self.create_value_table_(self.f, partition)
-
-        d1_analytic_values = self.create_value_table_(self.d_f, partition)
         d1_approx_values = self.create_value_table_(self.approximate_first_derivative, partition)
-        d2_analytic_values = self.create_value_table_(self.dd_f, partition)
         d2_approx_values = self.create_value_table_(self.approximate_second_derivative, partition)
 
+        if self.d_f is not None:
+            d1_analytic_values = self.create_value_table_(self.d_f, partition)
+
+        if self.dd_f is not None:
+            d2_analytic_values = self.create_value_table_(self.dd_f, partition)
+
+        # draw the plot
         plt.figure(1)
+        matplotlib.pyplot.grid(which="major")
 
         plt.plot(partition, the_function_values, label="f")
-        plt.plot(partition, d1_analytic_values, label="analytic f'")
+
+        if self.d_f is not None:
+            plt.plot(partition, d1_analytic_values, label="analytic f'")
+
         plt.plot(partition, d1_approx_values, label="approximation of f'", linestyle='dashed')
-        plt.plot(partition, d2_analytic_values, label="analytic f''")
+
+        if self.dd_f is not None:
+            plt.plot(partition, d2_analytic_values, label="analytic f''")
+
         plt.plot(partition, d2_approx_values, label="approximation of f''", linestyle='dashed')
 
         plt.xlabel('x')
@@ -128,26 +144,40 @@ class FiniteDifference:
 
 
 
-    def draw_errors(self, _interval, _number_of_points, _h_values):
-        # double log scale
-        partition = self.partition_interval_(_interval, _number_of_points)
+    def draw_errors(self, a, b, p, h_values):
+        # partition the interval [a, b]
+        interval = (a, b)
+        partition = self.partition_interval_(interval, p)
 
+        # we will iterate over each value in h_values to find the errors of the analytic and its
+        # approximation
+        # this could have been done with list comprehension, but if done so, compute errors would have
+        # needed another argument for h
+        reset_h = self.h
         d1_error_values = []
         d2_error_values = []
 
-        for new_h in _h_values:
+        for new_h in h_values:
             self.h = new_h
-            d1_error_values.append(self.compute_errors(_interval, _number_of_points)[0])
-            d2_error_values.append(self.compute_errors(_interval, _number_of_points)[1])
+            d1_error_values.append(self.compute_errors(a, b, p)[0])
+            d2_error_values.append(self.compute_errors(a, b, p)[1])
 
+        self.h = reset_h
+
+        # we will also compute the values for h ** 2 and h ** 3
+        h_quadratic = [h ** 2 for h in h_values]
+        h_cubic = [h ** 3 for h in h_values]
+
+        # draw the plot
         plt.figure(2)
+        matplotlib.pyplot.grid(which="major")
 
-        plt.loglog(_h_values, _h_values, label="h")
-        plt.loglog(_h_values, _h_values ** 2, label="h^2")
-        plt.loglog(_h_values, _h_values ** 3, label="h^3")
+        plt.loglog(h_values, h_values, label="h")
+        plt.loglog(h_values, h_quadratic, label="h^2")
+        plt.loglog(h_values, h_cubic, label="h^3")
 
-        plt.loglog(_h_values, d1_error_values, label="d1 error")
-        plt.loglog(_h_values, d2_error_values, label="d2 error")
+        plt.loglog(h_values, d1_error_values, label="d1 error")
+        plt.loglog(h_values, d2_error_values, label="d2 error")
 
         plt.xlabel("values of h")
         plt.ylabel("error")
@@ -161,27 +191,79 @@ class FiniteDifference:
 def main():
     """
     The plot drawn with Desmos:
-    https://www.desmos.com/calculator/eiacy1i3nk
+
     """
+    # greetings
+    print("This module is about approximations of derivatives!")
+    print("Consider the function g_1(x) = sin(x) / x\n\n")
+
+    # to test our module, we will consider the function defined below
     def g_1(x):
         return np.sin(x) / x
 
+    # the following two functions are the first two analytic derivatives
     def dg_1(x):
-        return (x * np.cos(x) - np.sin(x)) / x ** 2
+        numerator = x * np.cos(x) - np.sin(x)
+        denominator = x ** 2
+        return numerator / denominator
 
     def ddg_1(x):
-        # return -((x ** 2 - 2) * np.sin(x) + 2 * x * np.cos(x)) / x ** 3
         numerator = (x ** 2 - 2) * np.sin(x) + 2 * x * np.cos(x)
         denominator = x ** 3
         return - numerator / denominator
 
-    number_of_points = 1000
-    h_values = np.arange(0.001, 1, 0.001)
+    # some initial values for testing
+    a, b = np.pi, 3 * np.pi
+    p = 1000
+    h_values = np.logspace(-9, 2, num = 50)
 
-    test_class = FiniteDifference(0.5, g_1, dg_1, ddg_1)
-    test_class.draw_functions((np.pi, np.pi * 3), number_of_points)
-    # runtime warning below
-    test_class.draw_errors((0.1, 20), number_of_points, h_values)
+    # construct an object
+    initial_h = 0.5
+    # initial_h = 1 # developer version only
+    test_class = FiniteDifference(initial_h, g_1, dg_1, ddg_1)
+
+    # test_class = FiniteDifference(initial_h, g_1) # developer version only
+
+    # demonstration of the approximations
+    # if x = 5, then it should be
+    #
+    #                        analytic | approximated
+    # first derivative    |  0.0950   | 0.1270
+    # second derivative   |  0.1537   | 0.1522
+    x = 5
+    d1_solution = test_class.approximate_first_derivative(x)
+    d2_solution = test_class.approximate_second_derivative(x)
+    print("Firstly, this module is able to compute the approximation of the derivatives of a given " +
+          "function.")
+    print("The first derivative of g_1 at x = {0} should be about {1} (exact: {2}).".format(x, d1_solution, dg_1(x)))
+    print("The second derivative of g_1 at x = {0} should be about {1} (exact: {2}).".format(x, d2_solution, ddg_1(x)))
+    print("\n")
+
+    # demonstration of the error calculations
+    # check the output values with the data here:
+    # https://docs.google.com/spreadsheets/d/1aeaQkveMq4S_MCfeT2-_4mMtH0bFrduJscciTH_FwIw/edit?usp=sharing
+    if test_class.d_f is not None and test_class.dd_f is not None:
+        first_error, second_error = test_class.compute_errors(a, b, p)
+        print("Now, consider the interval [{0}, {1}] partitioned into {2} many points.".format(a, b, p))
+        print("Then, the maximal difference of the analytic derivative and the approximated functions are,")
+        print("{0} for the first derivative, and".format(first_error))
+        print("{0} for the second derivative.".format(second_error))
+        print("\n")
+
+    # demonstration of the plotting feature
+    test_class.draw_functions(a, b, p)
+    print("We can also draw the plot of the given function and its derivatives.")
+    print("\n")
+
+    # demonstration of the plotting of the errors
+    if test_class.d_f is not None and test_class.dd_f is not None:
+        test_class.draw_errors(a, b, p, h_values)
+        print("Furthermore, we can also plot the errors of the approximation and the analytic derivatives.")
+        print("\n")
+
+    print("Stay classy!")
+    print("\n")
+    print("END OF DEMONSTRATION\n")
 
 if __name__ == "__main__":
     main()
