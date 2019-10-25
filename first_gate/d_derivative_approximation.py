@@ -335,9 +335,9 @@ def main():
     # construct an object
     initial_h = 0.5
     # initial_h = 1 # developer version only
-    test_class = FiniteDifference(initial_h, g_1, dg_1, ddg_1)
+    test_obj = FiniteDifference(initial_h, g_1, dg_1, ddg_1)
 
-    # test_class = FiniteDifference(initial_h, g_1) # developer version only
+    # test_obj = FiniteDifference(initial_h, g_1) # developer version only
 
     # demonstration of the approximations
     # if x = 5, then it should be
@@ -346,8 +346,8 @@ def main():
     # first derivative    |  0.0950   | 0.1270
     # second derivative   |  0.1537   | 0.1522
     x = 5
-    d1_solution = test_class.approximate_first_derivative(x)
-    d2_solution = test_class.approximate_second_derivative(x)
+    d1_solution = test_obj.approximate_first_derivative(x)
+    d2_solution = test_obj.approximate_second_derivative(x)
     print("Firstly, this module is able to compute the approximation of the derivatives of a given " +
           "function.")
     print("The first derivative of g_1 at x = {0} should be about {1} (exact: {2}).".format(x, d1_solution, dg_1(x)))
@@ -357,8 +357,8 @@ def main():
     # demonstration of the error calculations
     # check the output values with the data here:
     # https://docs.google.com/spreadsheets/d/1aeaQkveMq4S_MCfeT2-_4mMtH0bFrduJscciTH_FwIw/edit?usp=sharing
-    if test_class.d_f is not None and test_class.dd_f is not None:
-        first_error, second_error = test_class.compute_errors(a, b, p)
+    if test_obj.d_f is not None and test_obj.dd_f is not None:
+        first_error, second_error = test_obj.compute_errors(a, b, p)
         print("Now, consider the interval [{0}, {1}] partitioned into {2} many points.".format(a, b, p))
         print("Then, the maximal difference of the analytic derivative and the approximated functions are,")
         print("{0} for the first derivative, and".format(first_error))
@@ -370,13 +370,13 @@ def main():
     # https://www.desmos.com/calculator/eiacy1i3nk
     print("We can also draw the plot of the given function and its derivatives.")
     print("\n")
-    test_class.draw_functions(a, b, p)
+    test_obj.draw_functions(a, b, p)
 
     # demonstration of the plotting of the errors
-    if test_class.d_f is not None and test_class.dd_f is not None:
+    if test_obj.d_f is not None and test_obj.dd_f is not None:
         print("Furthermore, we can also plot the errors of the approximation and the analytic derivatives.")
         print("\n")
-        test_class.draw_errors(a, b, p, h_values)
+        test_obj.draw_errors(a, b, p, h_values)
 
 
     print("Stay classy!")
