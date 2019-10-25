@@ -113,7 +113,7 @@ class FiniteDifference:
 
 
 
-    def compute_errors(self, a, b, p): # pylint: disable=invalid-name
+    def compute_errors(self, a, b, p):
         """ Calculates an approximation to the errors between an approximation
         and the exact derivative for first and second order derivatives in the
         maximum norm.
@@ -156,7 +156,7 @@ class FiniteDifference:
 
 
 
-    def draw_functions(self, a, b, p): # pylint: disable=invalid-name
+    def draw_functions(self, a, b, p):
         """ This function draws the plot for f, the approximated first two derivatives and if applicable,
         the analytic first two derivatives provided by the user.
         Parameters
