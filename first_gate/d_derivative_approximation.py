@@ -40,8 +40,6 @@ class FiniteDifference:
         The analytic second derivative of 'f'.
     """
 
-
-
     def __init__(self, h, f, d_f=None, dd_f=None):
         """ The constructor saves the arguments passed directly as attributes. See the class docstring for
         a description for the parameters and attributes.
@@ -51,7 +49,6 @@ class FiniteDifference:
         self.f = f
         self.d_f = d_f
         self.dd_f = dd_f
-
 
     @staticmethod
     def partition_interval_(a, b, p):
@@ -79,8 +76,6 @@ class FiniteDifference:
 
         return partition
 
-
-
     def approximate_first_derivative(self, x):
         """ This function approximates the first derivative of f at a given point. The formula used is the
         the courtesy of the Taylor's theorem.
@@ -94,8 +89,6 @@ class FiniteDifference:
             the approximation of the first derivative at the given point x
         """
         return (self.f(x + self.h) - self.f(x)) / self.h
-
-
 
     def approximate_second_derivative(self, x):
         """ This function approximates the second derivative of f at a given point. The formula used is the
@@ -111,9 +104,7 @@ class FiniteDifference:
         """
         return (self.f(x + self.h) - 2 * self.f(x) + self.f(x - self.h)) / self.h ** 2
 
-
-
-    def compute_errors(self, a, b, p): # pylint: disable=invalid-name
+    def compute_errors(self, a, b, p):
         """ Calculates an approximation to the errors between an approximation
         and the exact derivative for first and second order derivatives in the
         maximum norm.
@@ -154,9 +145,7 @@ class FiniteDifference:
         # and return
         return first_error, second_error
 
-
-
-    def draw_functions(self, a, b, p): # pylint: disable=invalid-name
+    def draw_functions(self, a, b, p):
         """ This function draws the plot for f, the approximated first two derivatives and if applicable,
         the analytic first two derivatives provided by the user.
         Parameters
@@ -203,8 +192,6 @@ class FiniteDifference:
 
         plt.show()
 
-
-
     def draw_errors(self, a, b, p, h_values):
         """ This function draws the error plot (i.e. the maximum difference of the analytic and the
         approximated on the given interval) according to the values for h with the double log scale. In
@@ -224,8 +211,6 @@ class FiniteDifference:
 
         # we will iterate over each value in h_values to find the errors of the analytic and its
         # approximation
-        # this could have been done with list comprehension, but if done so, compute errors would have
-        # needed another argument for h
         reset_h = self.h
         d1_error_values = []
         d2_error_values = []
@@ -261,8 +246,6 @@ class FiniteDifference:
         plt.legend()
 
         plt.show()
-
-
 
 def main():
     """ Our glorious main function. It will demonstrate every feature implemented in this module for the
@@ -317,16 +300,6 @@ def main():
         denominator = x ** 3
         return - numerator / denominator
 
-    # developer version only, a different test functions then given
-    # def g_1(x):
-    #     return np.log(x)
-    #
-    # def dg_1(x):
-    #     return 1 / x
-    #
-    # def ddg_1(x):
-    #     return - 1 / (x ** 2)
-
     # some initial values for testing
     a, b = np.pi, 3 * np.pi
     p = 1000
@@ -334,17 +307,9 @@ def main():
 
     # construct an object
     initial_h = 0.5
-    # initial_h = 1 # developer version only
     test_obj = FiniteDifference(initial_h, g_1, dg_1, ddg_1)
 
-    # test_obj = FiniteDifference(initial_h, g_1) # developer version only
-
     # demonstration of the approximations
-    # if x = 5, then it should be
-    #
-    #                        analytic | approximated
-    # first derivative    |  0.0950   | 0.1270
-    # second derivative   |  0.1537   | 0.1522
     x = 5
     d1_solution = test_obj.approximate_first_derivative(x)
     d2_solution = test_obj.approximate_second_derivative(x)
@@ -355,8 +320,6 @@ def main():
     print("\n")
 
     # demonstration of the error calculations
-    # check the output values with the data here:
-    # https://docs.google.com/spreadsheets/d/1aeaQkveMq4S_MCfeT2-_4mMtH0bFrduJscciTH_FwIw/edit?usp=sharing
     if test_obj.d_f is not None and test_obj.dd_f is not None:
         first_error, second_error = test_obj.compute_errors(a, b, p)
         print("Now, consider the interval [{0}, {1}] partitioned into {2} many points.".format(a, b, p))
@@ -367,7 +330,7 @@ def main():
 
     # demonstration of the plotting feature
     # Also check the plot drawn with Desmos:
-    # https://www.desmos.com/calculator/eiacy1i3nk
+    #      https://www.desmos.com/calculator/eiacy1i3nk
     print("We can also draw the plot of the given function and its derivatives.")
     print("\n")
     test_obj.draw_functions(a, b, p)
@@ -377,7 +340,6 @@ def main():
         print("Furthermore, we can also plot the errors of the approximation and the analytic derivatives.")
         print("\n")
         test_obj.draw_errors(a, b, p, h_values)
-
 
     print("Stay classy!")
     print("\n")
