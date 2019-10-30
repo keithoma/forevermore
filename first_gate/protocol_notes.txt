@@ -1,0 +1,28 @@
+Aufgabe 1.2.
+a) 
+
+Beobachtung: Mit einem kleineren Schrittweite h wird die Approximation besser. Die zweite Approximation nährt sich schneller an die analytische.
+
+Grund: Naja, die gleichmäßige Konvergenz von der Approximation gegen die Analytische ist klar (ich kann das auch schnell aufs Papier schreiben). Die Konvergenzgeschwindigkeit ist jeweils o(h) und o(h^2), also ist auch klar wieso die zweite Approximation schneller der analytischen Ableitung annährt.
+
+b)
+
+Beobachtung: Hier drei Sachen zu bemerken: 
+
+1. Rechts werden die Fehler konstant, denn die Approximation von der ggb. Funktion wird konstant (glaube 0) und die Ableitungen von der gegebenen Funktion ist beschränkt.
+
+2. Links werden die Fehler plötzlich größer. Liegt an der Maschinengenauigkeit.
+
+3. Dazwischen sind die Fehler parallel zu h und h^2 wie erwartet.
+
+Grund: steht da.
+
+Aufgabe 1.3.
+
+a)
+
+Beobachtung: Siehe vorläufiges Bild was ich gemacht habe. Die Werte für j waren 1 und 0.1. (für den Bericht brauchen wir richtige)
+
+Naja, mit einem kleineren j verschiebt sich der "Break Point" des Fehlers nach rechts (also die Approximation wird schlechter). Auffallend ist auch, dass der Fehler von der zweiten Approximation schneller schlechter wird, aber das liegt wieder an o(h^2). Ich glaube hier braucht man bisschen Mathe Hokuspokus.
+
+b) ähnlich wie (a) nur in die andere Richtung
