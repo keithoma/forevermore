@@ -26,3 +26,13 @@ Beobachtung: Siehe vorläufiges Bild was ich gemacht habe. Die Werte für j ware
 Naja, mit einem kleineren j verschiebt sich der "Break Point" des Fehlers nach rechts (also die Approximation wird schlechter). Auffallend ist auch, dass der Fehler von der zweiten Approximation schneller schlechter wird, aber das liegt wieder an o(h^2). Ich glaube hier braucht man bisschen Mathe Hokuspokus.
 
 b) ähnlich wie (a) nur in die andere Richtung
+
+--------------------------------
+
+Bericht Inhalt
+1. Einleitung
+2. Theoretischer Hintergrund
+3. Python Manual
+4. Dokumentation der Experimente
+5. Auswertung der Experimente
+6. Literatur
