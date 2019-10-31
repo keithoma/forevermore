@@ -187,7 +187,7 @@ class FiniteDifference:
 
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.title("Plot of f and Its Derivatives")
+        plt.title("Plot of f and Its Derivatives (h = {})".format(round(self.h, 2)))
         plt.legend()
 
         plt.show()
