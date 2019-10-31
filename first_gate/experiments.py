@@ -6,13 +6,13 @@ import derivative_approximation as da
 
 def main():
     # say hello to human
-    print("Greetings! This module will verify the experiments of the protocol.\n\n")
+    print("Greetings! This module will verify the experiments of the protocol. See the protocol for more infomation.\n\n")
 
     # EXPERIMENT ONE
     # we want to draw the functions for 4 different values of h
 
     print("EXPERIMENT ONE")
-    print("We will draw the plot for pi/3, pi/4, pi/5 and pi/10.")
+    print("We will draw the plot for pi/3, pi/4, pi/5 and pi/10.\n\n")
 
     # consider the function given below
     def g_1(x):
@@ -66,9 +66,21 @@ def main():
     p = 1000
 
     # draw the graphs for each h
-    for new_h in h_to_test:
-        test_obj.h = new_h
-        test_obj.draw_functions(a, b, p)
+    if False:
+        for new_h in h_to_test:
+            test_obj.h = new_h
+            test_obj.draw_functions(a, b, p)
+
+    # EXPERIMENT TWO
+    # we want to draw an useful error plot
+
+    print("EXPERIMENT TWO")
+    print("We will draw the error plot.")
+
+    h_values = np.logspace(-9, 2, num=50)
+    test_obj.draw_errors(a, b, p, h_values)
+
+
 
 if __name__ == "__main__":
     main()
