@@ -1,0 +1,21 @@
+\section{The Sweet Spot of the Increment}
+To test our theory, we consider the following function
+\begin{align*}
+    g_1(x) := \frac{\sin{x}}{x} \text{}
+\end{align*}
+and its derivatives
+\begin{align*}
+    {g'}_{1}(x) = \frac{x \cdot \cos{x} - \sin{x}}{x^2} \hspace{1cm} {g''}_{1}(x) = \frac{(x^2 - 2) \sin{x} + 2 x \cos{x}}{x^3} \text{.}
+\end{align*}
+
+\subsection{Plotting the Functions} % dont like the tile
+
+We first want to get a picture of what we are working with. Therefore, using the Python Module, we have drawn the plot of \(f\), its first two exact derivatives, \(D^{(1)}_h(x)\) and \(D^{(2)}_h(x)\). For the increment \(h\) we have chosen the following values
+\begin{align*}
+    \frac{\pi}{3} \text{,} \hspace{0.5cm} \frac{\pi}{4} \text{,} \hspace{0.5cm} \frac{\pi}{5} \text{,} \hspace{0.5cm} \frac{\pi}{10} \text{.}
+\end{align*}
+See \ref{XXX} for the resulting graph. \\
+As one can clearly see, both \(D^{(1)}_h(x)\) and \(D^{(2)}_h(x)\) merges <kann man besser schreiben> to the analytic derivatives of \(f\) as \(h\) becomes smaller. \(D^{(2)}_h(x)\) is almost indistinguishable from \(f''\) for \(h = \frac{\pi}{10}\). This result confirms the first part of the theory -- the approximation becomes better for smaller increments. But admittingly, even \(h = \frac{\pi}{10}\) is rather large if one compares it to the precision most computers have to offer<vielleicht erwaehnen 64bit>. Can we indefinitely improve our approximation if we just choose \(h\) to be small enough? Unfortunately, it turns out that this is not the case.
+\subsection{Plotting the Error}
+
+\section{How the Variance in Input changes the Output}
