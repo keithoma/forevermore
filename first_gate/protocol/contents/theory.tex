@@ -1,17 +1,17 @@
-Taylor's theorem is a powerful tool with many applications in physics, economics and many other fields. But in numerical analysis, we can use the Taylor polynomial to compute a fairly simple approximations for the derivatives of smooth functions.
+Taylor's theorem is a powerful tool with many applications in physics, economics and many other fields. But in numerical analysis, we can use the Taylor polynomial to compute approximations for the derivatives of smooth functions.
 
 Let \([a, b] \subset \mathbb{R}\) be a partitioned interval with \(p\) number of grid points, \(f \in C^{\infty}([a, b], \mathbb{R})\) a function, and we will denote with \(h \in \mathbb{R}\), \(h > 0\) the increment of the approximation. Given an \(x \in (a, b)\), we define \(x_{+} := x + h\) and \(x_{-} := x - h\).
 
-By Taylor's theorem we have
+By Taylor's theorem \cite{H.Amann} we have
 \begin{align}
-    f(x_{+}) &= \sum^{\infty}_{n = 0} \frac{f^{n}(x)}{n!} h^n = f(x) + f'(x)h + \frac{f''(x)}{2}h^2 + \dots \\
-    f(x_{-}) &= \sum^{\infty}_{n = 0} \frac{f^{n}(x)}{n!} (-h)^n = f(x) - f'(x)h + \frac{f''(x)}{2}h^2 + \dots
+    f(x_{+}) &= \sum^{\infty}_{n = 0} \frac{f^{n}(x)}{n!} h^n = f(x) + f'(x)h + \frac{f''(x)}{2}h^2 + \dots \label{eq:1}\\
+    f(x_{-}) &= \sum^{\infty}_{n = 0} \frac{f^{n}(x)}{n!} (-h)^n = f(x) - f'(x)h + \frac{f''(x)}{2}h^2 + \dots \label{eq:2}
 \end{align}
 Reformulate this equation and define the numerical approximation of the first derivative to be
 \begin{align*}
     D^{(1)}_h (x) := \frac{f(x_{+} - f(x)}{h} = f'(x) + \sum^{\infty}_{n = 2} \frac{f^{(n)} (x)}{n!}h^{n-1} \text{.}
 \end{align*}
-Adding \ref{xxx} and \ref{xxx} together and reformulating gives us
+Adding (\ref{eq:1}) and (\ref{eq:2}) together and reformulating gives us
 \begin{align*}
     D^{(2)}_h (x) := \frac{f(x_{+}) + f(x_{-}) - 2f(x)}{h} = f''(x) + \frac{f^(4)(x)h^2}{3 \cdot 4} + \dots \text{.}
 \end{align*}
