@@ -1,0 +1,12 @@
+\section{J is for Jitter}
+
+In the preceding section, we have learned that the computer is indeed limited and for every type of float there is an optimal increment for an approximation. To advance our understanding in this particular subject, let us modify the function from before and observe the effect on the error. Define
+\begin{align*}
+    g_j(x) := \frac{\sin(j x)}{x} \text{,}
+\end{align*}
+and we have the derivatives
+\begin{align*}
+    g_j'(x) &= \frac{j x \cos(jx) - \sin(jx)}{x^2} \\
+    g_j''(x) &= \frac{(2 - j^2 x^2)\sin(jx) - 2 j x \cos(jx)}{x^3} \text{,}
+\end{align*}
+with \(j > 0\). Once again, we will evaluate these functions on the partitioned interval \(I = [\pi, 3\pi]\) with \(p = 1000\). But given \(g_j\), how does large and small \(j\) affect the error plot?

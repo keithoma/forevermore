@@ -1,1 +1,12 @@
-In essence, the approximation of the derivative converges uniformly to the analytic one as the increment \(h\) becomes small enough. This realization, however, raises the question whether the aforementioned theory still holds true in the digital world of computing where the number line is far from complete. In the world where zero and one reign supreme, does the approximation still converge to the exact derivative?\\
+Let \([a, b] \subset \mathbb{R}\) be an interval, \(f \in C^{\infty}([a, b], \mathbb{R})\) a real function and we will denote with \(h \in \mathbb{R}\), \(h > 0\) the increment of the approximation. Given an \(x \in (a, b)\), we define \(x_{+} := x + h\) and \(x_{-} := x - h\).
+
+By Taylor's theorem we have
+\begin{align*}
+    f(x_{-}) = \sum^{\infty}_{n = 0} \frac{f^{n}(x)}{n!} h^n = f(x) + f'(x)h + \frac{f''(x)}{2}h^2 + \dots \text{.}
+\end{align*}
+Reformulate this equation and define the approximation of the first derivative to be
+\begin{align*}
+    D^{(1)}_h (x) := \frac{f(x_{+} - f(x)}{h}
+\end{align*}
+
+In essence, the approximation of the derivative converges uniformly to the analytic as the increment \(h\) tends to \(0\). This realization, however, raises the question whether the aforementioned theory still holds true in the digital world of computing where the number line is far from complete. In the world where only finite amount of ones and zeroes may exist, does the approximation still converge to the exact derivative?\\

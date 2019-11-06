@@ -10,7 +10,7 @@ and its derivatives
 on the interval \(I := [\pi, 3\pi]\). Note that we are bounded by the limitation of a computer, i.e. the interval \(I\) is partitioned into \(p := 1000\) many grid points and only on these points the functions will be evaluated.
 
 
-\subsection{Plotting the Functions} % dont like the tile
+\subsection{The Approaching Approximation} % dont like the tile
 
 We first want to get a picture of what we are working with. Therefore, using the Python module, we have drawn the plot of \(f\), its first two exact derivatives, \(D^{(1)}_h(x)\) and \(D^{(2)}_h(x)\). For the increment \(h\) we have chosen the following values
 \begin{align*}
@@ -37,8 +37,10 @@ But why does this happen? Where exactly in our computation does the imperfectnes
 
 %%% figure
 
-Here, we have fixed \(x = \pi + 2 \approx 5.14\) to observe the behavior of the analytic derivatives and the approximations with \(h\) as the variable. At around \(10^{-8}\) and \(10^{-4}\) respectively, both \(D^{(1)}_h(x)\) and \(D^{(2)}_h(x)\) starts oscillating resulting in the 
-
-
-
-\section{How the Variance in Input changes the Output}
+Here, we have fixed \(x = \pi + 2 \approx 5.14\) to observe the behavior of the analytic derivatives and the approximations with \(h\) as the variable. At around \(10^{-8}\) and \(10^{-4}\) respectively, both \(D^{(1)}_h(x)\) and \(D^{(2)}_h(x)\) starts oscillating even though in theory, these blue curves should once again smoothly approach the exact solution of \(f'\) and \(f''\) at \(x = \pi + 2\). This oscillation results in the error not converging. Therefore, we proceed by looking at the definition of the approximation. We had
+\begin{align*}
+    D^{(1)}_h(x) &:= \frac{f(x + h) - f(x)}{h} \\
+    D^{(2)}_h(x) &:= \frac{f(x + h) + f(x - h)- 2 f(x)}{h^2} \text{.}
+\end{align*}
+% here maybe we could takl about the conditioning of f?
+For \(D^{(1)}_h\), if \(h\) becomes small enough, then \(f(x + h) \approx f(x)\). Hence at the numerator, we are essentially subtracting two numbers which are close to each other, but such subtractions are ill-conditioned (see \ref{XXX}). Therefore, for \(h\) which are small enough, we loose accuracy at this point of the approximation process resulting in the error graph we have seen at \ref{XXX}. Similar argumentation also works for the second derivative as \(f(x + h) + f(x - h) \approx 2 f(x)\) for small \(h\). It is important to keep in mind that the threshhold for \(h\) being \textit{small enough} depends on the machine precision used for the computation. Our result is based on a 64-Bit float and while in general, the approximation will never converge to the analytic derivative outside of our mathematical imagination, the exact spot where the error stops decreasing might differ.
