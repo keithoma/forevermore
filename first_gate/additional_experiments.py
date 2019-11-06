@@ -41,9 +41,15 @@ class AdditionalExperiments:
         plt.ylabel("$y$")
         plt.title("Plot of $D_h^{(1)}f$ and $f'$ at $x = " + str(round(self.defaultx, 2)) + " $ with $h$ as the variable")
         plt.legend()
-        ticks = [0.11533351, 0.1153336]
 
-        ax.set_yticks(ticks)
+        # we are working with very small numbers which means we need custom ticks
+        # one may humor me and write this with np.arange
+        ticks1 = (0.1153335, 0.11533351, 0.11533352, 0.11533353, 0.11533354, 0.11533355, 0.11533357)
+        ticks2 = (0.11533358, 0.11533359, 0.1153336, 0.11533361, 0.11533362, 0.11533363)
+        ticks = ticks1 + ticks2
+        labels = (str(value) for value in ticks)
+        plt.yticks(ticks, labels, fontsize=8)
+
         plt.show()
 
     def draw_second_approximation(self):
@@ -62,19 +68,12 @@ class AdditionalExperiments:
         plt.ylabel("$y$")
         plt.title("Plot of $D_h^{(1)}f$ and $f'$ at $x = " + str(round(self.defaultx, 2)) + " $ with $h$ as the variable")
         plt.legend()
-        # ticks = [0.11533351, 0.1153336]
 
-        # ax.set_yticks(ticks)
-        plt.show()
-
-    def draw_first_difference(self):
-        h_values = np.logspace(-17, -14, num=10000)
-        d1_difference_values = [self.f(self.defaultx + h) - self.f(self.defaultx) for h in h_values]
-
-        fig = plt.figure()
-        ax = fig.add_subplot(1, 1, 1)
-
-        plt.loglog(h_values, d1_difference_values)
+        # we need custom ticks because we are woring with very small numbers
+        # again, if one wants to arange this, be my guest
+        ticks = (0.1319879, 0.131988, 0.1319881, 0.1319882, 0.1319883, 0.1319884)
+        labels = (str(value) for value in ticks)
+        plt.yticks(ticks, labels, fontsize=8)
 
         plt.show()
 
