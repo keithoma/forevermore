@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+""" This module draws crucial plots for the accompanying protocol.
+"""
 
 import numpy as np
-from decimal import *
 
 import matplotlib
 matplotlib.use('TkAgg')
