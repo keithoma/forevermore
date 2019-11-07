@@ -50,6 +50,10 @@ class FiniteDifference:
         self.d_f = d_f
         self.dd_f = dd_f
 
+        # graphic settings
+        self.error_plot_range = 10 ** (-9), 10 ** 5
+        self.j = 1
+
     @staticmethod
     def partition_interval_(a, b, p):
         """ This is a (private) function used to partition a interval passed as a parameter.
@@ -171,7 +175,7 @@ class FiniteDifference:
 
         # draw the plot
         plt.figure(1)
-        matplotlib.pyplot.grid(which="both")
+        matplotlib.pyplot.grid(which="major")
 
         plt.plot(partition, the_function_values, label="$f$")
 
@@ -229,7 +233,7 @@ class FiniteDifference:
         # draw the plot
         plt.figure(2)
         error_ax = plt.gca()
-        matplotlib.pyplot.grid(which="both")
+        matplotlib.pyplot.grid(which="major")
 
         plt.loglog(h_values, h_values, label="$h$", linestyle='dashed')
         plt.loglog(h_values, h_quadratic, label="$h^2$", linestyle='dashed')
@@ -238,14 +242,20 @@ class FiniteDifference:
         plt.loglog(h_values, d1_error_values, label="$e^{(1)}_f$")
         plt.loglog(h_values, d2_error_values, label="$e^{(2)}_f$")
 
-        error_ax.set_ylim(10 ** (-9), 10 ** 5) # limit the range of y; the values outside are uninteresting
-                                               # for our purposes
+        error_ax.set_ylim(self.error_plot_range) # limit the range of y; the values outside are uninteresting
+                                                 # for our purposes
         plt.xlabel("h")
         plt.ylabel("error or $h^j$")
-        plt.title("Plot of $e^{i}_f$ and $h^j$")
+        plt.title("Plot of $e^{i}_f$ and $h^j$ (j = " + str(round(self.j, 2)) + ")") # because format() gets confused
         plt.legend()
 
         plt.show()
+
+    def set_error_range(self, bottom, top):
+        self.error_plot_range = bottom, top
+
+    def set_j(self, j):
+        self.j = j
 
 def main():
     """ Our glorious main function. It will demonstrate every feature implemented in this module for the
