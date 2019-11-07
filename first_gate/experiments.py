@@ -71,7 +71,7 @@ def main():
     p = 1000
 
     # draw the graphs for each h
-    if False:
+    if True:
         for new_h in h_to_test:
             test_obj.h = new_h
             test_obj.draw_functions(a, b, p)
@@ -93,17 +93,20 @@ def main():
 
 
 
-    j_values_small = (1.0 / 3, 2.0 / 3, 1.0)
-    j_values_big = (2, 3, 4)
+    j_values_small = (1.0 / 100 , 1.0 / 10)
+    j_values_big = (10, 100)
 
     for j in j_values_small:
+
         j_obj = da.FiniteDifference(1, g_j(j), dg_j(j), ddg_j(j))
+        j_obj.ghost_error_plot = True
         j_obj.set_error_range(10 ** (-15), 10 ** 5)
         j_obj.set_j(j)
         j_obj.draw_errors(a, b, p, h_values)
 
     for j in j_values_big:
         j_obj = da.FiniteDifference(1, g_j(j), dg_j(j), ddg_j(j))
+        j_obj.ghost_error_plot = True
         j_obj.set_error_range(10 ** (-15), 10 ** 5)
         j_obj.set_j(j)
         j_obj.draw_errors(a, b, p, h_values)

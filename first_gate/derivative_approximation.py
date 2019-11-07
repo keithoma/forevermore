@@ -53,6 +53,7 @@ class FiniteDifference:
         # graphic settings
         self.error_plot_range = 10 ** (-9), 10 ** 5
         self.j = 1
+        self.ghost_error_plot = False
 
     @staticmethod
     def partition_interval_(a, b, p):
@@ -102,7 +103,7 @@ class FiniteDifference:
         x : float
             the point where the second derivative of f should be approximated
         Returns
-        -------
+        -------alpha=0.7
         float
             the approximation of the second derivative at the given point x
         """
@@ -177,17 +178,17 @@ class FiniteDifference:
         plt.figure(1)
         matplotlib.pyplot.grid(which="major")
 
-        plt.plot(partition, the_function_values, label="$f$")
+        plt.plot(partition, the_function_values, label="$g_1$")
 
         if self.d_f is not None:
-            plt.plot(partition, d1_analytic_values, label="$f'$")
+            plt.plot(partition, d1_analytic_values, label="$g_1'$")
 
-        plt.plot(partition, d1_approx_values, label="$D^{(1)}_h(f)$", linestyle='dashed')
+        plt.plot(partition, d1_approx_values, label="$D^{(1)}_h(g_1)$", linestyle='dashed')
 
         if self.dd_f is not None:
-            plt.plot(partition, d2_analytic_values, label="$f''$")
+            plt.plot(partition, d2_analytic_values, label="$g_1''$")
 
-        plt.plot(partition, d2_approx_values, label="$D^{(2)}_h(f)$", linestyle='dashed')
+        plt.plot(partition, d2_approx_values, label="$D^{(2)}_h(g_1)$", linestyle='dashed')
 
         plt.xlabel('x')
         plt.ylabel('y')
@@ -235,18 +236,95 @@ class FiniteDifference:
         error_ax = plt.gca()
         matplotlib.pyplot.grid(which="major")
 
-        plt.loglog(h_values, h_values, label="$h$", linestyle='dashed')
-        plt.loglog(h_values, h_quadratic, label="$h^2$", linestyle='dashed')
-        plt.loglog(h_values, h_cubic, label="$h^3$", linestyle='dashed')
+        plt.loglog(h_values, h_values, label="$h$", linestyle='dashed', color="#D3D3D3")
+        plt.loglog(h_values, h_quadratic, label="$h^2$", linestyle='dashed', color="#C0C0C0")
+        plt.loglog(h_values, h_cubic, label="$h^3$", linestyle='dashed', color="#A9A9A9")
 
-        plt.loglog(h_values, d1_error_values, label="$e^{(1)}_f$")
-        plt.loglog(h_values, d2_error_values, label="$e^{(2)}_f$")
+        plt.loglog(h_values, d1_error_values, label="$e^{(1)}_{g_j}$", color="#1f77b4")
+        plt.loglog(h_values, d2_error_values, label="$e^{(2)}_{g_j}$", color="#ff7f0e")
+
+        if self.ghost_error_plot is True:
+            # we first save the attributes as we want to reset later
+            reset_f = self.f
+            reset_d_f = self.d_f
+            reset_dd_f = self.dd_f
+             
+            def g_1(x):
+                """ A mathemathical function for testing.
+                Parameters
+                ----------
+                x : float
+                    The variable.
+                Returns
+                -------
+                float
+                    The solution of the function.
+                """
+                return np.sin(x) / x
+
+            # the following two functions are the first two analytic derivatives
+            def dg_1(x):
+                """ The first derivative of g_1().
+                Parameters
+                ----------
+                x : float
+                    The variable.
+                Returns
+                -------
+                float
+                    The solution of the function.
+                """
+                numerator = x * np.cos(x) - np.sin(x)
+                denominator = x ** 2
+                return numerator / denominator
+
+            def ddg_1(x):
+                """ The second derivative of g_1().
+                Parameters
+                ----------
+                x : float
+                    The variable.
+                Returns
+                -------
+                float
+                    The solution of the function.
+                """
+                numerator = (x ** 2 - 2) * np.sin(x) + 2 * x * np.cos(x)
+                denominator = x ** 3
+                return - numerator / denominator
+
+            self.f = g_1
+            self.d_f = dg_1
+            self.dd_f = ddg_1
+        
+            # now draw the function
+            # first calculate the values for the approximation
+            reset_h = self.h
+            d1_ghost_values = []
+            d2_ghost_values = []
+
+            for new_h in h_values:
+                self.h = new_h
+                d1_ghost_values.append(self.compute_errors(a, b, p)[0])
+                d2_ghost_values.append(self.compute_errors(a, b, p)[1])
+
+            self.h = reset_h
+            plt.loglog(h_values, d1_ghost_values, label="$e^{(1)}_{g_1}$", alpha=0.5, color="#1f77b4")
+            plt.loglog(h_values, d2_ghost_values, label="$e^{(2)}_{g_1}$", alpha=0.5, color="#ff7f0e")
+            
+            self.f = reset_f
+            self.d_f = reset_d_f
+            self.dd_f = reset_dd_f
+        
+
+
+            
 
         error_ax.set_ylim(self.error_plot_range) # limit the range of y; the values outside are uninteresting
                                                  # for our purposes
         plt.xlabel("h")
         plt.ylabel("error or $h^j$")
-        plt.title("Plot of $e^{i}_f$ and $h^j$ (j = " + str(round(self.j, 2)) + ")") # because format() gets confused
+        plt.title("Plot of $e^{i}_{g_j}$ and $h^j$ (j = " + str(round(self.j, 2)) + ")") # because format() gets confused
         plt.legend()
 
         plt.show()
