@@ -6,3 +6,4 @@
 *.gz
 *.pyc
 *.fdb_latexmk
+*.toc

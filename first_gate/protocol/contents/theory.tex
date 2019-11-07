@@ -1,3 +1,4 @@
+\section{Theory}
 Taylor's theorem is a powerful tool with many applications in physics, economics and many other fields. But in numerical analysis, we can use the Taylor polynomial to compute approximations for the derivatives of smooth functions.
 
 Let \([a, b] \subset \mathbb{R}\) be a partitioned interval with \(p\) number of grid points, \(f \in C^{\infty}([a, b], \mathbb{R})\) a function, and we will denote with \(h \in \mathbb{R}\), \(h > 0\) the increment of the approximation. Given an \(x \in (a, b)\), we define \(x_{+} := x + h\) and \(x_{-} := x - h\).
@@ -9,11 +10,11 @@ By Taylor's theorem \cite{H.Amann} we have
 \end{align}
 Reformulate this equation and define the numerical approximation of the first derivative to be
 \begin{align*}
-    D^{(1)}_h (x) := \frac{f(x_{+} - f(x)}{h} = f'(x) + \sum^{\infty}_{n = 2} \frac{f^{(n)} (x)}{n!}h^{n-1} \text{.}
+    D^{(1)}_h (x) := \frac{f(x_{+}) - f(x)}{h} = f'(x) + \sum^{\infty}_{n = 2} \frac{f^{(n)} (x)}{n!}h^{n-1} \text{.}
 \end{align*}
 Adding (\ref{eq:1}) and (\ref{eq:2}) together and reformulating gives us
 \begin{align*}
-    D^{(2)}_h (x) := \frac{f(x_{+}) + f(x_{-}) - 2f(x)}{h} = f''(x) + \frac{f^(4)(x)h^2}{3 \cdot 4} + \dots \text{.}
+    D^{(2)}_h (x) := \frac{f(x_{+}) + f(x_{-}) - 2f(x)}{h} = f''(x) + \frac{f^{(4)}(x)h^2}{3 \cdot 4} + \dots \text{.}
 \end{align*}
 \(D^{(2)}_h\) is the numerical approximation of the second derivative.
 
