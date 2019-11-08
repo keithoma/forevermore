@@ -84,7 +84,7 @@ def main():
 
     
     h_values = np.logspace(-9, 2, num=50)
-    if False:
+    if True:
         test_obj.draw_errors(a, b, p, h_values)
 
     # EXPERIMENT THREE
