@@ -39,7 +39,7 @@ See figure \ref{fig:exp1_h} for the resulting graph.
 
 As one can clearly see, both \((D^{(1)}_h g_1)\) and \((D^{(2)}_hg_2)\) merges to the analytic derivatives of \(g_1\) as \(h\) becomes small. \((D^{(2)}_h g_1)\) is almost indistinguishable from \(g_1''\) for \(h = \frac{\pi}{10}\). This result confirms the first part of the theory -- the approximation becomes better as the increment tends to \(0\). That \((D^{(2)}_h g_2)\) converges faster to \(g_1''\) is also expected because the rate of convergence of the approximation of the second derivative is faster than the one for the first. But admittingly, even \(h = \frac{\pi}{10}\) is rather large if one compares it to the 64 bit precision offered by \texttt{float64}. Can we indefinitely improve our approximation if we just choose \(h\) to be small enough? Unfortunately, it turns out that this is not the case.
 
-\subsection{The Anatomy of Errors}
+\subsection{The Anatomy of Errors}\label{cha:error}
 
 Now, we consider the two errors \(e_{g_1}^{(1)}(h)\) and \(e_{g_1}^{(2)}(h)\) which are again, the largest disparity between the analytic and the approximation on the interval \(I\). We have drawn the plot (see \ref{fig:exp1_error_plot}) in double log scale for the error for
 \[h \in [10^{-9}, 10^2] \text{.} \]
@@ -63,4 +63,4 @@ But why does this happen? Where exactly in our computation does the imperfectnes
 % here maybe we could takl about the conditioning of f?
 For \(D^{(1)}_h\), if \(h\) becomes small enough, then \(g_1(x + h) \approx g_1(x)\) since \(g_1\) is continuous. Hence at the numerator, we are essentially subtracting two numbers which are close to each other, but such subtractions are ill-conditioned \cite{Lecture}. In other words, for \(h\) which are small enough, we loose precision at this point of the approximation process resulting in the error graph we have seen at \ref{fig:exp1_error_plot}. Similar argumentation also works for the second derivative as \(- f(x + h) + 2 f(x) \approx f(x - h)\) for small \(h\).
 
-It is important to keep in mind that the threshhold for \(h\) being \textit{small enough} depends most likely on the machine precision used for the computation. Our result is based on a 64-Bit float and while in general, the approximation will never converge to the analytic derivative outside of our mathematical imagination, the exact spot where the error stops decreasing might differ. We will discuss this hypothesis in section \ref{xxx}.
+It is important to keep in mind that the threshhold for \(h\) being \textit{small enough} depends most likely on the machine precision used for the computation. Our result is based on a 64-Bit float and while in general, the approximation will never converge to the analytic derivative outside of our mathematical imagination, the exact spot where the error stops decreasing might differ. We will discuss this hypothesis in section \ref{cha:error}.
