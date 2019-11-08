@@ -1,8 +1,11 @@
-\section{Theory}
-\subsection{Approximation of Derivatives with the Taylor Polynomial}
-Taylor's theorem is a powerful tool with many applications in physics, economics and many other fields. But in numerical analysis, we can use the Taylor polynomial to compute approximations for the derivatives of smooth functions.
+\section{Theory and Motivation}
+As we alluded in the introduction, this protocol studies the behavior of numerical approximations in the digital enviroment. For this, we need to first define how the approximation of a derivative is constructed (section \ref{chap:approximation}), then the nature of numbers used by computers will be adressed (section \ref{cha:machine}).
+% Thinking ahead, we will also introduce the concept of conditioning as it will be important when we explain our results.
+%
+\subsection{Approximation of Derivatives with the Taylor Polynomial} \label{chap:approximation}
+Taylor's theorem is a powerful tool with applications in many fields and branches, but in numerical analysis, we use the Taylor polynomial to compute the approximations for the derivatives of smooth functions.
 
-Let \([a, b] \subset \mathbb{R}\) be a partitioned interval with \(p\) number of grid points, \(f \in C^{\infty}([a, b], \mathbb{R})\) a function, and we will denote with \(h \in \mathbb{R}\), \(h > 0\) the increment of the approximation. Given an \(x \in (a, b)\), we define \(x_{+} := x + h\) and \(x_{-} := x - h\).
+Let \([a, b] \subset \mathbb{R}\) be a partitioned interval with \(p\) number of grid points, \(f \in C^{\infty}([a, b], \mathbb{R})\) a function, and we will denote with \(h \in \mathbb{R}\), \(h > 0\) the increment of the approximations. Given an \(x \in (a, b)\), we define \(x_{+} := x + h\) and \(x_{-} := x - h\).
 
 By Taylor's theorem \cite{H.Amann} we have
 \begin{align}
@@ -11,31 +14,31 @@ By Taylor's theorem \cite{H.Amann} we have
 \end{align}
 Reformulate this equation and define the numerical approximation of the first derivative to be
 \begin{align*}
-    D^{(1)}_h (x) := \frac{f(x_{+}) - f(x)}{h} = f'(x) + \sum^{\infty}_{n = 2} \frac{f^{(n)} (x)}{n!}h^{n-1} \text{.}
+    (D^{(1)}_h f) (x) := \frac{f(x_{+}) - f(x)}{h} = f'(x) + \sum^{\infty}_{n = 2} \frac{f^{(n)} (x)}{n!}h^{n-1} \text{.}
 \end{align*}
 Adding (\ref{eq:1}) and (\ref{eq:2}) together and reformulating gives us
 \begin{align*}
-    D^{(2)}_h (x) := \frac{f(x_{+}) + f(x_{-}) - 2f(x)}{h} = f''(x) + \frac{f^{(4)}(x)h^2}{3 \cdot 4} + \dots \text{.}
+    (D^{(2)}_h f)(x) := \frac{f(x_{+}) - 2f(x) + f(x_{-})}{h^2} = f''(x) + \frac{f^{(4)}(x)h^2}{3 \cdot 4} + \dots \text{.}
 \end{align*}
 \(D^{(2)}_h\) is the numerical approximation of the second derivative.
 
-Via remainder estimation we have furthermore the rate of convergence
+As the remainder of the Taylor polynomial approaches \(0\) for \(h \rightarrow 0\), the approximations uniformly converge to the analytic derivatives. Via remainder estimation, the rate of convergence is
 \begin{align*}
     (D^{(1)}_h f) (x) &= f'(x) + \mathcal{O}(h) \\
     (D^{(2)}_h f) (x) &= f''(x) + \mathcal{O}(h^2) \text{.}
 \end{align*}
 
-With the maximum norm we can gauge the difference between the analytic and the approximation. Define for \(k = 1, 2\)
+\noindent With the maximum norm we can gauge the difference between the analytic and the approximation. Define for \(k = 1, 2\)
 \begin{align*}
-    e^{(k)}_f (h) = \max_{x_i \in [a, b]} \left| f^{(k)} (x_i) - (D^{(k)}_h f) (x_i)\right| \text{,}
+    e^{(k)}_f (h) := \max_{x_i \in [a, b]} \left| f^{(k)} (x_i) - (D^{(k)}_h f) (x_i)\right| \text{,}
 \end{align*}
 where \(x_i\) with \(1 \in i \in p\) are the grid points in \([a, b]\).
 
-\subsection{Machine Numbers}
+\subsection{Machine Numbers}\label{cha:machine}
 
-As mathematicians, we often flirt with the concept of infinity, yet it is questionable if such a thing that adheres to our definition of said concept even exists in the physical world. While our understanding about the cosmos is modest, we know for certain that our computers are limited by hardware --- only finitely many bits\footnote{Bit stands for \textit{binary digit} and can be thought to represent a logical value, i.e. "true or false" or "0 or 1".} may be used to represent a number. Thus, we cannot compute with "real" real numbers, we can only use a close approximation of it. These numbers which computers use are called the \textit{machine numbers}.
+As mathematicians, we often flirt with the concept of infinity, yet it is questionable if such a thing adhering to our definition of said concept even exists in the physical world. While our understanding about the cosmos is modest, we know for certain that our computers are limited by hardware --- only finitely many \textit{bits}\footnote{Bit stands for \textit{binary digit} and can be thought to represent a logical value, i.e. "true or false" or "0 or 1".} may be used to represent a number. Thus, we cannot compute with the "real" real numbers, we can only use a resembling number system. This number system is called \textit{machine numbers}.
 
-In a computer, every number is stored as a combination of a significand and an exponent with the base \(2\) which are both represented in the binary system as bits. For example, \texttt{float64}, the data type for a floating point number with 64 bits, uses 1 bit for the sign of the number, 52 bits for the significand, another 1 bit for the sign of the exponent and 10 for the exponent. The number \(1.2345 \in \mathbb{R}\) would then be \(12345 \cdot 10^{-4}\) and in binary,
+In a computer, every number is stored as a combination of a \textit{significand} and an \textit{exponent} with the \textit{base} \(2\) which are both represented in the binary system as bits. For example, \texttt{float64}, the data type for a floating point number with 64 bits according to IEEE-754, uses 1 bit for the sign of the number, 52 bits for the significand, another 1 bit for the sign of the exponent and 10 for the exponent. The number \(1.2345 \in \mathbb{R}\) would then be \(12345 \cdot 10^{-4}\) and in binary,
 \begin{align*}
     1.2345 = (11000000111001) \cdot 2^{-(100)_2}\text{.}
 \end{align*}
