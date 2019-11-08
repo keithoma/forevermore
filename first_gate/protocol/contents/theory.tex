@@ -1,4 +1,5 @@
 \section{Theory}
+\subsection{Approximation of Derivatives with the Taylor Polynomial}
 Taylor's theorem is a powerful tool with many applications in physics, economics and many other fields. But in numerical analysis, we can use the Taylor polynomial to compute approximations for the derivatives of smooth functions.
 
 Let \([a, b] \subset \mathbb{R}\) be a partitioned interval with \(p\) number of grid points, \(f \in C^{\infty}([a, b], \mathbb{R})\) a function, and we will denote with \(h \in \mathbb{R}\), \(h > 0\) the increment of the approximation. Given an \(x \in (a, b)\), we define \(x_{+} := x + h\) and \(x_{-} := x - h\).
@@ -30,4 +31,22 @@ With the maximum norm we can gauge the difference between the analytic and the a
 \end{align*}
 where \(x_i\) with \(1 \in i \in p\) are the grid points in \([a, b]\).
 
+\subsection{Machine Numbers}
+
+As mathematicians, we often flirt with the concept of infinity, yet it is questionable if such a thing that adheres to our definition of said concept even exists in the physical world. While our understanding about the cosmos is modest, we know for certain that our computers are limited by hardware --- only finitely many bits\footnote{Bit stands for \textit{binary digit} and can be thought to represent a logical value, i.e. "true or false" or "0 or 1".} may be used to represent a number. Thus, we cannot compute with "real" real numbers, we can only use a close approximation of it. These numbers which computers use are called the \textit{machine numbers}.
+
+In a computer, every number is stored as a combination of a significand and an exponent with the base \(2\) which are both represented in the binary system as bits. For example, \texttt{float64}, the data type for a floating point number with 64 bits, uses 1 bit for the sign of the number, 52 bits for the significand, another 1 bit for the sign of the exponent and 10 for the exponent. The number \(1.2345 \in \mathbb{R}\) would then be \(12345 \cdot 10^{-4}\) and in binary,
+\begin{align*}
+    1.2345 = (11000000111001) \cdot 2^{-(100)_2}\text{.}
+\end{align*}
+Using \texttt{float64} we are able to represent the number \(12345\) accurately, but as the information we are able to store is finite, not every number on the real number line can be represented precisely. If a number cannot be represented with the given float type, the computer rounds that number to the nearest machine number, hence \textit{rounding error} occurs.
+
+In other words, the number system used by a computer is far from complete in the sense of real analysis, but we can estimate the upper bound of the relative error of the rounding procedure which we denote as the machine epsilon \(\epsilon\).
+
+For the experiments we will discuss later, we have used \texttt{float64} in Python for which the machine epsilon is
+\begin{align*}
+    \epsilon = 2^{-52} \approx 2.22 \cdot 10^{-16} \text{.}
+\end{align*}
+
+\subsection{Motivation}
 In essence, the approximation of the derivative converges uniformly to the analytic as the increment \(h\) tends to \(0\). This realization, however, raises the question whether the aforementioned theory still holds true in the digital world of computing where the number line is far from complete. In the world where only finite amount of ones and zeroes may exist, does the approximation still converge to the exact derivative?\\
