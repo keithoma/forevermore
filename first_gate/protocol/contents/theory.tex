@@ -34,17 +34,15 @@ As the remainder of the Taylor polynomial approaches \(0\) for \(h \rightarrow 0
 \end{align*}
 where \(x_i\) with \(1 \in i \in p\) are the grid points in \([a, b]\).
 
-\subsection{Machine Numbers}\label{cha:machine}
+\subsection{Machine Numbers \cite{EWR}}\label{cha:machine}
 
-As mathematicians, we often flirt with the concept of infinity, yet it is questionable if such a thing adhering to our definition of said concept even exists in the physical world. While our understanding about the cosmos is modest, we know for certain that our computers are limited by hardware --- only finitely many \textit{bits}\footnote{Bit stands for \textit{binary digit} and can be thought to represent a logical value, i.e. "true or false" or "0 or 1".} may be used to represent a number. Thus, we cannot compute with the "real" real numbers, we can only use a resembling number system. This number system is called \textit{machine numbers}.
+As mathematicians, we often flirt with the concept of infinity, yet it is questionable if such a thing adhering to our definition of said concept even exists in the physical world. While our understanding about the cosmos is modest, we know for certain that our computers are limited by hardware --- only finitely many \textit{bits}\footnote{Bit stands for \textit{binary digit} and can be thought to represent a logical value, i.e. "true or false" or "0 or 1".} may be used to represent a number. Thus, we cannot compute with the "real" real numbers, we can only use a resembling, but incomplete number system. This number system is called \textit{machine numbers}.
 
-In a computer, every number is stored as a combination of a \textit{significand} and an \textit{exponent} with the \textit{base} \(2\) which are both represented in the binary system as bits. For example, \texttt{float64}, the data type for a floating point number with 64 bits according to IEEE-754, uses 1 bit for the sign of the number, 52 bits for the significand, another 1 bit for the sign of the exponent and 10 for the exponent. The number \(1.2345 \in \mathbb{R}\) would then be \(12345 \cdot 10^{-4}\) and in binary,
+In a computer, every number is stored as a combination of a \textit{significand} and an \textit{exponent} with the \textit{base} \(2\) which are both represented in the binary system as bits. For example, \texttt{float64}, the data type for a floating point number with 64 bits, uses, according to IEEE-754, 1 bit for the sign of the number, 52 bits for the significand, another 1 bit for the sign of the exponent and 10 for the exponent. The number \(1.2345 \in \mathbb{R}\) would then be \(12345 \cdot 10^{-4}\) and in binary,
 \begin{align*}
-    1.2345 = (11000000111001) \cdot 2^{-(100)_2}\text{.}
+    1.2345 = (11000000111001)_2 \cdot 2^{-(100)_2}\text{.}
 \end{align*}
-Using \texttt{float64} we are able to represent the number \(12345\) accurately, but as the information we are able to store is finite, not every number on the real number line can be represented precisely. If a number cannot be represented with the given float type, the computer rounds that number to the nearest machine number, hence \textit{rounding error} occurs.
-
-In other words, the number system used by a computer is far from complete in the sense of analysis, but we can estimate the upper bound of the relative error of the rounding procedure which we denote as the machine epsilon \(\epsilon\). For the experiments we will discuss later, we have used \texttt{float64} in Python for which the machine epsilon is
+Using \texttt{float64} we are able to represent the number \(12345\) accurately, but as the information we are able to store is finite, not every number on the real number line can be represented precisely. If a number cannot be represented with the given float type, the computer rounds that number to the nearest machine number, hence \textit{rounding error} occurs. But we can estimate the upper bound of the relative error of the rounding procedure which we denote as the machine epsilon \(\epsilon\). For the experiments we will discuss later, we have used \texttt{float64} in Python for which the machine epsilon is
 \begin{align*}
     \epsilon = 2^{-52} \approx 2.22 \cdot 10^{-16} \text{.}
 \end{align*}
