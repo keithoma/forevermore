@@ -15,13 +15,24 @@ def main():
     --------
         None
     """
+    # SET PARAMETERS HERE
+    a, b = np.pi, 3 * np.pi # the start and end point of the interval
+    p = 1000 # the number of grid points in the interval
+
+    h_to_test = (np.pi / 3, np.pi / 4, np.pi / 5, np.pi / 10) # the values for h for the function
+                                                              # plot
+    h_values = np.logspace(-9, 2, num=50) # the values for h for the error plot
+    j_values_small = (1.0 / 100 , 1.0 / 10) # the values for small j
+    j_values_big = (10, 100) # the values for large j
+
+
     # say hello to human
     print("Greetings! This module will verify the experiments of the protocol. See the protocol for more infomation.\n\n")
 
     # EXPERIMENT ONE
     # we want to draw the functions for 4 different values of h
 
-    print("EXPERIMENT ONE")
+    print("Section: Approximation's Approach")
     print("We will draw the plot for pi/3, pi/4, pi/5 and pi/10.\n\n")
 
     # consider the function given below
@@ -78,24 +89,25 @@ def main():
         denominator = lambda x: x ** 3
         return lambda x: numerator(x) / denominator(x)
 
-    # initialize some constants and construct an object of FiniteDifference
-    a, b = np.pi, 3 * np.pi
-    p = 1000
+    # constructs the object
+
+    test_obj = da.FiniteDifference(1, g_j(1), dg_j(1), ddg_j(1))
+    for new_h in h_to_test:
+        test_obj.h = new_h
+        test_obj.draw_functions(a, b, p)
 
     # EXPERIMENT TWO
     # we want to draw an useful error plot
 
-    print("EXPERIMENT TWO")
+    print("Section: Anatomy of Errors")
     print("We will draw the error plot.")
 
-    h_values = np.logspace(-9, 2, num=50)
+    test_obj.draw_errors(a, b, p, h_values)
+
 
     # EXPERIMENT THREE
 
     print("EXPERIMENT THREE")
-
-    j_values_small = (1.0 / 100 , 1.0 / 10)
-    j_values_big = (10, 100)
 
     for j in j_values_small:
         j_obj = da.FiniteDifference(1, g_j(j), dg_j(j), ddg_j(j))

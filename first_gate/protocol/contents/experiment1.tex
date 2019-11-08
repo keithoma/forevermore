@@ -41,7 +41,7 @@ As one can clearly see, both \((D^{(1)}_h g_1)\) and \((D^{(2)}_hg_2)\) merges t
 
 \subsection{The Anatomy of Errors}\label{cha:error}
 
-Now, we consider the two errors \(e_{g_1}^{(1)}(h)\) and \(e_{g_1}^{(2)}(h)\) which are again, the largest disparity between the analytic and the approximation on the interval \(I\). We have drawn the plot (see \ref{fig:exp1_error_plot}) in double log scale for the error for
+Now, we consider the two errors \(e_{g_1}^{(1)}(h)\) and \(e_{g_1}^{(2)}(h)\) which are again, the largest disparity between the analytic and the approximation on the interval \(I\). We have drawn the plot (see \ref{fig:exp1_error_plot}) in double log scale for the error for\footnote{Again, the plotting is bounded by the rules of computing. In this particular experiment, we have used 50 points for \(h\).}
 \[h \in [10^{-9}, 10^2] \text{.} \]
 
 %%% figure of the error plot
@@ -51,16 +51,16 @@ Now, we consider the two errors \(e_{g_1}^{(1)}(h)\) and \(e_{g_1}^{(2)}(h)\) wh
     \label{fig:exp1_error_plot}
 \end{figure}
 
-Before we discuss the bad news, let us examine where the theory was right in its prediction. The middle part of \(e_f^{(1)}(h)\) and \(e_f^{(2)}(h)\) are parallel to the lines of \(h\) and \(h^2\) respectively. This is as we hypothesized since the order of convergence of the error are
-\[\mathcal{O}(h) \hspace{0.3cm} \text{for} \hspace{0.3cm} e_f^{(1)}(h) \hspace{0.3cm} \text{and} \hspace{0.3cm} \mathcal{O}(h^2) \hspace{0.3cm} \text{for} \hspace{0.3cm} e_f^{(2)}(h) \text{.}\]
-The left side of the plot, however, does not behave the way we wanted. At around \(10^{-8}\) for \(e_f^{(1)}(h)\) and at \(10^{-4}\) for \(e_f^{(2)}(h)\) both plots stop converging and starts increasing again. This means that on the machine number line the approximation does not uniformly converge to the analytic derivative. Instead, there is an optimal point for the increment, a "sweet spot", so to speak. Beyond this sweet spot, the approximation actually becomes worse and thus, we cannot decrease the value of the increment haphazardly in hopes of getting a better approximation.
+Before we discuss the bad news, let us examine where the theory was right in its prediction. The middle part of \(e_{g_1}^{(1)}(h)\) and \(e_{g_1}^{(2)}(h)\) are parallel to the lines of \(h\) and \(h^2\) respectively. This is as we hypothesized since the order of convergence of the error are
+\[\mathcal{O}(h) \hspace{0.3cm} \text{for} \hspace{0.3cm} e_{g_1}^{(1)}(h) \hspace{0.3cm} \text{and} \hspace{0.3cm} \mathcal{O}(h^2) \hspace{0.3cm} \text{for} \hspace{0.3cm} e_{g_1}^{(2)}(h) \text{.}\]
+The left side of the plot, however, does not behave the way we wanted. At around \(10^{-8}\) for \(e_{g_1}^{(1)}(h)\) and at \(10^{-4}\) for \(e_{g_1}^{(2)}(h)\) both plots stop converging and starts increasing again. This means that on the machine number line the approximation does not uniformly converge to the analytic derivative. Instead, there is an optimal point for the increment, a "sweet spot", so to speak. Beyond this sweet spot, the approximation actually becomes worse and thus, we cannot decrease the value of the increment haphazardly in hopes of getting a better approximation.
 
 But why does this happen? Where exactly in our computation does the imperfectness of the machine sneak in? The answer is hidden in the way we compute the approximations. We had
 \begin{align*}
-    D^{(1)}_h(x) &= \frac{f(x + h) - f(x)}{h} \\
-    D^{(2)}_h(x) &= \frac{f(x + h) - 2 f(x)}{h^2} + f(x - h) \text{.}
+    (D^{(1)}_h g_1) &= \frac{g_1(x + h) - g_1(x)}{h} \\
+    (D^{(2)}_h g_1) &= \frac{g_1(x + h) - 2 g_1(x) + g_1(x - h)}{h^2} \text{.}
 \end{align*}
 % here maybe we could takl about the conditioning of f?
 For \(D^{(1)}_h\), if \(h\) becomes small enough, then \(g_1(x + h) \approx g_1(x)\) since \(g_1\) is continuous. Hence at the numerator, we are essentially subtracting two numbers which are close to each other, but such subtractions are ill-conditioned \cite{Lecture}. In other words, for \(h\) which are small enough, we loose precision at this point of the approximation process resulting in the error graph we have seen at \ref{fig:exp1_error_plot}. Similar argumentation also works for the second derivative as \(- f(x + h) + 2 f(x) \approx f(x - h)\) for small \(h\).
 
-It is important to keep in mind that the threshhold for \(h\) being \textit{small enough} depends most likely on the machine precision used for the computation. Our result is based on a 64-Bit float and while in general, the approximation will never converge to the analytic derivative outside of our mathematical imagination, the exact spot where the error stops decreasing might differ. We will discuss this hypothesis in section \ref{cha:error}.
+It is important to keep in mind that the threshhold for \(h\) being \textit{small enough} depends most likely on the machine precision used for the computation (see \ref{cha:prec}). Our result is based on a 64-Bit float and while in general, the approximation will never converge to the analytic derivative outside of our mathematical imagination, the exact spot where the error stops decreasing might differ. We will discuss this hypothesis in section \ref{cha:error}.
