@@ -42,7 +42,7 @@ In a computer, every number is stored as a combination of a \textit{significand}
 \begin{align*}
     1.2345 = (11000000111001)_2 \cdot 2^{-(100)_2}\text{.}
 \end{align*}
-Using \texttt{float64} we are able to represent the number \(12345\) accurately, but as the information we are able to store is finite, not every number on the real number line can be represented precisely. If a number cannot be represented with the given float type, the computer rounds that number to the nearest machine number, hence \textit{rounding error} occurs. But we can estimate the upper bound of the relative error of the rounding procedure which we denote as the machine epsilon \(\epsilon\). For the experiments we will discuss later, we have used \texttt{float64} in Python for which the machine epsilon is
+Using \texttt{float64} we are able to represent the number \(12345\) without an error, but as the information we are able to store is finite, not every number on the real number line can be represented precisely. If a number cannot be represented with the given float type, the computer rounds that number to the nearest machine number, hence \textit{rounding error} occurs. But we can estimate the upper bound of the relative error of the rounding procedure which we denote as the machine epsilon \(\epsilon\). For the experiments we will discuss later, we have used \texttt{float64} in Python for which the machine epsilon is
 \begin{align*}
     \epsilon = 2^{-52} \approx 2.22 \cdot 10^{-16} \text{.}
 \end{align*}
