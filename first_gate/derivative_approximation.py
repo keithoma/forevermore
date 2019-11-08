@@ -3,8 +3,9 @@
 Authors: Christian Parpart (185 676) & Kei Thoma (574 613)
 Date: 24th of October 2019
 
-This module implements a class FiniteDifference which provides functions to compute the approximation of
-a given function's derivatives. It is also able to draw a corresponding plot and calculate the diviation of
+This module implements a class FiniteDifference which provides functions
+to compute the approximation of a given function's derivatives.
+It is also able to draw a corresponding plot and calculate the diviation of
 the approximation from the analytic derivatives if they were provided by the user.
 """
 
@@ -41,8 +42,9 @@ class FiniteDifference:
     """
 
     def __init__(self, h, f, d_f=None, dd_f=None):
-        """ The constructor saves the arguments passed directly as attributes. See the class docstring for
-        a description for the parameters and attributes.
+        """
+        The constructor saves the arguments passed directly as attributes.
+        See the class docstring for a description for the parameters and attributes.
         """
         # save parameters as attributes
         self.h = h
@@ -57,18 +59,21 @@ class FiniteDifference:
 
     @staticmethod
     def partition_interval_(a, b, p):
-        """ This is a (private) function used to partition a interval passed as a parameter.
+        """
+        This is a (private) function used to partition a interval passed as a parameter.
+        
         Parameters
         ----------
         a, b : float
             Start and end point of the interval.
         p : int
             The number of points in this interval, a and b are counted.
+
         Returns
         -------
         list
-            A list of floats which contains p number of points separated evenly between a and b including a
-            and b.
+            A list of floats which contains p number of points separated
+            evenly between a and b including a and b.
         """
         # if a > b, swap a and b
         if a > b:
@@ -82,12 +87,15 @@ class FiniteDifference:
         return partition
 
     def approximate_first_derivative(self, x):
-        """ This function approximates the first derivative of f at a given point. The formula used is the
+        """
+        This function approximates the first derivative of f at a given point. The formula used is the
         the courtesy of the Taylor's theorem.
+        
         Parameters
         ----------
         x : float
             the point where the first derivative of f should be approximated
+        
         Returns
         -------
         float
@@ -96,35 +104,42 @@ class FiniteDifference:
         return (self.f(x + self.h) - self.f(x)) / self.h
 
     def approximate_second_derivative(self, x):
-        """ This function approximates the second derivative of f at a given point. The formula used is the
-        the courtesy of the Taylor's theorem.
+        """
+        This function approximates the second derivative of f at a given point.
+        The formula used is the the courtesy of the Taylor's theorem.
+        
         Parameters
         ----------
         x : float
             the point where the second derivative of f should be approximated
+        
         Returns
-        -------alpha=0.7
+        -------
         float
             the approximation of the second derivative at the given point x
         """
         return (self.f(x + self.h) - 2 * self.f(x) + self.f(x - self.h)) / self.h ** 2
 
     def compute_errors(self, a, b, p):
-        """ Calculates an approximation to the errors between an approximation
+        """
+        Calculates an approximation to the errors between an approximation
         and the exact derivative for first and second order derivatives in the
         maximum norm.
+        
         Parameters
         ----------
         a, b : float
             Start and end point of the interval.
         p : int
             Number of points used in the approximation of the maximum norm.
+
         Returns
         -------
         float
             Errors of the approximation of the first derivative.
         float
             Errors of the approximation of the second derivative.
+        
         Raises
         ------
         ValueError
@@ -151,8 +166,11 @@ class FiniteDifference:
         return first_error, second_error
 
     def draw_functions(self, a, b, p):
-        """ This function draws the plot for f, the approximated first two derivatives and if applicable,
+        """
+        This function draws the plot for f,
+        the approximated first two derivatives and if applicable,
         the analytic first two derivatives provided by the user.
+        
         Parameters
         ----------
         a, b : float
@@ -198,9 +216,11 @@ class FiniteDifference:
         plt.show()
 
     def draw_errors(self, a, b, p, h_values):
-        """ This function draws the error plot (i.e. the maximum difference of the analytic and the
+        """
+        This function draws the error plot (i.e. the maximum difference of the analytic and the
         approximated on the given interval) according to the values for h with the double log scale. In
         addition, the plots for h, h^2, and h^3 are also drawn.
+        
         Parameters
         ----------
         a, b : float
@@ -243,9 +263,7 @@ class FiniteDifference:
             plt.loglog(h_values, h_values, label="$h$", linestyle='dotted')
             plt.loglog(h_values, h_quadratic, label="$h^2$", linestyle='dotted')
             plt.loglog(h_values, h_cubic, label="$h^3$", linestyle='dotted')
-
         else:
-
             plt.loglog(h_values, h_values, label="$h$", linestyle='dotted', color="#D3D3D3")
             plt.loglog(h_values, h_quadratic, label="$h^2$", linestyle='dotted', color="#C0C0C0")
             plt.loglog(h_values, h_cubic, label="$h^3$", linestyle='dotted', color="#A9A9A9")
@@ -259,7 +277,8 @@ class FiniteDifference:
             reset_dd_f = self.dd_f
              
             def g_1(x):
-                """ A mathemathical function for testing.
+                """
+                A mathemathical function for testing.
                 Parameters
                 ----------
                 x : float
@@ -273,7 +292,8 @@ class FiniteDifference:
 
             # the following two functions are the first two analytic derivatives
             def dg_1(x):
-                """ The first derivative of g_1().
+                """
+                The first derivative of g_1().
                 Parameters
                 ----------
                 x : float
@@ -288,11 +308,14 @@ class FiniteDifference:
                 return numerator / denominator
 
             def ddg_1(x):
-                """ The second derivative of g_1().
+                """
+                The second derivative of g_1().
+
                 Parameters
                 ----------
                 x : float
                     The variable.
+
                 Returns
                 -------
                 float
@@ -335,13 +358,41 @@ class FiniteDifference:
         plt.show()
 
     def set_error_range(self, bottom, top):
+        """
+        Sets the error plot range to the given top and bottom values.
+
+        Parameters: 
+        -----------
+        top : float
+            The top of the error range.
+        bottom : float
+            The bottom of the error range.
+
+        Returns:
+        --------
+            None.
+        """
         self.error_plot_range = bottom, top
 
-    def set_j(self, j):
-        self.j = j
+    def set_j(self, _j):
+        """
+        Sets the member variable j to the contents of the input parameter _j.
+
+        Parameters: 
+        -----------
+        j : float
+            the j-variable of the mathematical expression.
+        
+        Returns:
+        --------
+            None.
+        """
+        self.j = _j
 
 def main():
-    """ Our glorious main function. It will demonstrate every feature implemented in this module for the
+    """
+    Our glorious main function.
+    It will demonstrate every feature implemented in this module for the
     function, sin(x) / x.
     """
     # greetings
@@ -364,11 +415,14 @@ def main():
 
     # the following two functions are the first two analytic derivatives
     def dg_1(x):
-        """ The first derivative of g_1().
+        """
+        The first derivative of g_1().
+
         Parameters
         ----------
         x : float
             The variable.
+
         Returns
         -------
         float
@@ -379,11 +433,14 @@ def main():
         return numerator / denominator
 
     def ddg_1(x):
-        """ The second derivative of g_1().
+        """
+        The second derivative of g_1().
+
         Parameters
         ----------
         x : float
             The variable.
+
         Returns
         -------
         float
@@ -406,8 +463,8 @@ def main():
     x = 5
     d1_solution = test_obj.approximate_first_derivative(x)
     d2_solution = test_obj.approximate_second_derivative(x)
-    print("Firstly, this module is able to compute the approximation of the derivatives of a given " +
-          "function.")
+    print("Firstly, this module is able to compute the approximation of " +
+          "the derivatives of a given function.")
     print("The first derivative of g_1 at x = {0} should be about {1} (exact: {2}).".format(x, d1_solution, dg_1(x)))
     print("The second derivative of g_1 at x = {0} should be about {1} (exact: {2}).".format(x, d2_solution, ddg_1(x)))
     print("\n")
@@ -415,7 +472,8 @@ def main():
     # demonstration of the error calculations
     if test_obj.d_f is not None and test_obj.dd_f is not None:
         first_error, second_error = test_obj.compute_errors(a, b, p)
-        print("Now, consider the interval [{0}, {1}] partitioned into {2} many points.".format(a, b, p))
+        print("Now, consider the interval [{0}, {1}] partitioned into {2} many points.".
+              format(a, b, p))
         print("Then, the maximal difference of the analytic derivative and the approximated functions are,")
         print("{0} for the first derivative, and".format(first_error))
         print("{0} for the second derivative.".format(second_error))
