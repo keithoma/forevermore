@@ -1,6 +1,6 @@
 \section{j-Variable Variations}
 
-In the preceding section, we have learned that the computer is indeed limited and for every type of float there is an optimal increment for an approximation. To advance our understanding in this particular subject, let us modify the function from before and observe the effect on the error. Define
+In the preceding section, we have learned that the computer is indeed limited and for every type of float there is an optimal increment for an approximation. To advance our understanding in this particular subject, let us modify the function and observe the effect on the error. Define
 \begin{align*}
     g_j(x) := \frac{\sin(j x)}{x} \text{,}
 \end{align*}
@@ -10,3 +10,14 @@ and we have the derivatives
     g_j''(x) &= \frac{(2 - j^2 x^2)\sin(jx) - 2 j x \cos(jx)}{x^3} \text{,}
 \end{align*}
 with \(j > 0\). Once again, we will evaluate these functions on the partitioned interval \(I = [\pi, 3\pi]\) with \(p = 1000\). But given \(g_j\), how does large and small \(j\) affect the error plot?
+
+%%%
+
+On the figure \ref{XXX} one can see that as \(j\) gets smaller, the sweet spot of the increment for both \(D^{(1)}_h(g_j)\) and \(D^{(2)}_h(g_j)\) moves to bottom right. This means, that the optimal choice for \(h\) becomes larger and the approximation becomes slightly better. On the other hand, choosing big values for \(j\) moves the spot to the top left which means that one needs a smaller \(h\) for the most optimal yet worse approximation.
+Why does this movement of the sweet spot occur? To answer this question, we have to look at what \(j\) does in our function \(\sin(\cdot)\). \(j\) changes the period, the smaller the \(j\) the smaller the period and vice versa. Because \(g_j\) is once again a periodic function\footnote{A function \(f\) is periodic if there is a nonzero constant \(P \in \mathbb{R}\), such that \(f(x + P) = f(x)\) for all \(x\) in the domain.}, this property of periodicity is inherited from \(\sin(\cdot)\). If we now consider once again how the approximation is calculated, we had
+
+\begin{align*}
+    D^{(1)}_h (g_j) = \frac{g_j(x + h) - g_j(x)}{h} \text{.}
+\end{align*}
+
+We know that the subtraction at the numerator is the source inaccuracy. If \(j\) is small however, then \(g_j(x + h) - g_j(x)\) because the small change in the variable results in small change in value. Therefore, the approximation approaches the exact one with a larger increment. Hence the optimal increment is larger and gives a better approximation (in the sense that the error is small). Similary, if \(j\) is large, then for a better approximation one needs a smaller \(h\).
