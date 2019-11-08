@@ -41,9 +41,7 @@ In a computer, every number is stored as a combination of a significand and an e
 \end{align*}
 Using \texttt{float64} we are able to represent the number \(12345\) accurately, but as the information we are able to store is finite, not every number on the real number line can be represented precisely. If a number cannot be represented with the given float type, the computer rounds that number to the nearest machine number, hence \textit{rounding error} occurs.
 
-In other words, the number system used by a computer is far from complete in the sense of real analysis, but we can estimate the upper bound of the relative error of the rounding procedure which we denote as the machine epsilon \(\epsilon\).
-
-For the experiments we will discuss later, we have used \texttt{float64} in Python for which the machine epsilon is
+In other words, the number system used by a computer is far from complete in the sense of analysis, but we can estimate the upper bound of the relative error of the rounding procedure which we denote as the machine epsilon \(\epsilon\). For the experiments we will discuss later, we have used \texttt{float64} in Python for which the machine epsilon is
 \begin{align*}
     \epsilon = 2^{-52} \approx 2.22 \cdot 10^{-16} \text{.}
 \end{align*}
