@@ -9,8 +9,8 @@ Let \([a, b] \subset \mathbb{R}\) be a partitioned interval with \(p\) number of
 
 By Taylor's theorem \cite{H.Amann} we have
 \begin{align}
-    f(x_{+}) &= \sum^{\infty}_{n = 0} \frac{f^{n}(x)}{n!} h^n = f(x) + f'(x)h + \frac{f''(x)}{2}h^2 + \dots \label{eq:1}\\
-    f(x_{-}) &= \sum^{\infty}_{n = 0} \frac{f^{n}(x)}{n!} (-h)^n = f(x) - f'(x)h + \frac{f''(x)}{2}h^2 + \dots \label{eq:2}
+    f(x_{+}) &= \sum^{\infty}_{n = 0} \frac{f^{(n)}(x)}{n!} h^n = f(x) + f'(x)h + \frac{f''(x)}{2}h^2 + \dots \label{eq:1}\\
+    f(x_{-}) &= \sum^{\infty}_{n = 0} \frac{f^{(n)}(x)}{n!} (-h)^n = f(x) - f'(x)h + \frac{f''(x)}{2}h^2 + \dots \label{eq:2}
 \end{align}
 Reformulate this equation and define the numerical approximation of the first derivative to be
 \begin{align*}

@@ -16,9 +16,27 @@ We first want to get a picture of what we are working with. Therefore, using the
 \begin{align*}
     \frac{\pi}{3} \text{,} \hspace{0.5cm} \frac{\pi}{4} \text{,} \hspace{0.5cm} \frac{\pi}{5} \text{,} \hspace{0.5cm} \frac{\pi}{10} \text{.}
 \end{align*}
-See \ref{XXX} for the resulting graph. \\
+See figure \ref{fig:exp1_h} for the resulting graph.
+\pagebreak
 
 %%% figure the 4 plots for the h
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.4\linewidth}
+        \includegraphics[width=\linewidth]{graphics/plot_h/exp1_huge_h.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+        \includegraphics[width=\linewidth]{graphics/plot_h/exp1_large_h.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+        \includegraphics[width=\linewidth]{graphics/plot_h/exp1_small_h.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+        \includegraphics[width=\linewidth]{graphics/plot_h/exp1_tiny_h.png}
+    \end{subfigure}
+    \caption{huge}
+    \label{fig:exp1_h}
+\end{figure}
 
 As one can clearly see, both \(D^{(1)}_h(x)\) and \(D^{(2)}_h(x)\) merges to the analytic derivatives of \(f\) as \(h\) becomes smaller. \(D^{(2)}_h(x)\) is almost indistinguishable from \(f''\) for \(h = \frac{\pi}{10}\). This result confirms the first part of the theory -- the approximation becomes better as the increment tends to \(0\). That \(D^{(2)}_h(x)\) converges faster to \(f''\) is also expected from the theory. But admittingly, even \(h = \frac{\pi}{10}\) is rather large if one compares it to the 64-bit precision we have worked with and most modern computers have to offer. Can we indefinitely improve our approximation if we just choose \(h\) to be small enough? Unfortunately, it turns out that this is not the case.
 
@@ -35,7 +53,7 @@ The left side of the plot, however, does not behave the way we wanted. At around
 
 But why does this happen? Where exactly in our computation does the imperfectness of the machine sneak in? To answer this question, see figure \ref{xxx}
 
-%%% figure
+%%% figure(X)
 
 Here, we have fixed \(x = \pi + 2 \approx 5.14\) to observe the behavior of the analytic derivatives and the approximations with \(h\) as the variable. At around \(10^{-8}\) and \(10^{-4}\) respectively, both \(D^{(1)}_h(x)\) and \(D^{(2)}_h(x)\) starts oscillating even though in theory, these blue curves should once again smoothly approach the exact solution of \(f'\) and \(f''\) at \(x = \pi + 2\). This oscillation results in the error not converging.
 
