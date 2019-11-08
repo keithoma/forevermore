@@ -71,7 +71,7 @@ def main():
     p = 1000
 
     # draw the graphs for each h
-    if True:
+    if False:
         for new_h in h_to_test:
             test_obj.h = new_h
             test_obj.draw_functions(a, b, p)
@@ -84,7 +84,7 @@ def main():
 
     
     h_values = np.logspace(-9, 2, num=50)
-    if True:
+    if False:
         test_obj.draw_errors(a, b, p, h_values)
 
     # EXPERIMENT THREE

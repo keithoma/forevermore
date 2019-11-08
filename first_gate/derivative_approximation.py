@@ -236,18 +236,19 @@ class FiniteDifference:
         error_ax = plt.gca()
         matplotlib.pyplot.grid(which="major")
 
-        plt.loglog(h_values, h_values, label="$h$", linestyle='dashed')
-        plt.loglog(h_values, h_quadratic, label="$h^2$", linestyle='dashed')
-        plt.loglog(h_values, h_cubic, label="$h^3$", linestyle='dashed')
+        if self.ghost_error_plot is False:
+            plt.loglog(h_values, d1_error_values, label="$e^{(1)}_{g_j}$")
+            plt.loglog(h_values, d2_error_values, label="$e^{(2)}_{g_j}$")
 
-        plt.loglog(h_values, d1_error_values, label="$e^{(1)}_{g_j}$", color="#1f77b4")
-        plt.loglog(h_values, d2_error_values, label="$e^{(2)}_{g_j}$", color="#ff7f0e")
+            plt.loglog(h_values, h_values, label="$h$", linestyle='dotted')
+            plt.loglog(h_values, h_quadratic, label="$h^2$", linestyle='dotted')
+            plt.loglog(h_values, h_cubic, label="$h^3$", linestyle='dotted')
 
-        if self.ghost_error_plot is True:
+        else:
 
-            plt.loglog(h_values, h_values, label="$h$", linestyle='dashed', color="#D3D3D3")
-            plt.loglog(h_values, h_quadratic, label="$h^2$", linestyle='dashed', color="#C0C0C0")
-            plt.loglog(h_values, h_cubic, label="$h^3$", linestyle='dashed', color="#A9A9A9")
+            plt.loglog(h_values, h_values, label="$h$", linestyle='dotted', color="#D3D3D3")
+            plt.loglog(h_values, h_quadratic, label="$h^2$", linestyle='dotted', color="#C0C0C0")
+            plt.loglog(h_values, h_cubic, label="$h^3$", linestyle='dotted', color="#A9A9A9")
 
             plt.loglog(h_values, d1_error_values, label="$e^{(1)}_{g_j}$", color="#1f77b4")
             plt.loglog(h_values, d2_error_values, label="$e^{(2)}_{g_j}$", color="#ff7f0e")
@@ -323,10 +324,6 @@ class FiniteDifference:
             self.f = reset_f
             self.d_f = reset_d_f
             self.dd_f = reset_dd_f
-        
-
-
-            
 
         error_ax.set_ylim(self.error_plot_range) # limit the range of y; the values outside are uninteresting
                                                  # for our purposes
