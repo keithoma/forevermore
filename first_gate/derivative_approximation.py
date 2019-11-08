@@ -61,7 +61,7 @@ class FiniteDifference:
     def partition_interval_(a, b, p):
         """
         This is a (private) function used to partition a interval passed as a parameter.
-        
+
         Parameters
         ----------
         a, b : float
@@ -90,12 +90,12 @@ class FiniteDifference:
         """
         This function approximates the first derivative of f at a given point. The formula used is the
         the courtesy of the Taylor's theorem.
-        
+
         Parameters
         ----------
         x : float
             the point where the first derivative of f should be approximated
-        
+
         Returns
         -------
         float
@@ -107,12 +107,12 @@ class FiniteDifference:
         """
         This function approximates the second derivative of f at a given point.
         The formula used is the the courtesy of the Taylor's theorem.
-        
+
         Parameters
         ----------
         x : float
             the point where the second derivative of f should be approximated
-        
+
         Returns
         -------
         float
@@ -125,7 +125,7 @@ class FiniteDifference:
         Calculates an approximation to the errors between an approximation
         and the exact derivative for first and second order derivatives in the
         maximum norm.
-        
+
         Parameters
         ----------
         a, b : float
@@ -139,7 +139,7 @@ class FiniteDifference:
             Errors of the approximation of the first derivative.
         float
             Errors of the approximation of the second derivative.
-        
+
         Raises
         ------
         ValueError
@@ -170,7 +170,7 @@ class FiniteDifference:
         This function draws the plot for f,
         the approximated first two derivatives and if applicable,
         the analytic first two derivatives provided by the user.
-        
+
         Parameters
         ----------
         a, b : float
@@ -215,12 +215,12 @@ class FiniteDifference:
 
         plt.show()
 
-    def draw_errors(self, a, b, p, h_values):
+    def draw_errors(self, a, b, p, h_values): # pylint: disable=too-many-locals, too-many-statements
         """
         This function draws the error plot (i.e. the maximum difference of the analytic and the
         approximated on the given interval) according to the values for h with the double log scale. In
         addition, the plots for h, h^2, and h^3 are also drawn.
-        
+
         Parameters
         ----------
         a, b : float
@@ -275,7 +275,7 @@ class FiniteDifference:
             reset_f = self.f
             reset_d_f = self.d_f
             reset_dd_f = self.dd_f
-             
+
             def g_1(x):
                 """
                 A mathemathical function for testing.
@@ -328,7 +328,7 @@ class FiniteDifference:
             self.f = g_1
             self.d_f = dg_1
             self.dd_f = ddg_1
-        
+
             # now draw the function
             # first calculate the values for the approximation
             reset_h = self.h
@@ -343,7 +343,7 @@ class FiniteDifference:
             self.h = reset_h
             plt.loglog(h_values, d1_ghost_values, label="$e^{(1)}_{g_1}$", alpha=0.5, color="#1f77b4")
             plt.loglog(h_values, d2_ghost_values, label="$e^{(2)}_{g_1}$", alpha=0.5, color="#ff7f0e")
-            
+
             self.f = reset_f
             self.d_f = reset_d_f
             self.dd_f = reset_dd_f
@@ -352,8 +352,9 @@ class FiniteDifference:
                                                  # for our purposes
         plt.xlabel("h")
         plt.ylabel("error or $h^j$")
-        plt.title("Plot of $e^{i}_{g_j}$ and $h^j$ (j = " + str(round(self.j, 2)) + ")") # because format() gets confused
+        # because format() gets confused
         plt.legend(fontsize=14)
+        plt.title("Plot of $e^{i}_{g_j}$ and $h^j$ (j = " + str(round(self.j, 2)) + ")")
 
         plt.show()
 
@@ -361,16 +362,12 @@ class FiniteDifference:
         """
         Sets the error plot range to the given top and bottom values.
 
-        Parameters: 
+        Parameters:
         -----------
         top : float
             The top of the error range.
         bottom : float
             The bottom of the error range.
-
-        Returns:
-        --------
-            None.
         """
         self.error_plot_range = bottom, top
 
@@ -378,14 +375,10 @@ class FiniteDifference:
         """
         Sets the member variable j to the contents of the input parameter _j.
 
-        Parameters: 
+        Parameters:
         -----------
         j : float
             the j-variable of the mathematical expression.
-        
-        Returns:
-        --------
-            None.
         """
         self.j = _j
 

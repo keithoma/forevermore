@@ -1,19 +1,13 @@
 #!/usr/bin/python3
+""" Forged by Christian Parpart & Kei Thoma. Module was written for the protocol "The Effect of
+of the Machine Precision in the Numerical Approximation of a Derivative".
+"""
 
 import numpy as np
 import derivative_approximation as da
 
 def main():
-    """
-    This is the main function being invoked when running this program.
-
-    Parameter:
-    ----------
-        None
-
-    Returns:
-    --------
-        None
+    """ This is the main function being invoked when running this program.
     """
     # SET PARAMETERS HERE
     a, b = np.pi, 3 * np.pi # the start and end point of the interval
@@ -22,12 +16,13 @@ def main():
     h_to_test = (np.pi / 3, np.pi / 4, np.pi / 5, np.pi / 10) # the values for h for the function
                                                               # plot
     h_values = np.logspace(-9, 2, num=50) # the values for h for the error plot
-    j_values_small = (1.0 / 100 , 1.0 / 10) # the values for small j
+    j_values_small = (1.0 / 100, 1.0 / 10) # the values for small j
     j_values_big = (10, 100) # the values for large j
 
 
     # say hello to human
-    print("Greetings! This module will verify the experiments of the protocol. See the protocol for more infomation.\n\n")
+    print("Greetings! This module will verify the experiments of the protocol." +
+          "See the protocol for more infomation.\n\n")
 
     # EXPERIMENT ONE
     # we want to draw the functions for 4 different values of h
