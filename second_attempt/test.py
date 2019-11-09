@@ -23,6 +23,19 @@ def construct_A1(d, n):
         return [ entry(j) for j in range(1, n) ]
     return [ row(i, d) for i in range(1, n) ]
 
+def count_elements(multi_list, a=0):
+    for item in multi_list:
+        a = a + 1 if type(item) != list else count_elements(item, a)
+    return a
+
+# def flatten(container):
+#     for i in container:
+#         if isinstance(i, (list,tuple)):
+#             for j in flatten(i):
+#                 yield j
+#         else:
+#             yield i
+
 def construct(d, l, n):
     """
     Constructs A(l, d) in R^{(n-1)^l x (n-1)^l}
@@ -34,15 +47,18 @@ def construct(d, l, n):
             if i == j:
                 return construct(d, l - 1, n)
             elif j == i - 1 or j == i + 1:
-                return minus_I(l)
+                return minus_I((n - 1) ** (l-1))
             else:
-                return null(l)
-        return [ entry(j) for j in range(1, l) ]
+                return null((n - 1) ** (l-1))
+        return [ entry(j) for j in range(1, n) ]
     if l > 1:
-        return [ row(i) for i in range(1, l) ]
+        return [ row(i) for i in range(1, n) ]
     elif l == 1:
         return construct_A1(d, n)
     else:
         raise ValueError("Invalid parameter l={0}.".format(l))
 
-print(construct(2, 2, 3))
+A_n = construct(2, 2, 3)
+print(A_n)
+#print(reshape(A_n, 4))
+print(count_elements(A_n))
