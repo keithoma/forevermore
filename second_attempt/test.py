@@ -67,7 +67,27 @@ def construct(d, n):
         raise ValueError("n must be >= 2")
     return generate(d, 1, 1)
 
+def traverse_block_matrix(block_matrix):
+    def traverse(block, i, j):
+        if type(block) == list and len(block) == 0:
+            # -> empty (syntetic)
+            return i, j
+        elif type(block) == list and type(block[0]) == list:
+            # -> list of rows of block matrices
+            r, c = traverse(block[0], i, j)
+            traverse(block[1:], i + 1, j)
+            return i + r * len(block), j + c * len(block)
+        if type(block) == list and type(block[0]) != list:
+            # -> one row of elementary values
+            _, x = traverse(block[0], i, j)
+            return i, j + x
+        else:
+            # single elementary value
+            print("[{}, {}] = {}".format(i, j, block))
+            return i + 1, j + 1
+    traverse(block_matrix, 0, 0)
+
 A_n = construct(2, 3)
 print(A_n)
-#print(reshape(A_n, 4))
-print(count_elements(A_n))
+print("Traversing:")
+traverse_block_matrix(A_n)
