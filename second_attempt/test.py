@@ -75,12 +75,13 @@ def traverse_block_matrix(block_matrix):
         elif type(block) == list and type(block[0]) == list:
             # -> list of rows of block matrices
             r, c = traverse(block[0], i, j)
-            traverse(block[1:], i + 1, j)
-            return i + r * len(block), j + c * len(block)
+            traverse(block[1:], r, j)
+            return r, c
         if type(block) == list and type(block[0]) != list:
             # -> one row of elementary values
-            _, x = traverse(block[0], i, j)
-            return i, j + x
+            traverse(block[0], i, j)
+            traverse(block[1:], i, j + 1)
+            return i + 1, j + len(block)
         else:
             # single elementary value
             print("[{}, {}] = {}".format(i, j, block))
