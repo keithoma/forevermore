@@ -22,7 +22,7 @@ def construct(d, n):
     """
     Constructs A(l, d) in R^{(n-1)^l x (n-1)^l}
     """
-    def generate(l, global_i=1, global_j=1):
+    def generate(l):
         def construct_A1():
             """ Constructs a A1 matrix in R^{(n-1)x(n-1)}. """
             def row(i):
