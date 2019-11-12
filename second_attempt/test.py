@@ -10,6 +10,13 @@ def depth(block_matrix):
     """ Computes the depth of a recursive block matrix. """
     return 1 if type(block_matrix) != list else 1 + depth(max(block_matrix, key = lambda p: depth(p)))
 
+def dot_graph(matrix):
+    """ Constructs the graph in dot-format. See: https://en.wikipedia.org/wiki/DOT_(graph_description_language) """
+    def dot(node, depth):
+        subs = functools.reduce(lambda a, n: a + ("" if type(n) != list else dot(n, depth + 1)), node, "")
+        return functools.reduce(lambda a, n: a + "\t\"{}\" -> \"{}\";\n".format(node, n), node, "") + subs
+    return "digraph {{\n{}\n}}\n".format(dot(matrix, 0))
+
 # def flatten(container):
 #     for i in container:
 #         if isinstance(i, (list,tuple)):
