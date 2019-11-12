@@ -1,23 +1,14 @@
 #! /usr/bin/env python3
 import numpy as np
+import functools 
 
-def construct_A1(d, n):
-    """ Constructs a A1 matrix in R^{(n-1)*(n-1)}. """
-    def row(j, d):
-        def entry(i):
-            if i == j:
-                return 2 * d
-            elif j == i + 1 or j == i - 1:
-                return -1
-            else:
-                return 0
-        return [ entry(j) for j in range(1, n) ]
-    return [ row(i, d) for i in range(1, n) ]
+def count_elements(block_matrix, a=0):
+    """ Counts the number of coefficients in the matrix. """
+    return functools.reduce(lambda a, x: a + (1 if type(x) != list else count_elements(x)), block_matrix, 0)
 
-def count_elements(multi_list, a=0):
-    for item in multi_list:
-        a = a + 1 if type(item) != list else count_elements(item, a)
-    return a
+def depth(block_matrix):
+    """ Computes the depth of a recursive block matrix. """
+    return 1 if type(block_matrix) != list else 1 + depth(max(block_matrix, key = lambda p: depth(p)))
 
 # def flatten(container):
 #     for i in container:
