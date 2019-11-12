@@ -59,25 +59,25 @@ def construct(d, n):
     return generate(d, 1, 1)
 
 def traverse_block_matrix(block_matrix):
-    def traverse(block, i, j):
+    def traverse(block, i, j, depth):
         if type(block) == list and len(block) == 0:
             # -> empty (syntetic)
             return i, j
         elif type(block) == list and type(block[0]) == list:
             # -> list of rows of block matrices
-            r, c = traverse(block[0], i, j)
-            traverse(block[1:], r, j)
+            r, c = traverse(block[0], i, j, depth + 1)
+            traverse(block[1:], r, j, depth + 1)
             return r, c
         if type(block) == list and type(block[0]) != list:
             # -> one row of elementary values
-            traverse(block[0], i, j)
-            traverse(block[1:], i, j + 1)
+            traverse(block[0], i, j, depth + 1)
+            traverse(block[1:], i, j + 1, depth + 1)
             return i + 1, j + len(block)
         else:
             # single elementary value
             print("[{}, {}] = {}".format(i, j, block))
             return i + 1, j + 1
-    traverse(block_matrix, 0, 0)
+    traverse(block_matrix, 0, 0, 0)
 
 # =================
 # TESTING SPACE ==
