@@ -57,14 +57,11 @@ def construct(d, n):
                 else:
                     return null_matrix((n - 1) ** (l-1))
             return [ entry(j) for j in range(1, n) ]
-        if l > 1:
-            return [ row(i) for i in range(1, n) ]
-        elif l == 1:
-            return construct_A1()
-        else:
-            raise ValueError("Invalid parameter l={0}.".format(l))
+        return [ row(i) for i in range(1, n) ] if l > 1 else construct_A1()
+    if not (d >= 1):
+        raise ValueError("d must satisfy >= 1")
     if not (n >= 2):
-        raise ValueError("n must be >= 2")
+        raise ValueError("n must satisfy >= 2")
     return generate(d)
 
 # hard_code_testing()
