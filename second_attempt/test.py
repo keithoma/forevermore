@@ -30,12 +30,7 @@ def construct(d, n):
                 """ Constructs the row at A_{i} """
                 def entry(j):
                     """ Constructs an entry at A_{i,j} """
-                    if i == j:
-                        return 2 * d
-                    elif j == i - 1 or j == i + 1:
-                        return -1
-                    else:
-                        return 0
+                    return 2 * d if i == j else -1 if j == i - 1 or j == i + 1 else 0
                 return [ entry(j) for j in range(1, n) ]
             return sm.coo_matrix([ row(i) for i in range(1, n) ])
         def row(i):
