@@ -20,13 +20,16 @@ def dot_graph(matrix):
 
 def construct(d, n):
     """
-    Constructs A(l, d) in R^{(n-1)^l x (n-1)^l}
+    Constructs A(l, d) in R^{(n-1)^l x (n-1)^l}.
     """
     def generate(l):
+        """ Helper function for constructing a (sub-) block matrix for given `l` parameter. """
         def construct_A1():
             """ Constructs a A1 matrix in R^{(n-1)x(n-1)}. """
             def row(i):
+                """ Constructs the row at A_{i} """
                 def entry(j):
+                    """ Constructs an entry at A_{i,j} """
                     if i == j:
                         return 2 * d
                     elif j == i - 1 or j == i + 1:
@@ -36,8 +39,16 @@ def construct(d, n):
                 return [ entry(j) for j in range(1, n) ]
             return sm.coo_matrix([ row(i) for i in range(1, n) ])
         def row(i):
+            """ Constructs the row at A_{i} """
             def entry(j):
+                """ Constructs an entry at A_{i,j} """
                 def null_matrix(k):
+                    """ Constructs a null-matrix of `k` rows and `k` columns.
+                        Even though parameter `k` is not used, it is actually meant to be passed,
+                        because before using SciPy, we have been doing everything our own,
+                        and I want to preserve that right to move away from SciPy, also,
+                        it's nice documentation to know what dimension this matrix is meant to be.
+                    """
                     return None
                 if i == j:
                     return generate(l - 1)
@@ -54,7 +65,7 @@ def construct(d, n):
             raise ValueError("Invalid parameter l={0}.".format(l))
     if not (n >= 2):
         raise ValueError("n must be >= 2")
-    return generate(d, 1, 1)
+    return generate(d)
 
 # hard_code_testing()
 A_n = construct(2, 5)
