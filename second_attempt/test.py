@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
-import numpy as np
 import functools 
+import numpy as np
+from scipy import sparse as sm
 
 def count_elements(block_matrix, a=0):
     """ Counts the number of coefficients in the matrix. """
@@ -33,19 +34,17 @@ def construct(d, n):
                     else:
                         return 0
                 return [ entry(j) for j in range(1, n) ]
-            return [ row(i) for i in range(1, n) ]
+            return sm.coo_matrix([ row(i) for i in range(1, n) ])
         def row(i):
             def entry(j):
-                def null(k):
-                    return [ [0 for j in range(1, k + 1)] for i in range(1, k + 1)]
-                def minus_I(k):
-                    return [ [(-1 if i == j else 0) for j in range(1, k + 1)] for i in range(1, k + 1)] # XXX
+                def null_matrix(k):
+                    return None
                 if i == j:
                     return generate(l - 1)
                 elif j == i - 1 or j == i + 1:
-                    return minus_I((n - 1) ** (l-1))
+                    return -1 * sm.identity((n - 1) ** (l-1))
                 else:
-                    return null((n - 1) ** (l-1))
+                    return null_matrix((n - 1) ** (l-1))
             return [ entry(j) for j in range(1, n) ]
         if l > 1:
             return [ row(i) for i in range(1, n) ]
@@ -59,4 +58,6 @@ def construct(d, n):
 
 # hard_code_testing()
 A_n = construct(2, 5)
+print(sm.bmat(A_n).toarray())
+print(A_n)
 
