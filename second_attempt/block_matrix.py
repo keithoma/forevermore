@@ -61,7 +61,7 @@ def construct(d, n):
                     return {
                         0: lambda: 2 * d,
                         1: lambda: -1
-                    }.get(abs(i - j), 0)
+                    }.get(abs(i - j), lambda: 0)()
                 return [entry(j) for j in range(1, n)]
             return sm.coo_matrix([row(i) for i in range(1, n)])
         def row(i):
