@@ -5,7 +5,6 @@ License: GPL-3
 """
 
 import functools as fp
-import numpy as np
 from scipy import sparse as sm
 
 def count_elements(block_matrix, a=0):
@@ -18,26 +17,19 @@ def depth(block_matrix):
 
 def dot_graph(matrix):
     """ Constructs the graph in dot-format. See: https://en.wikipedia.org/wiki/DOT_(graph_description_language) """
-    visited_leaves = []
     def adot(node, next_id, depth):
         s = ""
-        if type(node) == list:
+        if isinstance(node, list):
             my_id = next_id
             s += "\t{} [label=\"{}\"];\n".format(my_id, str(node))
             if depth < 200:
                 for n in node:
-                    if type(n) == list:
+                    if isinstance(n, list):
                         s += "\t{} -> {};\n".format(my_id, next_id + 1)
                         x, y = adot(n, next_id + 1, depth + 1)
-                        s += x;
+                        s += x
                         next_id = y
-        # elif visited_leaves.count(node) == 0:
-        #     visited_leaves.append(node)
-        #     s += "\t{} [label=\"{}\"];\n".format(next_id, node)
         return s, next_id
-    # def dot(node, depth):
-    #     subs = functools.reduce(lambda a, n: a + ("" if type(n) != list else dot(n, depth + 1)), node, "")
-    #     return functools.reduce(lambda a, n: a + "\t\"{}\" -> \"{}\";\n".format(node, n), node, "") + subs
     return "digraph {{\n{}\n}}\n".format(adot(matrix, 0, 0)[0])
 
 def construct(d, n):
@@ -88,10 +80,10 @@ def construct(d, n):
                     return null_matrix((n - 1) ** (l - 1))
             return [ entry(j) for j in range(1, n) ]
         res = [ row(i) for i in range(1, n) ] if l > 1 else construct_A1()
-        return sm.bmat(res) if type(res) == list and type(res[0]) == list else res
-    if not (d >= 1):
+        return sm.bmat(res) if isinstance(res, list) and isinstance(res[0], list) else res
+    if not d >= 1:
         raise ValueError("d must satisfy >= 1")
-    if not (n >= 2):
+    if not n >= 2:
         raise ValueError("n must satisfy >= 2")
     return generate(d)
 
