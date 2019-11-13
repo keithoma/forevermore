@@ -8,16 +8,17 @@ License: GPL-3
 import functools as fp
 from scipy import sparse as sm
 
-def count_elements(block_matrix):
+def count_entries(lists):
     """ Counts the number of coefficients in the matrix. """
-    return fp.reduce(lambda a, x: a + (1 if not isinstance(x, list) else count_elements(x)), block_matrix, 0)
+    return fp.reduce(lambda a, x: a + (1 if not isinstance(x, list) else count_entries(x)), lists, 0)
 
-def depth(block_matrix):
+def depth(lists):
     """ Computes the depth of a recursive block matrix. """
-    return 1 if not isinstance(block_matrix, list) else 1 + depth(max(block_matrix, key=lambda p: depth(p)))
+    return 1 if not isinstance(lists, list) else 1 + depth(max(lists, key=lambda p: depth(p))) # pylint: disable=unnecessary-lambda
 
 def dot_graph(matrix):
-    """ Constructs the graph in dot-format. See: https://en.wikipedia.org/wiki/DOT_(graph_description_language) """
+    """ Constructs the graph in dot-format.
+        See: https://en.wikipedia.org/wiki/DOT_(graph_description_language) """
     def adot(node, next_id):
         s = ""
         if isinstance(node, list):
@@ -30,7 +31,7 @@ def dot_graph(matrix):
                     s += x
                     next_id = y
         return s, next_id
-    return "digraph {{\n{}\n}}\n".format(adot(matrix, 0, 0)[0])
+    return "digraph {{\n{}\n}}\n".format(adot(matrix, 0)[0])
 
 def construct(d, n):
     """
@@ -51,7 +52,7 @@ def construct(d, n):
     """
     def generate(l):
         """ Helper function for constructing a (sub-) block matrix for given `l` parameter. """
-        def construct_A1():
+        def construct_A1(): # pylint: disable=invalid-name
             """ Constructs a A1 matrix in R^{(n-1)x(n-1)}. """
             def row(i):
                 """ Constructs the row at A_{i} """
@@ -74,7 +75,7 @@ def construct(d, n):
                     return None
                 if i == j:
                     return generate(l - 1)
-                elif j in (i - 1, i + 1):
+                if j in (i - 1, i + 1):
                     return -1 * sm.identity((n - 1) ** (l - 1))
                 return null_matrix((n - 1) ** (l - 1))
             return [entry(j) for j in range(1, n)]
