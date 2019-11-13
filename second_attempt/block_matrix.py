@@ -7,28 +7,27 @@ License: GPL-3
 import functools as fp
 from scipy import sparse as sm
 
-def count_elements(block_matrix, a=0):
+def count_elements(block_matrix):
     """ Counts the number of coefficients in the matrix. """
-    return fp.reduce(lambda a, x: a + (1 if type(x) != list else count_elements(x)), block_matrix, 0)
+    return fp.reduce(lambda a, x: a + (1 if not isinstance(x, list) else count_elements(x)), block_matrix, 0)
 
 def depth(block_matrix):
     """ Computes the depth of a recursive block matrix. """
-    return 1 if type(block_matrix) != list else 1 + depth(max(block_matrix, key = lambda p: depth(p)))
+    return 1 if not isinstance(block_matrix, list) else 1 + depth(max(block_matrix, key=lambda p: depth(p)))
 
 def dot_graph(matrix):
     """ Constructs the graph in dot-format. See: https://en.wikipedia.org/wiki/DOT_(graph_description_language) """
-    def adot(node, next_id, depth):
+    def adot(node, next_id):
         s = ""
         if isinstance(node, list):
             my_id = next_id
             s += "\t{} [label=\"{}\"];\n".format(my_id, str(node))
-            if depth < 200:
-                for n in node:
-                    if isinstance(n, list):
-                        s += "\t{} -> {};\n".format(my_id, next_id + 1)
-                        x, y = adot(n, next_id + 1, depth + 1)
-                        s += x
-                        next_id = y
+            for n in node:
+                if isinstance(n, list):
+                    s += "\t{} -> {};\n".format(my_id, next_id + 1)
+                    x, y = adot(n, next_id + 1)
+                    s += x
+                    next_id = y
         return s, next_id
     return "digraph {{\n{}\n}}\n".format(adot(matrix, 0, 0)[0])
 
@@ -47,7 +46,7 @@ def construct(d, n):
     Returns
     -------
     list
-        A row-major list of block matrix entries suitable for feeding into SciPy's API. 
+        A row-major list of block matrix entries suitable for feeding into SciPy's API.
     """
     def generate(l):
         """ Helper function for constructing a (sub-) block matrix for given `l` parameter. """
@@ -57,14 +56,14 @@ def construct(d, n):
                 """ Constructs the row at A_{i} """
                 def entry(j):
                     """ Constructs an entry at A_{i,j} """
-                    return 2 * d if i == j else -1 if j == i - 1 or j == i + 1 else 0
-                return [ entry(j) for j in range(1, n) ]
-            return sm.coo_matrix([ row(i) for i in range(1, n) ])
+                    return 2 * d if i == j else -1 if j in (i - 1, i + 1) else 0
+                return [entry(j) for j in range(1, n)]
+            return sm.coo_matrix([row(i) for i in range(1, n)])
         def row(i):
             """ Constructs the row at A_{i} """
             def entry(j):
                 """ Constructs an entry at A_{i,j} """
-                def null_matrix(k):
+                def null_matrix(k): # pylint: disable=unused-argument
                     """ Constructs a null-matrix of `k` rows and `k` columns.
                         Even though parameter `k` is not used, it is actually meant to be passed,
                         because before using SciPy, we have been doing everything our own,
@@ -74,12 +73,11 @@ def construct(d, n):
                     return None
                 if i == j:
                     return generate(l - 1)
-                elif j == i - 1 or j == i + 1:
+                elif j in (i - 1, i + 1):
                     return -1 * sm.identity((n - 1) ** (l - 1))
-                else:
-                    return null_matrix((n - 1) ** (l - 1))
-            return [ entry(j) for j in range(1, n) ]
-        res = [ row(i) for i in range(1, n) ] if l > 1 else construct_A1()
+                return null_matrix((n - 1) ** (l - 1))
+            return [entry(j) for j in range(1, n)]
+        res = [row(i) for i in range(1, n)] if l > 1 else construct_A1()
         return sm.bmat(res) if isinstance(res, list) and isinstance(res[0], list) else res
     if not d >= 1:
         raise ValueError("d must satisfy >= 1")
