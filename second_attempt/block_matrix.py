@@ -66,9 +66,9 @@ def construct(d, n):
                 if i == j:
                     return generate(l - 1)
                 elif j == i - 1 or j == i + 1:
-                    return -1 * sm.identity((n - 1) ** (l-1))
+                    return -1 * sm.identity((n - 1) ** (l - 1))
                 else:
-                    return null_matrix((n - 1) ** (l-1))
+                    return null_matrix((n - 1) ** (l - 1))
             return [ entry(j) for j in range(1, n) ]
         res = [ row(i) for i in range(1, n) ] if l > 1 else construct_A1()
         return sm.bmat(res) if type(res) == list and type(res[0]) == list else res
