@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 """
 Author: Christian Parpart & Kei Thoma
 Date: 2019-11-13
