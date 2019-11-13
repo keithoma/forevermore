@@ -18,10 +18,27 @@ def depth(block_matrix):
 
 def dot_graph(matrix):
     """ Constructs the graph in dot-format. See: https://en.wikipedia.org/wiki/DOT_(graph_description_language) """
-    def dot(node, depth):
-        subs = fp.reduce(lambda a, n: a + ("" if type(n) != list else dot(n, depth + 1)), node, "")
-        return fp.reduce(lambda a, n: a + "\t\"{}\" -> \"{}\";\n".format(node, n), node, "") + subs
-    return "digraph {{\n{}\n}}\n".format(dot(matrix, 0))
+    visited_leaves = []
+    def adot(node, next_id, depth):
+        s = ""
+        if type(node) == list:
+            my_id = next_id
+            s += "\t{} [label=\"{}\"];\n".format(my_id, str(node))
+            if depth < 200:
+                for n in node:
+                    if type(n) == list:
+                        s += "\t{} -> {};\n".format(my_id, next_id + 1)
+                        x, y = adot(n, next_id + 1, depth + 1)
+                        s += x;
+                        next_id = y
+        # elif visited_leaves.count(node) == 0:
+        #     visited_leaves.append(node)
+        #     s += "\t{} [label=\"{}\"];\n".format(next_id, node)
+        return s, next_id
+    # def dot(node, depth):
+    #     subs = functools.reduce(lambda a, n: a + ("" if type(n) != list else dot(n, depth + 1)), node, "")
+    #     return functools.reduce(lambda a, n: a + "\t\"{}\" -> \"{}\";\n".format(node, n), node, "") + subs
+    return "digraph {{\n{}\n}}\n".format(adot(matrix, 0, 0)[0])
 
 def construct(d, n):
     """
