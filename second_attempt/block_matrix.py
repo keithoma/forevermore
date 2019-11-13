@@ -116,7 +116,7 @@ class BlockMatrix:
         scipy.sparse.csr_matrix
             block_matrix in a sparse data format
         """
-        return self.data
+        return self.data.tocsr()
 
     def eval_zeros(self):
         """ Returns the (absolute and relative) numbers of (non-)zero elements
