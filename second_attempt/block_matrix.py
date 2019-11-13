@@ -58,26 +58,20 @@ def construct(d, n):
                 """ Constructs the row at A_{i} """
                 def entry(j):
                     """ Constructs an entry at A_{i,j} """
-                    return 2 * d if i == j else -1 if j in (i - 1, i + 1) else 0
+                    return {
+                        0: lambda: 2 * d,
+                        1: lambda: -1
+                    }.get(abs(i - j), 0)
                 return [entry(j) for j in range(1, n)]
             return sm.coo_matrix([row(i) for i in range(1, n)])
         def row(i):
             """ Constructs the row at A_{i} """
             def entry(j):
                 """ Constructs an entry at A_{i,j} """
-                def null_matrix(k): # pylint: disable=unused-argument
-                    """ Constructs a null-matrix of `k` rows and `k` columns.
-                        Even though parameter `k` is not used, it is actually meant to be passed,
-                        because before using SciPy, we have been doing everything our own,
-                        and I want to preserve that right to move away from SciPy, also,
-                        it's nice documentation to know what dimension this matrix is meant to be.
-                    """
-                    return None
-                if i == j:
-                    return generate(l - 1)
-                if j in (i - 1, i + 1):
-                    return -1 * sm.identity((n - 1) ** (l - 1))
-                return null_matrix((n - 1) ** (l - 1))
+                return {
+                    0: lambda: generate(l - 1),
+                    1: lambda: -1 * sm.identity((n - 1) ** (l - 1))
+                }.get(abs(i - j), lambda: None)()
             return [entry(j) for j in range(1, n)]
         res = [row(i) for i in range(1, n)] if l > 1 else construct_A1()
         return sm.bmat(res) if isinstance(res, list) and isinstance(res[0], list) else res
