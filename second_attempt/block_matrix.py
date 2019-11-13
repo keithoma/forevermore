@@ -70,7 +70,8 @@ def construct(d, n):
                 else:
                     return null_matrix((n - 1) ** (l-1))
             return [ entry(j) for j in range(1, n) ]
-        return [ row(i) for i in range(1, n) ] if l > 1 else construct_A1()
+        res = [ row(i) for i in range(1, n) ] if l > 1 else construct_A1()
+        return sm.bmat(res) if type(res) == list and type(res[0]) == list else res
     if not (d >= 1):
         raise ValueError("d must satisfy >= 1")
     if not (n >= 2):
@@ -112,7 +113,7 @@ class BlockMatrix:
         scipy.sparse.csr_matrix
             block_matrix in a sparse data format
         """
-        return sm.bmat(self.data)
+        return self.data
 
     def eval_zeros(self):
         """ Returns the (absolute and relative) numbers of (non-)zero elements
@@ -145,18 +146,18 @@ def test_main():
         """ Demos block matrix for given `d` and `n` onto the terminal. """
         mat = BlockMatrix(d, n)
         print("# Demo BlockMatrix(d={}, n={}) in R^{{{}x{}}}".format(d, n, mat.extend, mat.extend))
-        print("#----------------------------------------------")
-        print(mat.data)
-        print("#----------------------------------------------")
-        print(mat.get_sparse().toarray())
+        print("#==============================================")
+        # print(mat.data)
+        # print("#----------------------------------------------")
+        sp = mat.get_sparse()
+        print(sp.toarray())
         non_zeros, zeros, rel_non_zeros, rel_zeros = mat.eval_zeros()
         print("# non-zeros : {} (total number of non-zero values)".format(non_zeros))
         print("# zeros     : {} (total number of zero values)".format(zeros))
         print("% non-zeros : {:.2} (relative non-zero values)".format(rel_non_zeros))
         print("% zeros     : {:.2} (relative zero values)".format(rel_zeros))
         print()
-    # FIXME: 2=d works, d=1 and d=3 not ;(
-    for d in [2, 3, 1]:
+    for d in [1, 2, 3, 4]:
         for n in [2, 3, 4, 5]:
             demo(d, n)
 
