@@ -8,31 +8,6 @@ License: GPL-3
 import functools as fp
 from scipy import sparse as sm
 
-def count_entries(lists):
-    """ Counts the number of coefficients in the matrix. """
-    return fp.reduce(lambda a, x: a + (1 if not isinstance(x, list) else count_entries(x)), lists, 0)
-
-def depth(lists):
-    """ Computes the depth of a recursive block matrix. """
-    return 1 if not isinstance(lists, list) else 1 + depth(max(lists, key=lambda p: depth(p))) # pylint: disable=unnecessary-lambda
-
-def dot_graph(matrix):
-    """ Constructs the graph in dot-format.
-        See: https://en.wikipedia.org/wiki/DOT_(graph_description_language) """
-    def adot(node, next_id):
-        s = ""
-        if isinstance(node, list):
-            my_id = next_id
-            s += "\t{} [label=\"{}\"];\n".format(my_id, str(node))
-            for n in node:
-                if isinstance(n, list):
-                    s += "\t{} -> {};\n".format(my_id, next_id + 1)
-                    x, y = adot(n, next_id + 1)
-                    s += x
-                    next_id = y
-        return s, next_id
-    return "digraph {{\n{}\n}}\n".format(adot(matrix, 0)[0])
-
 def construct(d, n):
     """
     Constructs block matrices arising from finite difference approximations
@@ -50,29 +25,28 @@ def construct(d, n):
     list
         A row-major list of block matrix entries suitable for feeding into SciPy's API.
     """
+    """
+        construct(d, n)
+            generate(l)
+                construct_A1()
+                    row(i)
+                        entry(j)
+                row(i)
+                    entry(j)
+    """
     def generate(l):
-        """ Helper function for constructing a (sub-) block matrix for given `l` parameter. """
         def construct_A1(): # pylint: disable=invalid-name
-            """ Constructs a A1 matrix in R^{(n-1)x(n-1)}. """
             def row(i):
-                """ Constructs the row at A_{i} """
-                def entry(j):
-                    """ Constructs an entry at A_{i,j} """
-                    return {
-                        0: lambda: 2 * d,
-                        1: lambda: -1
-                    }.get(abs(i - j), lambda: 0)()
-                return [entry(j) for j in range(1, n)]
+                return [{
+                    0: lambda: 2 * d,
+                    1: lambda: -1
+                }.get(abs(i - j), lambda: 0)() for j in range(1, n)]
             return sm.coo_matrix([row(i) for i in range(1, n)])
         def row(i):
-            """ Constructs the row at A_{i} """
-            def entry(j):
-                """ Constructs an entry at A_{i,j} """
-                return {
-                    0: lambda: generate(l - 1),
-                    1: lambda: -1 * sm.identity((n - 1) ** (l - 1))
-                }.get(abs(i - j), lambda: None)()
-            return [entry(j) for j in range(1, n)]
+            return [{
+                0: lambda: generate(l - 1),
+                1: lambda: -1 * sm.identity((n - 1) ** (l - 1))
+            }.get(abs(i - j), lambda: None)() for j in range(1, n)]
         res = [row(i) for i in range(1, n)] if l > 1 else construct_A1()
         return sm.bmat(res) if isinstance(res, list) and isinstance(res[0], list) else res
     if not d >= 1:
