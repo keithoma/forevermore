@@ -1,10 +1,15 @@
 \documentclass[11pt, a4paper]{article}
 \usepackage[utf8]{inputenc}
 
+\usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage{mathtools}
 
 \newcommand{\idx}[1]{\text{idx} \left( #1 \right)}
 \newcommand{\idxi}[1]{\text{idx}^{-1} \left( #1 \right)}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
 \begin{document}
     \input{content/index_conversion.tex}
