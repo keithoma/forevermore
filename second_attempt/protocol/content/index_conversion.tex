@@ -1,33 +1,38 @@
-For notational convenience, we define
-\begin{align*}
-    \phi_k : \mathbb{N} \rightarrow \mathbb{N}, \hspace{0.5cm}
-    x \mapsto \phi_k (x) = \ceil*{\frac{x}{k}}
-\end{align*}
+\begin{formula}
+    For the conversion from coordinates along the axis to the linear numbering of gird points and vice versa, we define
+    \begin{align*}
+        \idx_{d} &: \{1, \dots, n - 1\}^d \rightarrow \{1, \dots, N\} \text{, and} \\
+        \idx_{d}^{-1} &: \{1, \dots, N\} \rightarrow \{1, \dots, n - 1\}^d \text{.}
+    \end{align*}
+    The exact way of computation is intuitive, yet tedious to formulate symbolically.
 
-dimension 1
+    \textit{Dimension 1}
+    \begin{align*}
+        \idx_{d = 1} (j_1) & = j_1 \\
+        \idx_{d = 1}^{-1} (j_1) & = j_1 \\
+    \end{align*}
+    \textit{Dimension 2}
+    \begin{align*}
+        \idx_{d = 2} (j_1, j_2) & = (j_1 - 1) (n - 1) + j_2 \\
+        \idx_{d = 2}^{-1} (N) & = (j_1, j_2) \text{, where}
+        \begin{cases}
+            j_1 = \ceil*{\frac{N}{n - 1}} \\
+            j_2 = N - (j_1 - 1) (n - 1)
+        \end{cases}
+    \end{align*}
+    \textit{Dimension 3}
+    \begin{align*}
+        \idx_{d = 3} (j_1, j_2, j_3) & = (j_1 - 1) (n - 1)^2 + j_2 (n - 1) + j_3 \\
+        \idx_{d = 3}^{-1} (N) &= (j_1, j_2, j_3) \text{, where}
+        \begin{cases}
+            j_1 = \ceil*{\frac{N}{(n - 1)^2}} \\
+            j_2 = \ceil*{\frac{N - (j_1 - 1) (n - 1)^2}{n - 1}} \\
+            j_3 = N - (j_2 - 1) (n - 1) - (j_1 - 1) (n - 1)^2
+        \end{cases}
+    \end{align*}
 
-\begin{align*}
-    x \mapsto& \idx{\frac{j}{n}} := j \\
-    y \mapsto& \idxi{y} := \frac{y}{n}
-\end{align*}
-
-dimension 2
-
-\begin{align*}
-    (x_1, x_2) \mapsto& \idx{\frac{j_1}{n}, \frac{j_2}{n}}
-    := (j_1 - 1) \cdot (n - 1) + j_2 \\
-    %
-    y \mapsto& \idxi{y} := \left( \phi_{n-1}(y),
-    y - \left( \phi_{n-1}(y) - 1 \right) \cdot (n - 1) \right)
-\end{align*}
-
-dimension 3
-
-Not yet done. Thinking about formatting.
-
-\begin{align*}
-    (x_1, x_2, x_3) \mapsto& \idx{\frac{j_1}{n}, \frac{j_2}{n}, \frac{j_3}{n}}
-    := (j_1 - 1) \cdot (n - 1)^2 + (j_2 - 1) \cdot (n - 1) + j_3 \\
-    %
-    y \mapsto& \idxi{y} := 
-\end{align*}
+    \textit{Derivation} \hspace{0.1cm} The formula for \(d = 1\) should be clear. For \(d = 2\), given two coordinates \(j_1\) and \(j_2\), then one has \(j_1 - 1\) times of filled columns which has \(n - 1\) elements, thus we have \(N = (j_1 - 1) (n - 1) + j_2\). The inverse is slightly more difficult. To compute \(j_1\), we need to consider how many columns are filled by \(N\). This is done by \(\ceil*{\frac{N}{n-1}}\). Subtracting \((j_1 - 1)(n - 1)\) from \(N\) we get \(j_2\). The same ideas applies for \(d=3\).
+    \begin{flushright}
+        \(\bigtriangleup\)
+    \end{flushright}
+\end{formula}

@@ -1,0 +1,33 @@
+For notational convenience, we define
+\begin{align*}
+    \phi_k : \mathbb{N} \rightarrow \mathbb{N}, \hspace{0.5cm}
+    x \mapsto \phi_k (x) = \ceil*{\frac{x}{k}}
+\end{align*}
+
+dimension 1
+
+\begin{align*}
+    x \mapsto& \idx{\frac{j}{n}} := j \\
+    y \mapsto& \idxi{y} := \frac{y}{n}
+\end{align*}
+
+dimension 2
+
+\begin{align*}
+    (x_1, x_2) \mapsto& \idx{\frac{j_1}{n}, \frac{j_2}{n}}
+    := (j_1 - 1) \cdot (n - 1) + j_2 \\
+    %
+    y \mapsto& \idxi{y} := \left( \phi_{n-1}(y),
+    y - \left( \phi_{n-1}(y) - 1 \right) \cdot (n - 1) \right)
+\end{align*}
+
+dimension 3
+
+Not yet done. Thinking about formatting.
+
+\begin{align*}
+    (x_1, x_2, x_3) \mapsto& \idx{\frac{j_1}{n}, \frac{j_2}{n}, \frac{j_3}{n}}
+    := (j_1 - 1) \cdot (n - 1)^2 + (j_2 - 1) \cdot (n - 1) + j_3 \\
+    %
+    y \mapsto& \idxi{y} := 
+\end{align*}
