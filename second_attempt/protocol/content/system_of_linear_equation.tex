@@ -1,0 +1,62 @@
+As the behaviour on the boarder is given, we immediately know that
+\begin{align*}
+    u(x_0) = u(x_N) = 0 \text{.}
+\end{align*}
+Moreover, since we are in the first dimension, we have \(u \in C^2(\mathbb{R}, \mathbb{R})\), therefore the second derivative of \(u\) is nothing complicated. We will approximate the computation of the second derivative with the Taylor polynomial and we have
+\begin{align*}
+    f(x_i) = -u''(x_i) \approx \frac{-u(x_i + h) + 2u(x) - u(x_i - h)}{h^2} \text{,}
+\end{align*}
+and as \(h\) is not only the increment of the approximation, but also the distance between each point, we get
+\begin{align*}
+    h^2 f_i \approx -u_{i - 1} + 2u_i - u_{i + i} \text{.}
+\end{align*}
+If we express this relation for all \(1 \leq i \leq N - 1\) as a linear transformation, we have
+\begin{align*}
+    \underbrace{
+    \begin{pmatrix}
+        2  & -1 &  0 & \dots & 0 \\
+        -1 &  2 & -1 & \dots & 0 \\
+        0  & -1 &  2 & \dots & 0 \\
+        \vdots & & & \ddots & \vdots \\
+        0 & \dots & 0 & -1 & 2
+    \end{pmatrix}
+    }_{=: A_1}
+    \begin{pmatrix}
+        u_1 \\ u_2 \\ u_3 \\ \vdots \\ u_{N-1}
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        2u_1 - u2 \\
+        -u_1 + 2u_2 + -u_3 \\
+        -u_2 + 2 u_3 - u_4 \\
+        \vdots \\
+        -u_{N-2} + 2 u_N
+    \end{pmatrix}
+\end{align*}
+For the resulting vector on the right side, we can subtract from the first and last entry \(u_0\) and \(u_N\) respectively since they are both \(0\). We have
+\begin{align*}
+    \begin{pmatrix}
+        2u_1 - u2 \\
+        -u_1 + 2u_2 + -u_3 \\
+        -u_2 + 2 u_3 - u_4 \\
+        \vdots \\
+        -u_{N-2} + 2 u_{N - 1}
+    \end{pmatrix}
+    % ceck here
+    =
+    \begin{pmatrix}
+        -u_0 + 2u_1 - u2 \\
+        -u_1 + 2u_2 + -u_3 \\
+        -u_2 + 2 u_3 - u_4 \\
+        \vdots \\
+        -u_{N-2} + 2 u_{N - 1} - u_N
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        2u_1 - u2 \\
+        -u_1 + 2u_2 + -u_3 \\
+        -u_2 + 2 u_3 - u_4 \\
+        \vdots \\
+        -u_{N-2} + 2 u_N
+    \end{pmatrix}
+\end{align*}
