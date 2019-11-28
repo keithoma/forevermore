@@ -1,10 +1,41 @@
-\documentclass[11pt, a4paper]{scrartcl}
+\documentclass[refman]{article}
 \usepackage[utf8]{inputenc}
+
+
+%
+\usepackage[english]{babel}
+\usepackage{colortbl}
+\usepackage{epigraph}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hhline}
+\usepackage[utf8]{inputenc}
+\usepackage[procnames]{listings}
+\usepackage{longtable}
+\usepackage{tikz}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{wrapfig}
+\usepackage[nottoc,numbib]{tocbibind}
+\usepackage{amsmath}
+%
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+%
+
 
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{mathtools}
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ left=30mm,
+ top=30mm,
+ }
+\pagestyle{fancy}
 
 \usepackage[document]{ragged2e}
 
@@ -17,10 +48,17 @@
 \newtheorem*{formula}{Formula}
 
 \begin{document}
+	\input{content/titlepage.tex}
+	\newpage
+
     \input{content/introduction.tex}
     \input{content/taylor.tex}
     \input{content/first_dimension.tex}
     \input{content/index_conversion.tex}
     %\input{content/system_of_linear_equation.tex}
     \input{content/memory_usage.tex}
+    
+    
+    \section{Memory Usage Testing: The Curtain Fall}
+    \section{Conclusion: Skewer the Critics}
 \end{document}
