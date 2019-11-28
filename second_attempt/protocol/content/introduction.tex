@@ -1,0 +1,12 @@
+\section{Introduction: Setting the Stage}
+
+This protocol discusses a numerical approach to solve second order partial differential equations\footnote{This is sometimes referred as Laplace's equation.}. To draw inspiration from a physical example for this mathematical problem, visualize a two dimensional space in which a string is fixed at both ends and a force, such as gravity, acting on the said string. From the Newtonian mechanics, we have the equation
+\begin{align*}
+	F = ma \text{.}
+\end{align*}
+In the above equation, \(F\) denotes the force, and \(a\) is the acceleration which is just the second derivative of the location or in our case the displacement which can be thought as a function of the points of the string, \(u(x)\). If we na{\"i}vely set the mass \(m = 1\), we have\footnote{The minus sign in front of \(u\) arises from convention. We have also replaced \(F\) with \(f\) to adhere to a more mathematical standard.}
+\begin{align*}
+	f(x) = - u''(x) \text{.}
+\end{align*}
+Assuming the values for the function \(f\) is known we want to describe a procedure how to numerically compute the solution for \(u\). Ultimately, we will do this by approximating the second partial derivative with Taylor polynomials and constructing a linear transformation which maps a vector containing \(u\) for every evaluated point \(x_i\) to a vector which encodes the values of \(f\).
+However, this protocol is meant to be a preparatory piece and while we will describe in detail the construction of the matrix for the linear transformation, we will not discuss how to solve the system for \(u\).

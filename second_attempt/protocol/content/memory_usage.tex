@@ -1,6 +1,6 @@
 % note that what we consider here is not necessary the memory usage, but instead the number of (non-zero) elements which are saved as floats
 \begin{formula}
-    Let \(d \in {1, 2, 3}\) be the number of the space dimension and \(n \in \mathbb{N}\) the number of grid points on each axis \([0, 1]\) excluding the start point, but including the end point (i.e. since the given problem has the value \(0\) at the boundary, we will effectivly evaluate \((n - 1)^d\) points). Then, we have the formula for the memory usage of dense and sparse matrices
+    Let \(d \in \{1, 2, 3\}\) be the number of the space dimension and \(n \in \mathbb{N}\) the number of grid points on each axis \([0, 1]\) excluding the start point, but including the end point (i.e. since the given problem has the value \(0\) at the boundary, we will effectively evaluate \((n - 1)^d\) points). Then, we have the formula for the memory usage of dense and sparse matrices
     \begin{align*}
         f^{(d = 1)}_{\text{dense}} (n) = (n - 1)^2 \hspace{0.5cm}&
         f^{(d = 1)}_{\text{sparse}} (n) = 3n - 5 \\

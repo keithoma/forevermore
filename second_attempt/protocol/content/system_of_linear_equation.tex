@@ -1,62 +1,12 @@
-As the behaviour on the boarder is given, we immediately know that
+\subsection{To Infinity and Beyond}
+
+We will generalize our understanding to two and three dimension. Let \([0, 1]^d\) the domain where \(d \in \{1, 2, 3\} \) is the number of dimensions. Given a discretization of the domain with \(n \in \mathbb{N}\) number of Cartesian grid on each axis, we have a total of \(N := (n-1)^d\) points inside the domain to consider. From the definition of the Laplace operator, we have
 \begin{align*}
-    u(x_0) = u(x_N) = 0 \text{.}
+	\Delta u_N =& \frac{\partial^2 u_N}{\partial {x_1} + \frac{\partial^2 u_N}{\partial x_2^2} \text{.}
 \end{align*}
-Moreover, since we are in the first dimension, we have \(u \in C^2(\mathbb{R}, \mathbb{R})\), therefore the second derivative of \(u\) is nothing complicated. We will approximate the computation of the second derivative with the Taylor polynomial and we have
+We can approximate the partial abbreviation again with the Taylor polynomial. We have
 \begin{align*}
-    f(x_i) = -u''(x_i) \approx \frac{-u(x_i + h) + 2u(x) - u(x_i - h)}{h^2} \text{,}
+	\frac{\partial^2 u_i}{\partial x_1^2} =& \frac{1}{h^2} (u_{i - 1} + 2u_i - u_{i + 1}) \\
+	\frac{\partial^2 u_i}{\partial x_2^2} =& \frac{1}{h^2} (u_{i - (n-1)} + 2u_i - u_{i + (n +1)}) \text{.}
 \end{align*}
-and as \(h\) is not only the increment of the approximation, but also the distance between each point, we get
-\begin{align*}
-    h^2 f_i \approx -u_{i - 1} + 2u_i - u_{i + i} \text{.}
-\end{align*}
-If we express this relation for all \(1 \leq i \leq N - 1\) as a linear transformation, we have
-\begin{align*}
-    \underbrace{
-    \begin{pmatrix}
-        2  & -1 &  0 & \dots & 0 \\
-        -1 &  2 & -1 & \dots & 0 \\
-        0  & -1 &  2 & \dots & 0 \\
-        \vdots & & & \ddots & \vdots \\
-        0 & \dots & 0 & -1 & 2
-    \end{pmatrix}
-    }_{=: A_1}
-    \begin{pmatrix}
-        u_1 \\ u_2 \\ u_3 \\ \vdots \\ u_{N-1}
-    \end{pmatrix}
-    =
-    \begin{pmatrix}
-        2u_1 - u2 \\
-        -u_1 + 2u_2 + -u_3 \\
-        -u_2 + 2 u_3 - u_4 \\
-        \vdots \\
-        -u_{N-2} + 2 u_N
-    \end{pmatrix}
-\end{align*}
-For the resulting vector on the right side, we can subtract from the first and last entry \(u_0\) and \(u_N\) respectively since they are both \(0\). We have
-\begin{align*}
-    \begin{pmatrix}
-        2u_1 - u2 \\
-        -u_1 + 2u_2 + -u_3 \\
-        -u_2 + 2 u_3 - u_4 \\
-        \vdots \\
-        -u_{N-2} + 2 u_{N - 1}
-    \end{pmatrix}
-    % ceck here
-    =
-    \begin{pmatrix}
-        -u_0 + 2u_1 - u2 \\
-        -u_1 + 2u_2 + -u_3 \\
-        -u_2 + 2 u_3 - u_4 \\
-        \vdots \\
-        -u_{N-2} + 2 u_{N - 1} - u_N
-    \end{pmatrix}
-    =
-    \begin{pmatrix}
-        2u_1 - u2 \\
-        -u_1 + 2u_2 + -u_3 \\
-        -u_2 + 2 u_3 - u_4 \\
-        \vdots \\
-        -u_{N-2} + 2 u_N
-    \end{pmatrix}
-\end{align*}
+Risking informality, but perhaps stimulating the intuition, one uses the neighboring "top and bottom" values to approximate the partial abbreviation for the direction of the x-axis while "left and right" values are used for the direction of the y-axis. The latter is exactly why we subtract and add \((n-1\) from the indices. 

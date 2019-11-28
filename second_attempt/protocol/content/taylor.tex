@@ -1,0 +1,46 @@
+\section{Theoretical Considerations: The Numerical Libretto}
+
+We will first establish the approach to solve \(- \Delta u = f\) for the first dimension before we generalize the procedure for multiple dimensions. It must be said that the case for the first dimension is fairly simple as we do not need partial differentiation, and indeed as we go up into more than one dimension, more theoretical background work is needed. The order of presentation, as we believe, is matter of taste, but we have chosen to demonstrate the solution for the first dimension as early as possible to highlight the underlying method which stays similar even for many dimensions.
+
+\subsection{Discretization of Lines}
+
+It might be tempting for some to solve the given PDE for every point on the interval \([0, 1] \subset \mathbb{R}\), but with a numerical approach the price for such computation of infinitely many points would exceed every budget, and therefore, we must instead limit our aspirations to a finite amount of grid points. In particular, we will arrange \(n\) number of points on the said interval which are exactly \(h\) distance apart from the next. For \(n\) we have
+\begin{align*}
+	h := \frac{1}{n} \text{,}
+\end{align*}
+and moreover, we will number each point \(x_i \in [0, 1]\) where \(0 \leq i \leq n\)  on the interval. This gives us
+\begin{align*}
+	x_i = \frac{j}{n} \text{.}
+\end{align*}
+
+The PDE will only be evaluated on these points \(x_i\). This means that a finer discretization will give a better approximated result, but the computation time will also increase.
+
+Here, we have only described the discretization used for the first dimension. We will return to this topic later when we discuss the arrangement of grid points in multidimensional space.
+
+\subsection{Bend it like Taylor}
+
+Before we even consider partial derivatives, it is critical to introduce a method to evaluate derivatives numerically. Taylor's theorem is a powerful tool with applications in many fields and branches, but in numerical analysis, we use the Taylor polynomial to compute the approximations for the derivatives of smooth functions.
+
+Let \([0, 1] \subset \mathbb{R}\) be a interval with \(N\) number of grid points, \(f \in C^{\infty}([a, b], \mathbb{R})\) a function, and we will denote with \(h \in \mathbb{R}\), \(h > 0\) the increment of the approximations. Given an \(x \in (a, b)\), we define \(x_{+} := x + h\) and \(x_{-} := x - h\).
+
+By Taylor's theorem \cite{H.Amann} we have
+\begin{align}
+    f(x_{+}) &= \sum^{\infty}_{n = 0} \frac{f^{(n)}(x)}{n!} h^n = f(x) + f'(x)h + \frac{f''(x)}{2}h^2 + \dots \label{eq:1}\\
+    f(x_{-}) &= \sum^{\infty}_{n = 0} \frac{f^{(n)}(x)}{n!} (-h)^n = f(x) - f'(x)h + \frac{f''(x)}{2}h^2 + \dots \label{eq:2}
+\end{align}
+Reformulate this equation and define the numerical approximation of the first derivative to be
+\begin{align*}
+    (D^{(1)}_h f) (x) := \frac{f(x_{+}) - f(x)}{h} = f'(x) + \sum^{\infty}_{n = 2} \frac{f^{(n)} (x)}{n!}h^{n-1} \text{.}
+\end{align*}
+Adding (\ref{eq:1}) and (\ref{eq:2}) together and reformulating gives us
+\begin{align*}
+    (D^{(2)}_h f)(x) := \frac{f(x_{+}) - 2f(x) + f(x_{-})}{h^2} = f''(x) + \frac{f^{(4)}(x)h^2}{3 \cdot 4} + \dots \text{.}
+\end{align*}
+\(D^{(2)}_h\) is the numerical approximation of the second derivative.
+
+As the remainder of the Taylor polynomial approaches \(0\) for \(h \rightarrow 0\), the approximations uniformly converge to the analytic derivatives.
+
+\subsection{The Chosen Increment}
+
+Now we are equipped to solve the stated problem for the first dimension. There is, however, one very important thing to mention. The increment \(h\) which we will use to approximate the derivatives will set to be exactly the distance between each neighboring grid points.
+%maybe explain why
