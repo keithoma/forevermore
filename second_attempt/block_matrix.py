@@ -1,10 +1,13 @@
 #! /usr/bin/env python3
 """
+This module implements the BlockMatrix class which is used to solve the Poisson problem.
+
 Author: Christian Parpart & Kei Thoma
 Date: 2019-11-13
 License: GPL-3
 """
 
+import numpy as np
 from scipy import sparse as sm
 
 def construct(d, n):
@@ -105,6 +108,42 @@ class BlockMatrix:
         rel_zeros = zeros / total_elems
 
         return non_zeros, zeros, rel_non_zeros, rel_zeros
+
+    @staticmethod
+    def rhs(d, n, f):
+        """ Computes the right-hand side vector 'b' for a given function 'f'.
+
+        Parameters
+        ----------
+        d : int
+            Dimension of the space.
+        n : int
+            Number of intervals in each dimension.
+        f : callable
+            Function right-hand-side of Poisson problem
+
+        Returns
+        -------
+        array or None
+            Vector to the right-hand-side f. Returns None if d > 3.
+
+        Raises
+        ------
+        ValueError
+            If d < 1 or n < 2.
+        """
+        if d < 1 or n < 2:
+            raise ValueError("We require d >= 1 and n >= 2!")
+
+        grid = np.linspace(0.0, 1.0, n, endpoint=False)[1:]
+
+        if d == 1:
+            return [f(x) for x in grid]
+        elif d == 2:
+            return [f(x, y) for x in grid for y in grid]
+        elif d == 3:
+            return [f(x, y, z) for x in grid for y in grid for z in grid]
+        return None
 
 def main():
     """ Internal demo-function for testing (or demoing) this module. """

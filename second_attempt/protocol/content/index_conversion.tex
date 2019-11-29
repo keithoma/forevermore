@@ -1,10 +1,11 @@
-\subsection{Discretization of the Space}
-
+\section{To Multidimension and Beyond}
 In a nutshell, we have constructed the matrix \(A_1\) by exploiting the fact that the increment for the approximation is the same as the distance between two grid points which allows us to express the derivative at a certain point with the neighboring values, i.e.
 \[
 f(p_i) = -u''(p_i) = \frac{1}{h^2} (-u_{i - 1} + 2 u_i - u_{i + 1}) \text{.}
 \]
 We will use essentially the same idea for higher dimensions. However, instead of looking into just one direction (that is two neighboring points on an axis), we will be looking at two and three.
+\subsection{Dissecting Space}
+
 
 Let \([0,1]^{d}\) with \(d \in \{1, 2, 3\}\) the domain for the given problem. Again, on the boundaries \(u\) is \(0\). The discretization of this domain arises naturally from the one dimensional case. Each axis is equipped with \(n \in \mathbb{N}\) number of Cartesian grid such that there is a total of \( N := (n-1)^d\) points to compute. To proceed the discretization alone is not enough however. We need a way to order these points in the domain. For this endeavor, we start with a function that maps the Cartesian coordinates to an positive integer \(1 \leq i \leq N\).
 
