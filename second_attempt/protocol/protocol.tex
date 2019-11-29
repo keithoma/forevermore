@@ -1,15 +1,16 @@
 \documentclass[refman]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
 
 
 %
-\usepackage[english]{babel}
+
 \usepackage{colortbl}
 \usepackage{epigraph}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{hhline}
-\usepackage[utf8]{inputenc}
+
 \usepackage[procnames]{listings}
 \usepackage{longtable}
 \usepackage{tikz}
@@ -17,9 +18,8 @@
 \usepackage{xcolor}
 \usepackage{wrapfig}
 \usepackage[nottoc,numbib]{tocbibind}
-\usepackage{amsmath}
 %
-\usepackage[T1]{fontenc}
+%\usepackage[T1]{fontenc}
 \usepackage{lmodern}
 %
 
@@ -37,8 +37,6 @@
  }
 \pagestyle{fancy}
 
-\usepackage[document]{ragged2e}
-
 \newcommand{\idx}{\text{idx}}
 
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
@@ -47,7 +45,10 @@
 \theoremstyle{definition}
 \newtheorem*{formula}{Formula}
 
+\usepackage[document]{ragged2e}
+
 \begin{document}
+    \justify
 	\input{content/titlepage.tex}
 	\newpage
 
@@ -57,8 +58,4 @@
     \input{content/index_conversion.tex}
     %\input{content/system_of_linear_equation.tex}
     \input{content/memory_usage.tex}
-    
-    
-    \section{Memory Usage Testing: The Curtain Fall}
-    \section{Conclusion: Skewer the Critics}
 \end{document}

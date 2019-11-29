@@ -1,19 +1,27 @@
-\section{Theoretical Considerations: The Numerical Libretto}
+\section{Theoretical Considerations}
 
-We will first establish the approach to solve \(- \Delta u = f\) for the first dimension before we generalize the procedure for multiple dimensions. It must be said that the case for the first dimension is fairly simple as we do not need partial differentiation, and indeed as we go up into more than one dimension, more theoretical background work is needed. The order of presentation, as we believe, is matter of taste, but we have chosen to demonstrate the solution for the first dimension as early as possible to highlight the underlying method which stays similar even for many dimensions.
+Every journey must begin with a single step. In our case, we consider a one dimensional domain, i.e.
+\begin{align*}
+    \Omega = (0, 1)
+\end{align*}
+before we generalize to multiple dimension. It should be noted that the case for the first dimension is particularly simple because instead of any partial derivatives, we just have the equation
+\begin{align*}
+    - \Delta u = f \text{.}
+\end{align*}
+Indeed, the multidimensional case require more theoretical work, but in essence, the core idea to construct matrices stays the same. Understanding the first dimension will therefore be our stepping stone for a general method to solve the Laplace equation.
 
 \subsection{Discretization of Lines}
 
-It might be tempting for some to solve the given PDE for every point on the interval \([0, 1] \subset \mathbb{R}\), but with a numerical approach the price for such computation of infinitely many points would exceed every budget, and therefore, we must instead limit our aspirations to a finite amount of grid points. In particular, we will arrange \(n\) number of points on the said interval which are exactly \(h\) distance apart from the next. For \(n\) we have
+It might be tempting for some to solve the given differential equation for every point on the interval \([0, 1] \subset \mathbb{R}\), but with a numerical approach the price for such computation of infinitely many points would exceed every budget, and therefore, we must instead limit our aspirations to a finite amount of grid points. In particular, we will arrange \(n\) number of points on the said interval which are exactly \(h\) distance apart from the next. Hence, we have
 \begin{align*}
 	h := \frac{1}{n} \text{,}
 \end{align*}
-and moreover, we will number each point \(x_i \in [0, 1]\) where \(0 \leq i \leq n\)  on the interval. This gives us
+and moreover, we will number each point \(p_i \in [0, 1]\) where \(0 \leq i \leq n\)  on the interval. This gives us
 \begin{align*}
-	x_i = \frac{j}{n} \text{.}
+	p_i = \frac{j}{n} \text{.}
 \end{align*}
 
-The PDE will only be evaluated on these points \(x_i\). This means that a finer discretization will give a better approximated result, but the computation time will also increase.
+The Laplace equation will only be evaluated on these points \(p_i\). This means that a finer discretization will give a better approximated result, but the computation time will also increase.
 
 Here, we have only described the discretization used for the first dimension. We will return to this topic later when we discuss the arrangement of grid points in multidimensional space.
 
@@ -42,5 +50,4 @@ As the remainder of the Taylor polynomial approaches \(0\) for \(h \rightarrow 0
 
 \subsection{The Chosen Increment}
 
-Now we are equipped to solve the stated problem for the first dimension. There is, however, one very important thing to mention. The increment \(h\) which we will use to approximate the derivatives will set to be exactly the distance between each neighboring grid points.
-%maybe explain why
+Now we are equipped to solve the stated problem for the first dimension. There is, however, one very important thing to mention. The increment \(h\) which we will use to approximate the derivatives will set to be exactly the distance between each neighboring grid points. This trick proves to be very useful when we construct the matrices.

@@ -1,12 +1,21 @@
-\section{Introduction: Light up the Stage}
+\section{Introduction}
 
-This protocol discusses a numerical approach to solve second order partial differential equations\footnote{This is sometimes referred as Laplace's equation.}. To draw inspiration from a physical example for this mathematical problem, visualize a two dimensional space in which a string is fixed at both ends and a force, such as gravity, acting on the said string. From the Newtonian mechanics, we have the equation
+This protocol discusses a numerical approach to solve a Laplace equation which for an \(u \in C^2(\mathbb{R^d}, \mathbb{R})\) is defined as
 \begin{align*}
-	F = ma \text{.}
+	\Delta u = \sum^{d}_{l = 1} \frac{\partial^2 u}{\partial x_l^2} \text{.}
 \end{align*}
-In the above equation, \(F\) denotes the force, and \(a\) is the acceleration which is just the second derivative of the location or in our case the displacement which can be thought as a function of the points of the string, \(u(x)\). If we na{\"i}vely set the mass \(m = 1\), we have\footnote{The minus sign in front of \(u\) arises from convention. We have also replaced \(F\) with \(f\) to adhere to a more mathematical standard.}
+In particular, we will limit ourselves on the domain \( \Omega := (0, 1)^d \subset \mathbb{R^d} \) with the equations\footnote{\(\partial \Omega\) denotes the boundary of the domain.}
 \begin{align*}
-	f(x) = - u''(x) \text{.}
+	- \Delta u &= f \hspace{0.5cm} \text{on } \Omega \text{, and} \\
+	u &= 0 \hspace{0.5cm} \text{on } \partial \Omega \text{.}
 \end{align*}
-Assuming the values for the function \(f\) is known we want to describe a procedure how to numerically compute the solution for \(u\). Ultimately, we will do this by approximating the second partial derivative with Taylor polynomials and constructing a linear transformation which maps a vector containing \(u\) for every evaluated point \(x_i\) to a vector which encodes the values of \(f\).
-However, this protocol is meant to be a preparatory piece and while we will describe in detail the construction of the matrix for the linear transformation, we will not discuss how to solve the system for \(u\).
+Given the function \(f\), how can one compute \(u\)? First, we must define a proper discretization of the domain and a convenient linear order for the grid points. This allows us to encode the values of the functions \(u\) and \(f\) for each grid point into a vector \(\hat{u}\) and \(b\). The notation for the vector \(\hat{u}\) is not just to differentiate from the function \(u\) we want to compute, but also to stress that the solution will be an approximation.
+
+It turns out that we can actually construct a fairly simple linear transformation which maps the vector \(\hat{u}\) to \(b\). In other words, we will see that there is a matrix \(A\) such that
+\begin{align*}
+	A \hat{u} = b \text{.}
+\end{align*}
+
+Furthermore, this particular matrix \(A\), while large in size for almost all pratical applications, has a useful structure which we will exploit to reduce computation time to an acceptable length.
+
+Lastly, as this protocol is meant to be preparatory piece, it will not present a method to solve the above linear equation for \(\hat{u}\).
