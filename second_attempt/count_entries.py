@@ -10,6 +10,8 @@ Kei Thoma
 
 import matplotlib.pyplot as plt
 
+MAX_N = 10001
+
 def count_entries_dense(d, n):
     """
     Counts all entries of A_d.
@@ -57,7 +59,7 @@ def draw_amount_of_entries():
     Draws the plot on double log scale for the number of counted entries of dense and sparse.
     """
     # values for x-axis
-    x_axis = [i for i in range(2, 10002)]
+    x_axis = [i for i in range(2, MAX_N)]
 
     # values for y-axis
     dense = [[count_entries_dense(d, i) for i in x_axis] for d in (1, 2, 3)]

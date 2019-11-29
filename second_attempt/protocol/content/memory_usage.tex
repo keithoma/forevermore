@@ -42,3 +42,9 @@ The aforementioned matrix \(A_d\) increases in size quickly for large \(n\) espe
         \(\bigtriangleup\)
     \end{flushright}
 \end{formula}
+\begin{figure}[h]
+    \includegraphics[width=\linewidth]{graphic/memory.png}
+    \caption{The formula for the number of entries visualized.}
+    \label{fig:plot}
+\end{figure}
+Perhaps the above formula might not be too exciting for some. For those, we have written a Python module \texttt{count\_entries.py} which visualizes the above formula for \(2 \leq n \leq 10000\) (see figure \ref{fig:plot}). One may change the \texttt{MAX\_N} variable to draw the graph for a different upper bound of \(n\).

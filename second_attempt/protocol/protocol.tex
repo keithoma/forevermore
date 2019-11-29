@@ -10,6 +10,7 @@
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{hhline}
+\usepackage{biblatex}
 
 \usepackage[procnames]{listings}
 \usepackage{longtable}
@@ -21,8 +22,6 @@
 %
 %\usepackage[T1]{fontenc}
 \usepackage{lmodern}
-%
-
 
 \usepackage{amsfonts}
 \usepackage{amsmath}
@@ -57,4 +56,18 @@
     \input{content/index_conversion.tex}
     \input{content/system_of_linear_equation.tex}
     \input{content/memory_usage.tex}
+\section{Conclusion}
+The presented method to tackle the Laplace equation for three dimensions can further generalized to any number of finite dimensions. This is intuitive, but notationally intensive.
+
+Furthermore, we must talk about the elephant in the room. We have essentially reduced a problem of partial differential equations to a problem of linear transformation, but how are we going to numerically solve the system for \(\hat{u}\)? In the next protocol, we will return to this issue and strengthen our understanding about the Laplace equation by actually solving the matrix \(A_d\).
+\medskip
+\begin{thebibliography}{9}
+    \bibitem{H.Amann}
+    Herbert Amann, Joachim Escher
+    \textit{Analysis I} (German). 
+    3rd edition, Birkhaeuser Verlag, Berlin, 2006.
+\end{thebibliography}
+
+    \newpage
+    \epigraph{"Do not try and solve the system of linear equation, that's impossible. Instead, only try to realize the truth ... there is no system of linear equation."}{Unknown}
 \end{document}
