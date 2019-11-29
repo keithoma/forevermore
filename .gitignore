@@ -1,12 +1,14 @@
 .DS_Store
 
 *.aux
+*.bcf
+*.blg
+*.fdb_latexmk
 *.fls
+*.gz
 *.log
 *.pdf
-*.gz
 *.pyc
-*.fdb_latexmk
 *.toc
 
 /.vscode/settings.json
