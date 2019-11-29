@@ -7,9 +7,9 @@ Moreover, since we are in the first dimension, we have \(u \in C^2(\mathbb{R}, \
 \begin{align*}
     f(p_i) = -u''(p_i) \approx \frac{-u(p_i + h) + 2u(p_i) - u(p_i - h)}{h^2} \text{,}
 \end{align*}
-and as \(h\) is not only the increment of the approximation, but also the distance between each point, we get
+and as \(h\) is not only the increment of the approximation, but also the distance between each point. For notational convenience, denote \(u_i := u(p_i)\) and \(f_i := f(p_i)\)  we get
 \begin{align*}
-    f_i \approx \frac{1}{h^2} -u_{i - 1} + 2u_i - u_{i + i} \text{.}
+    f_i \approx \frac{1}{h^2} (-u_{i - 1} + 2u_i - u_{i + i}) \text{.}
 \end{align*}
 Let \(b \in \mathbb{R}^{n-1}\) be a vector which encodes for \(1 \leq i \leq n-1\) the values of \(f(p_i) =: f_i\). Then we have
 \begin{align*}

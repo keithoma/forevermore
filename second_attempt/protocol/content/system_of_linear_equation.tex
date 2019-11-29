@@ -1,12 +1,56 @@
 \subsection{To Infinity and Beyond}
 
-We will generalize our understanding to two and three dimension. Let \([0, 1]^d\) the domain where \(d \in \{1, 2, 3\} \) is the number of dimensions. Given a discretization of the domain with \(n \in \mathbb{N}\) number of Cartesian grid on each axis, we have a total of \(N := (n-1)^d\) points inside the domain to consider. From the definition of the Laplace operator, we have
+We will generalize our understanding to two and three dimension. Let \([0, 1]^d\) the domain where \(d \in \{1, 2, 3\} \) is the number of dimensions. Given a discretization of the domain with \(n \in \mathbb{N}\) number of Cartesian grid on each axis, we have a total of \(N := (n-1)^d\) points inside the domain to consider. We order every grid point as we discussed in the previous section and assign a positive integer to it. Let therefore \(p_i\) with \(1 \leq i \leq N\) the grid points on the domain. From the definition of the Laplace operator, we have
 \begin{align*}
-	\Delta u_N =& \frac{\partial^2 u_N}{\partial {x_1} + \frac{\partial^2 u_N}{\partial x_2^2} \text{.}
+	-\Delta u_i =& -\sum^d_{l=1}\frac{\partial^2 u_i}{\partial x_l} \text{.}
 \end{align*}
-We can approximate the partial abbreviation again with the Taylor polynomial. We have
+With the same idea as before, we want to approximate the partial derivative with the Taylor polynomial. We have
 \begin{align*}
-	\frac{\partial^2 u_i}{\partial x_1^2} =& \frac{1}{h^2} (u_{i - 1} + 2u_i - u_{i + 1}) \\
-	\frac{\partial^2 u_i}{\partial x_2^2} =& \frac{1}{h^2} (u_{i - (n-1)} + 2u_i - u_{i + (n +1)}) \text{.}
+	-\frac{\partial^2 u_i}{\partial x_l} \approx \frac{1}{h^2}
+	(-u(p_i - h e_l) + 2u(p_i) -u(p_i + h e_l)) \text{,}
 \end{align*}
-Risking informality, but perhaps stimulating the intuition, one uses the neighboring "top and bottom" values to approximate the partial abbreviation for the direction of the x-axis while "left and right" values are used for the direction of the y-axis. The latter is exactly why we subtract and add \((n-1\) from the indices. 
+where \(e_l \in \mathbb{R}^{d}\) is the unit vector. Again, each grid point in every direction of the canonical basis is apart exactly \(h\) units. Therefore, we have for the first three dimensions (in case of \(d=2\), the third line below can be ignored)
+\begin{align*}
+	-\frac{\partial^2 u_i}{\partial x_1} \approx& \frac{1}{h^2}
+	(-u_{i - 1} + 2u_i -u_{i + (n - 1)}) \\
+	%
+	-\frac{\partial^2 u_i}{\partial x_2} \approx& \frac{1}{h^2}
+	(-u_{i - (n - 1)} + 2u_i -u_{i + (n - 1)}) \\
+	%
+	-\frac{\partial^2 u_i}{\partial x_3} \approx& \frac{1}{h^2}
+	(-u_{i - (n - 1)^2} + 2u_i -u_{i + (n - 1)^2}) \text{.}
+\end{align*}
+Hence we have (again ignore the last summand for \(d=2\) below and simplify the equation accordingly)
+\begin{align*}
+	-\Delta u_i \approx \frac{1}{h^2} & ( (-u_{i - 1} + 2u_i -u_{i + (n - 1)} ) \\
+	+&(-u_{i - (n - 1)} + 2u_i -u_{i + (n - 1)}) \\
+	+&(-u_{i - (n - 1)^2} + 2u_i -u_{i + (n - 1)^2}) ) \\
+	= \frac{1}{h^2} & 
+	( -u_{i - (n - 1)^2} -u_{i - (n - 1)} -u_{i - 1} \\
+	+& 6u_i \\
+	+& u_{i + 1} + u_{i + (n - 1)} + u_{i + (n-1)^2} )
+\end{align*}
+Remember that if the index \(i\) is \(i \leq 0\) or \(i \geq N\), then \(u_i\) is on the boundary of the domain \(\Omega\) and we have \(u_i = 0\). With this, we can define the matrix \(A_d \in \mathbb{R}^{(n-1)^d \times (n-1)^d}\). We will do so recursively for convenience. Let
+\begin{align*}
+	A_1 (z) :=&
+	\begin{pmatrix}
+		2z & -1 & 0 & \dots & 0 \\
+		-1 & 2z & -1 & & \vdots  \\
+		0 & -1 & 2z & & \\
+		\vdots & & &    & -1\\
+		0 & \dots & &  -1 & 2z
+	\end{pmatrix} \\
+	\\
+	A_d (z) :=&
+	\begin{pmatrix}
+		A_{d-1}(z) & -\mathcal{I}_{d-1} & 0 & \dots & 0 \\
+		-\mathcal{I}_{d-1} & A_{d-1}(z) & -\mathcal{I}_{d-1} & & \vdots  \\
+		0 & -\mathcal{I}_{d-1} & A_{d-1}(z) & & \\
+		\vdots & & &    & -\mathcal{I}_{d-1}\\
+		0 & \dots & &  -\mathcal{I}_{d-1} & A_{d-1}(z) \text{,}
+	\end{pmatrix} \\
+\end{align*}
+where, \(\mathcal{I}_d \in \mathbb{R}^{(n-1)^d \times (n-1)^d}\) is the identity matrix. Then set \(A_d := A_d(d)\), and then we have
+\begin{align*}
+	\frac{1}{h^2} A_d \hat{u} = b \text{.}
+\end{align*}

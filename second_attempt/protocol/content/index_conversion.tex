@@ -2,11 +2,11 @@
 
 In a nutshell, we have constructed the matrix \(A_1\) by exploiting the fact that the increment for the approximation is the same as the distance between two grid points which allows us to express the derivative at a certain point with the neighboring values, i.e.
 \[
--u''(x_i) = \frac{1}{h^2} (-u_{i - 1} + 2 u_i - u_{i + 1}) \text{.}
+f(p_i) = -u''(p_i) = \frac{1}{h^2} (-u_{i - 1} + 2 u_i - u_{i + 1}) \text{.}
 \]
 We will use essentially the same idea for higher dimensions. However, instead of looking into just one direction (that is two neighboring points on an axis), we will be looking at two and three.
 
-Let \([0,1]^{d}\) with \(d \in \{1, 2, 3\}\) the domain for the given problem. Again, on the boundaries \(u\) is \(0\). The discretization of this domain arises naturally from the one dimensional case. Each axis is equipped with \(n \in \mathbb{R}\) number of Cartesian grid such that there is a total of \( N := (n-1)^d\) points to compute. To proceed the discretization alone is not enough however. We need a way to order these points in the domain. For this endeavor, we start with a function that maps the Cartesian coordinates to an positive integer \(1 \leq i \leq N\).
+Let \([0,1]^{d}\) with \(d \in \{1, 2, 3\}\) the domain for the given problem. Again, on the boundaries \(u\) is \(0\). The discretization of this domain arises naturally from the one dimensional case. Each axis is equipped with \(n \in \mathbb{N}\) number of Cartesian grid such that there is a total of \( N := (n-1)^d\) points to compute. To proceed the discretization alone is not enough however. We need a way to order these points in the domain. For this endeavor, we start with a function that maps the Cartesian coordinates to an positive integer \(1 \leq i \leq N\).
 
 \begin{formula}
     For the conversion from coordinates along the axis to the linear numbering of gird points and vice versa, we define
@@ -16,7 +16,7 @@ Let \([0,1]^{d}\) with \(d \in \{1, 2, 3\}\) the domain for the given problem. A
     \end{align*}
     The exact way of computation is intuitive, yet tedious to formulate symbolically.
 
-    \textit{Dimension 1}
+    \noindent \textit{Dimension 1}
     \begin{align*}
         \idx_{d = 1} (j_1) & = j_1 \\
         \idx_{d = 1}^{-1} (j_1) & = j_1 \\
@@ -32,7 +32,7 @@ Let \([0,1]^{d}\) with \(d \in \{1, 2, 3\}\) the domain for the given problem. A
     \end{align*}
     \textit{Dimension 3}
     \begin{align*}
-        \idx_{d = 3} (j_1, j_2, j_3) & = (j_1 - 1) (n - 1)^2 + j_2 (n - 1) + j_3 \\
+        \idx_{d = 3} (j_1, j_2, j_3) & = (j_1 - 1) (n - 1)^2 + (j_2 - 1) (n - 1) + j_3 \\
         \idx_{d = 3}^{-1} (N) &= (j_1, j_2, j_3) \text{,} \\
         \text{where}&
         \begin{cases}
@@ -49,5 +49,12 @@ Let \([0,1]^{d}\) with \(d \in \{1, 2, 3\}\) the domain for the given problem. A
         \(\bigtriangleup\)
     \end{flushright}
 \end{formula}
+
+Now, we have a bijective function which maps Cartesian coordinates to a positive integer. The linear ordering of the grid points arises naturally by ordering through the integer numbering asigned to each point, i.e. for a points \(p\) and \(q\)  with \(j_p\) and \(j_q\) as tuples of coordinates
+\begin{align*}
+    p < q :\iff idx(j_p) < idx(j_q)
+\end{align*}
+Intuitively, this ordering relation can be understood as a lexicographic ordering of the Cartesian coordinates.
+
 
 % number them correctly
