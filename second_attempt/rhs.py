@@ -23,7 +23,7 @@ def rhs(d, n, f):
 
     Returns
     -------
-    array or None
+    np.array or None
         Vector to the right-hand-side f. Returns None if d > 3.
 
     Raises
@@ -39,7 +39,7 @@ def rhs(d, n, f):
     if d == 1:
         return (1 / n) ** 2 * np.array([f(x) for x in grid])
     elif d == 2:
-        return (1 / n) ** 2 * np.array([f([x, y]) for x in grid for y in grid])
+        return (1 / n) ** 2 * np.array([f([y, x]) for x in grid for y in grid])
     elif d == 3:
-        return (1 / n) ** 2 * np.array([f([x, y, z]) for x in grid for y in grid for z in grid])
+        return (1 / n) ** 2 * np.array([f([z, y, x]) for x in grid for y in grid for z in grid])
     return None
