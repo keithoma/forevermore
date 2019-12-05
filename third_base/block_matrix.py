@@ -9,8 +9,12 @@ License: GPL-3
 
 import numpy as np
 from scipy import sparse as sm
-from scipy.sparse import csc_matrix, linalg as sla
-# from scipy import linalg
+from scipy.sparse import linalg as slina
+from scipy import linalg as lina
+
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt # pylint: disable=wrong-import-position
 
 def construct(d, n):
     """
@@ -48,9 +52,13 @@ class BlockMatrix:
     Attributes
     ----------
     d : int
-        Dimension of the space
+        Dimension of the space.
     n : int
-        Number of intervals in each dimension
+        Number of intervals in each dimension.
+    extend : int
+        The size of the matrix on one axis.
+    data : sparse
+        The matrix saved as SciPy sparse format. The format is appropriately chosen by SciPy.
     """
 
     def __init__(self, d, n):
@@ -67,9 +75,9 @@ class BlockMatrix:
         ValueError, if d < 1 or n < 2
         """
         if not d >= 1:
-            raise ValueError("d must satisfy >= 1")
+            raise ValueError("d must satisfy >= 1.")
         if not n >= 2:
-            raise ValueError("n must satisfy >= 2")
+            raise ValueError("n must satisfy >= 2.")
 
         self.d = d
         self.n = n
@@ -128,7 +136,7 @@ class BlockMatrix:
         pc : scipy.sparse.csr_matrix
             column permutation matrix of LU-decomposition
         """
-        lu = sla.splu(self.data)
+        lu = slina.splu(self.data)
 
         # convert the triangular matrix to csr (from csc)
         l, u = lu.L.tocsr(), lu.U.tocsr()
@@ -159,25 +167,62 @@ class BlockMatrix:
         _, l, u, _ = self.get_lu()
 
         # absolute number of zeros for LU
-        print(l.count_nonzero())
-        print(u.count_nonzero())
-        print()
         nnz = l.count_nonzero() + u.count_nonzero()
-        nz = 2 * self.extend - nnz
+        nz = 2 * self.extend ** 2 - nnz
 
         # absolute number of zeros for A
         mat_nnz = self.data.count_nonzero()
         mat_nz = self.extend - mat_nnz
 
-        return nnz, nz, float(mat_nnz / nnz), float(mat_nz / nz)
+        return nnz, nz, float(mat_nnz / nnz) if nnz != 0 else 1, float(mat_nz / nz) if nz != 0 else 1
+
+    def get_cond(self):
+        """ Computes the condition number of the represented matrix.
+
+        Returns
+        -------
+        float
+            condition number with respect to max-norm
+        """
+        # if n is 2, then the matrix has the dimension 1x1
+        if self.n == 2:
+            return 1
+
+        # SciPy likes csc more to calculate the inverse
+        csc = sm.csc_matrix(self.data)
+        return sm.linalg.norm(csc, np.inf) * sm.linalg.norm(sm.linalg.inv(csc), np.inf)
 
 
 
-    # should probably be moved out
-    @staticmethod
-    def test_lu(pr, l, u, pc):
-        return pr.transpose() * l * u * pc.transpose()
 
+def draw_cond(max_n=20):
+    # get the values for the plot
+    for d in [1, 2, 3]:
+        plt.plot([x for x in range(2, max_n)],
+            [BlockMatrix(d, x).get_cond() for x in range(2, max_n)],
+            label="cond(A^" + str(d) + ")") # why does't latex script work?
+
+    # finilize
+    plt.xlabel('n'), plt.ylabel('cond(A)'), plt.legend()
+    plt.title("Plot of cond(A) depending on the dimension and size")
+    plt.show()
+
+def draw_nonzero(max_n=20):
+    # to do maybe we can do the lines better
+
+    # get the values for the plot
+    for d in [1, 2, 3]:
+        plt.loglog([x for x in range(2, max_n)],
+            [BlockMatrix(d, x).eval_zeros()[0] for x in range(2, max_n)],
+            label="nonzero elements of A^" + str(d) + ")")
+        plt.loglog([x for x in range(2, max_n)],
+            [BlockMatrix(d, x).eval_zeros_lu()[0] for x in range(2, max_n)],
+            label="nonzero elements of LU^" + str(d) + ")")
+
+    # finilize
+    plt.xlabel('n'), plt.ylabel('number of nonzeros'), plt.legend()
+    plt.title("Plot of nonzero elements of A and LU depending on the dimension and size")
+    plt.show()
 
 def main():
     """ Internal demo-function for testing (or demoing) this module. """
@@ -239,7 +284,10 @@ def main():
     # print(re.toarray())
     nnz, nz, rel_nnz, rel_nz = mat.eval_zeros_lu()
     print("{}, {}, {}, {}".format(nnz, nz, rel_nnz, rel_nz))
+    print(mat.get_cond())
 
+    #draw_cond(10)
+    draw_nonzero(10)
 
 
 
