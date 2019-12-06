@@ -46,7 +46,7 @@ def solve_lu(pr, l, u, pc, b):
 
 # DEBUG FUNCTIONS FOR FUN
 
-def test_validity(n_upto=20, num_test=20):
+def test_validity(n_upto=20, num_test=20, show=False):
     for d in [1, 2, 3]:
         for n in range(2, n_upto):
             for i in range(0, num_test):
@@ -57,9 +57,12 @@ def test_validity(n_upto=20, num_test=20):
 
                 if np.all((x_demo, x_true)):
                     print("d = {} | n = {} | TEST {}/{} PASSED!".format(d, n, i + 1, num_test))
-                    # print("A = {}".format(mat.data.toarray()))
-                    # print("b = {}\n".format(b))
-                    # print("x = {}".format(x_demo))
+                    if show:
+                        print()
+                        print("A = {}".format(mat.data.toarray()))
+                        print("b = {}\n".format(b))
+                        print("x = {}".format(x_demo))
+                        print("==============================\n")
                 else:
                     print("d = {} | n = {} | TEST {}/{} FAILED FOR".format(d, n, i + 1, num_test))
                     print("A = {}".format(mat.data.toarray()))
@@ -75,10 +78,8 @@ def test_speed(d=3, n=50, num_test=50):
         x = solve_lu(*mat.get_lu(), b)
         print("SOLVED {}/{}".format(i + 1, num_test))
 
-
-
 def main():
-    pass
+    test_validity(5, 1, True)
 
 if __name__ == '__main__':
     main()
