@@ -71,15 +71,12 @@ def compute_error(d, n, hat_u, u):
     # in the case d > 3
     _ = 0
     if d == 1:
-        _ = np.linalg.norm([abs(ai - bi)
-            for ai, bi in zip( np.array( [u(x) for x in grid] ), hat_u )], np.inf)
+        u_vec = np.array([u(x) for x in grid])
     elif d == 2:
-        _ = np.linalg.norm([abs(ai - bi)
-            for ai, bi in zip( np.array( [u([y, x]) for x in grid for y in grid] ), hat_u )], np.inf)
+        u_vec = np.array([u([y, x]) for x in grid for y in grid])
     elif d == 3:
-        _ = np.linalg.norm([abs(ai - bi)
-            for ai, bi in zip( np.array( [u([z, y, x]) for x in grid for y in grid for z in grid] ), hat_u )], np.inf)
-    return _
+        u_vec = np.array([u([z, y, x]) for x in grid for y in grid for z in grid])
+    return np.linalg.norm([abs(ai - bi) for ai, bi in zip(u_vec , hat_u)], np.inf) if d >= 1 or d <= 3 else 0
 
 def draw_error(max_n=15):
     pass
@@ -108,7 +105,7 @@ def test_compute_error():
         x, y = v[0], v[1]
         return (-1)*((-1)*20*np.pi*y*np.sin(10*np.pi*y)*(5*np.pi*x*np.sin(10*np.pi) - np.cos(10*np.pi*x)) + (-1)*20*np.pi*np.sin(10*np.pi*x) * (5*np.pi*y*np.sin(10*np.pi*y)-np.cos(10*np.pi*y)))
 
-    n = 200
+    n = 28
 
     b = rhs(2, n, thef)
 
