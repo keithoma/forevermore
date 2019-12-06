@@ -6,8 +6,11 @@ Author: Christian Parpart & Kei Thoma
 Date: 2019-11-13
 License: GPL-3
 """
-
+import numpy as np
+from scipy import sparse as sm
 from scipy.sparse import linalg as slina
+
+import random
 
 import block_matrix
 
@@ -35,28 +38,47 @@ def solve_lu(pr, l, u, pc, b):
     x : numpy.ndarray
         solution of the linear system
     """
-    # remember kids, A = pr^-1 * l * u * pc^-1
-    for item in [slina.inv(pc), u, l, slina.inv(pr)]:
-        b = slina.spsolve(item, b)
-    return b
+    _ = slina.spsolve(slina.inv(sm.csc_matrix(pr)), b)
+    _ = slina.spsolve_triangular(l, _, lower=True)
+    _ = slina.spsolve_triangular(u, _, lower=False)
+    _ = slina.spsolve(slina.inv(sm.csc_matrix(pc)), _)
+    return _
+
+# DEBUG FUNCTIONS FOR FUN
+
+def test_validity(n_upto=20, num_test=20):
+    for d in [1, 2, 3]:
+        for n in range(2, n_upto):
+            for i in range(0, num_test):
+                mat = block_matrix.BlockMatrix(d, n)
+                b = [random.randint(-20, 20) for _ in range(0, mat.extend)]
+                x_demo = solve_lu(*mat.get_lu(), b)
+                x_true = slina.spsolve(mat.data, b)
+
+                if np.all((x_demo, x_true)):
+                    print("d = {} | n = {} | TEST {}/{} PASSED!".format(d, n, i + 1, num_test))
+                    # print("A = {}".format(mat.data.toarray()))
+                    # print("b = {}\n".format(b))
+                    # print("x = {}".format(x_demo))
+                else:
+                    print("d = {} | n = {} | TEST {}/{} FAILED FOR".format(d, n, i + 1, num_test))
+                    print("A = {}".format(mat.data.toarray()))
+                    print("b = {}\n".format(b))
+                    print("x = {}".format(x_demo))
+                    return False
+    return True
+
+def test_speed(d=3, n=50, num_test=50):
+    mat = block_matrix.BlockMatrix(d, n)
+    for i in range(0, num_test):
+        b = [random.randint(-20, 20) for _ in range(0, mat.extend)]
+        x = solve_lu(*mat.get_lu(), b)
+        print("SOLVED {}/{}".format(i + 1, num_test))
 
 
-def something():
-    pr = scipy.sparse.csc_matrix(pr)
-    pc = scipy.sparse.csc_matrix(pc)
-    inverse_pr = sla.inv(pr)
-    inverse_pc = sla.inv(pc)
-    y_1 = sla.spsolve(inverse_pr, b)
-    y_2 = sla.spsolve_triangular(l, y_1)
-    y_3 = sla.spsolve_triangular(u, y_2, lower=False)
-    x = sla.spsolve(inverse_pc, y_3)
-    return x
 
 def main():
-    demo_matrix_1 = block_matrix.BlockMatrix(1,4)
-    x = solve_lu(demo_matrix_1.get_lu(), [2,1,-4])
-    print(x)
-    print(demo_matrix_1.matrix.toarray())
+    pass
 
 if __name__ == '__main__':
     main()

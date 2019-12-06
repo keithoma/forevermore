@@ -136,7 +136,7 @@ class BlockMatrix:
         pc : scipy.sparse.csr_matrix
             column permutation matrix of LU-decomposition
         """
-        lu = slina.splu(self.data)
+        lu = slina.splu(sm.csc_matrix(self.data))
 
         # convert the triangular matrix to csr (from csc)
         l, u = lu.L.tocsr(), lu.U.tocsr()
@@ -192,10 +192,7 @@ class BlockMatrix:
         csc = sm.csc_matrix(self.data)
         return sm.linalg.norm(csc, np.inf) * sm.linalg.norm(sm.linalg.inv(csc), np.inf)
 
-
-
-
-def draw_cond(max_n=20):
+def draw_cond(max_n=15):
     # get the values for the plot
     for d in [1, 2, 3]:
         plt.plot([x for x in range(2, max_n)],
@@ -207,7 +204,7 @@ def draw_cond(max_n=20):
     plt.title("Plot of cond(A) depending on the dimension and size")
     plt.show()
 
-def draw_nonzero(max_n=20):
+def draw_nonzero(max_n=15):
     # to do maybe we can do the lines better
 
     # get the values for the plot
@@ -239,7 +236,7 @@ def main():
         """
         mat = BlockMatrix(d, n)
         print("# Demo BlockMatrix(d={}, n={}) in R^{{{}x{}}}".format(d, n, mat.extend, mat.extend))
-        print("#==============================================")
+        print("#======================================================")
         # print(mat.data)
         # print("#----------------------------------------------")
         sp = mat.get_sparse()
@@ -254,40 +251,38 @@ def main():
     def demo_lu(d, n):
         mat = BlockMatrix(d, n)
         pr, l, u, pc = mat.get_lu()
-        print("For the LU-Decomposition, Pr * A * Pl = LU, we have:\n")
-        print("Row Permutation Matrix (Pr):\n{}".format(pr))
-        print("The Matrix (A):\n".format(mat.data))
-        print("Column Permutation Matrix (Pl):\n{}".format(pc))
-        print("Lower Triangular Matrix (L):\n{}".format(l))
-        print("Upper Triangular Matrix (U):\n{}".format(u))
+        print("Let d = {} and n = {}. For the LU-Decomposition, Pr * A * Pl = LU, we have:\n".format(d, n))
+        print("Row Permutation Matrix (Pr):\n{}\n".format(pr.toarray()))
+        print("The Matrix (A):\n{}\n".format(mat.data.toarray()))
+        print("Column Permutation Matrix (Pl):\n{}\n".format(pc.toarray()))
+        print("Lower Triangular Matrix (L):\n{}\n".format(l.toarray()))
+        print("Upper Triangular Matrix (U):\n{}\n".format(u.toarray()))
 
+    def demo_nnz(d, n):
+        mat = BlockMatrix(d, n)
+        print("# Demo BlockMatrix(d={}, n={}) in R^{{{}x{}}}".format(d, n, mat.extend, mat.extend))
+        print("#======================================================")
+        # demo_lu(d, n)
+        non_zeros, zeros, rel_non_zeros, rel_zeros = mat.eval_zeros_lu()
+        print("# non-zeros : {} (total number of non-zero values)".format(non_zeros))
+        print("# zeros     : {} (total number of zero values)".format(zeros))
+        print("% non-zeros : {:.2} (relative non-zero values)".format(float(rel_non_zeros)))
+        print("% zeros     : {:.2} (relative zero values)".format(float(rel_zeros)))
+        print()
+        print("Cond(A) = {}".format(mat.get_cond()))
+        print()
+
+    draw_cond()
+    draw_nonzero()
 
     for d in [1, 2, 3]:
         for n in [2, 3, 4, 5]:
-            # demo_construction(d, n)
+            demo_construction(d, n)
+            demo_nnz(d, n)
             pass
 
-
-    mat = BlockMatrix(2, 3)
-    pr, l, u, pc = mat.get_lu()
-    print(pr.toarray())
-    print()
-    print(mat.data.toarray())
-    print()
-    print(pc.toarray())
-    print()
-    print(l.toarray())
-    print()
-    print(u.toarray())
-    print()
-    # re = mat.test_lu(pr, l, u, pc)
-    # print(re.toarray())
-    nnz, nz, rel_nnz, rel_nz = mat.eval_zeros_lu()
-    print("{}, {}, {}, {}".format(nnz, nz, rel_nnz, rel_nz))
-    print(mat.get_cond())
-
-    #draw_cond(10)
-    draw_nonzero(10)
+    demo_lu(1, 5)
+    demo_lu(2, 4)
 
 
 
