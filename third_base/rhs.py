@@ -69,14 +69,20 @@ def compute_error(d, n, hat_u, u):
     grid = np.linspace(0.0, 1.0, n, endpoint=False)[1:]
 
     # in the case d > 3
-    err = 0
+    _ = 0
     if d == 1:
-        exc = np.linalg.norm(np.array([u(x) for x in grid]), np.inf)
+        _ = np.linalg.norm([abs(ai - bi)
+            for ai, bi in zip( np.array( [u(x) for x in grid] ), hat_u )], np.inf)
     elif d == 2:
-        exc = np.linalg.norm(np.array([u([y, x]) for x in grid for y in grid]), np.inf)
+        _ = np.linalg.norm([abs(ai - bi)
+            for ai, bi in zip( np.array( [u([y, x]) for x in grid for y in grid] ), hat_u )], np.inf)
     elif d == 3:
-        exc = np.linalg.norm(np.array([u([z, y, x]) for x in grid for y in grid for z in grid]), np.inf)
-    return abs(np.linalg.norm(hat_u, np.inf) - exc)
+        _ = np.linalg.norm([abs(ai - bi)
+            for ai, bi in zip( np.array( [u([z, y, x]) for x in grid for y in grid for z in grid] ), hat_u )], np.inf)
+    return _
+
+def draw_error(max_n=15):
+    pass
 
 # DEBUG
 
@@ -102,15 +108,20 @@ def test_compute_error():
         x, y = v[0], v[1]
         return (-1)*((-1)*20*np.pi*y*np.sin(10*np.pi*y)*(5*np.pi*x*np.sin(10*np.pi) - np.cos(10*np.pi*x)) + (-1)*20*np.pi*np.sin(10*np.pi*x) * (5*np.pi*y*np.sin(10*np.pi*y)-np.cos(10*np.pi*y)))
 
-    n = 2
+    n = 200
 
     b = rhs(2, n, thef)
 
     mat = block_matrix.BlockMatrix(2, n)
     u_hat = linear_solvers.solve_lu(*mat.get_lu(), b)
-
+    print(b)
+    print()
+    print(u_hat)
+    print()
     error = compute_error(2, n, u_hat, u_2)
     print(error)
+
+
 
 def main():
     test_compute_error()
