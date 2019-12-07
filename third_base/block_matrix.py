@@ -172,7 +172,7 @@ class BlockMatrix:
 
         # absolute number of zeros for A
         mat_nnz = self.data.count_nonzero()
-        mat_nz = self.extend - mat_nnz
+        mat_nz = self.extend ** 2 - mat_nnz
 
         return nnz, nz, float(mat_nnz / nnz) if nnz != 0 else 1, float(mat_nz / nz) if nz != 0 else 1
 
@@ -193,28 +193,42 @@ class BlockMatrix:
         return sm.linalg.norm(csc, np.inf) * sm.linalg.norm(sm.linalg.inv(csc), np.inf)
 
 def draw_cond(max_n=15):
+    """
+    Draws the graph for the condition of A.
+
+    Parameters
+    ----------
+    max_n : int
+        The maximal n for which the plot should be drawn.
+    """
     # get the values for the plot
     for d in [1, 2, 3]:
         plt.plot([x for x in range(2, max_n)],
             [BlockMatrix(d, x).get_cond() for x in range(2, max_n)],
-            label="cond(A^" + str(d) + ")") # why does't latex script work?
+            label="cond" + "$(A_" + str(d) + ")$") # why does't latex script work?
 
     # finilize
-    plt.xlabel('n'), plt.ylabel('cond(A)'), plt.legend()
+    plt.xlabel('$n$'), plt.ylabel('$cond(A)$'), plt.legend()
     plt.title("Plot of cond(A) depending on the dimension and size")
     plt.show()
 
 def draw_nonzero(max_n=15):
-    # to do maybe we can do the lines better
+    """
+    Draws the graph for the nonzero entries of A.
 
+    Parameters
+    ----------
+    max_n : int
+        The maximal n for which the plot should be drawn.
+    """
     # get the values for the plot
     for d in [1, 2, 3]:
         plt.loglog([x for x in range(2, max_n)],
             [BlockMatrix(d, x).eval_zeros()[0] for x in range(2, max_n)],
-            label="nonzero elements of A^" + str(d) + ")")
+            label="nonzero elements of " + "$A_" + str(d) + "$")
         plt.loglog([x for x in range(2, max_n)],
             [BlockMatrix(d, x).eval_zeros_lu()[0] for x in range(2, max_n)],
-            label="nonzero elements of LU^" + str(d) + ")")
+            label="nonzero elements of " + "$LU_" + str(d) + "$")
 
     # finilize
     plt.xlabel('n'), plt.ylabel('number of nonzeros'), plt.legend()
@@ -260,7 +274,7 @@ def main():
 
     def demo_nnz(d, n):
         mat = BlockMatrix(d, n)
-        print("# Demo BlockMatrix(d={}, n={}) in R^{{{}x{}}}".format(d, n, mat.extend, mat.extend))
+        print("# NUMBER OF ZEROS LU DECOMPOSITION(d={}, n={}) in R^{{{}x{}}}".format(d, n, mat.extend, mat.extend))
         print("#======================================================")
         # demo_lu(d, n)
         non_zeros, zeros, rel_non_zeros, rel_zeros = mat.eval_zeros_lu()
@@ -275,16 +289,13 @@ def main():
     draw_cond()
     draw_nonzero()
 
-    for d in [1, 2, 3]:
-        for n in [2, 3, 4, 5]:
+    for d in [1, 2]:
+        for n in [2, 3, 4]:
             demo_construction(d, n)
             demo_nnz(d, n)
-            pass
 
     demo_lu(1, 5)
     demo_lu(2, 4)
-
-
 
 if __name__ == "__main__":
     main()
