@@ -1,6 +1,12 @@
 """
-Copy pasted from block_matrix.py's static method zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+This small module creates the vector b. See protocol for more information.
+
+Fractals are the essence of bread crumbs.
+
 """
+
+# Copy pasted from block_matrix.py's static method zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+
 import numpy as np
 
 def rhs(d, n, f):
@@ -17,7 +23,7 @@ def rhs(d, n, f):
 
     Returns
     -------
-    array or None
+    np.array or None
         Vector to the right-hand-side f. Returns None if d > 3.
 
     Raises
@@ -30,29 +36,10 @@ def rhs(d, n, f):
 
     grid = np.linspace(0.0, 1.0, n, endpoint=False)[1:]
 
-
-
     if d == 1:
-        return [f(x) for x in grid]
+        return (1 / n) ** 2 * np.array([f(x) for x in grid])
     elif d == 2:
-        return [f([y, x]) for x in grid for y in grid]
+        return (1 / n) ** 2 * np.array([f([y, x]) for x in grid for y in grid])
     elif d == 3:
-        return [f([z, y, x]) for x in grid for y in grid for z in grid]
+        return (1 / n) ** 2 * np.array([f([z, y, x]) for x in grid for y in grid for z in grid])
     return None
-
-
-
-def funa(x):
-    return np.sin(x) / x
-
-n = 10
-
-values = np.linspace(1/n, (n-1)/n, n-1)
-b = []
-for i in values:
-    b.append(funa(i))
-
-print(b)
-print("----")
-
-print(rhs(1, n, funa))
