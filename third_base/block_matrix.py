@@ -10,7 +10,6 @@ License: GPL-3
 import numpy as np
 from scipy import sparse as sm
 from scipy.sparse import linalg as slina
-from scipy import linalg as lina
 
 import matplotlib
 matplotlib.use('TkAgg')
@@ -34,6 +33,18 @@ def construct(d, n):
             block_matrix in a sparse data format
     """
     def generate(l):
+        """ Auxilary function.
+
+        Parameters
+        ----------
+        l : int
+            The current index of the recursion.
+
+        Returns
+        -------
+        sparse matrix
+            The block matrix depending on l.
+        """
         res = [[{
             0: lambda: generate(l - 1),
             1: lambda: -1 * sm.identity((n - 1) ** (l - 1))
@@ -204,11 +215,13 @@ def draw_cond(max_n=15):
     # get the values for the plot
     for d in [1, 2, 3]:
         plt.plot([x for x in range(2, max_n)],
-            [BlockMatrix(d, x).get_cond() for x in range(2, max_n)],
-            label="cond" + "$(A_" + str(d) + ")$") # why does't latex script work?
+                 [BlockMatrix(d, x).get_cond() for x in range(2, max_n)],
+                 label="cond" + "$(A_" + str(d) + ")$")
 
     # finilize
-    plt.xlabel('$n$'), plt.ylabel('$cond(A)$'), plt.legend()
+    plt.xlabel('$n$')
+    plt.ylabel('$cond(A)$')
+    plt.legend()
     plt.title("Plot of cond(A) depending on the dimension and size")
     plt.show()
 
@@ -224,14 +237,16 @@ def draw_nonzero(max_n=15):
     # get the values for the plot
     for d in [1, 2, 3]:
         plt.loglog([x for x in range(2, max_n)],
-            [BlockMatrix(d, x).eval_zeros()[0] for x in range(2, max_n)],
-            label="nonzero elements of " + "$A_" + str(d) + "$")
+                   [BlockMatrix(d, x).eval_zeros()[0] for x in range(2, max_n)],
+                   label="nonzero elements of " + "$A_" + str(d) + "$")
         plt.loglog([x for x in range(2, max_n)],
-            [BlockMatrix(d, x).eval_zeros_lu()[0] for x in range(2, max_n)],
-            label="nonzero elements of " + "$LU_" + str(d) + "$")
+                   [BlockMatrix(d, x).eval_zeros_lu()[0] for x in range(2, max_n)],
+                   label="nonzero elements of " + "$LU_" + str(d) + "$")
 
     # finilize
-    plt.xlabel('n'), plt.ylabel('number of nonzeros'), plt.legend()
+    plt.xlabel('n')
+    plt.ylabel('number of nonzeros')
+    plt.legend()
     plt.title("Plot of nonzero elements of A and LU depending on the dimension and size")
     plt.show()
 
@@ -263,6 +278,15 @@ def main():
         print()
 
     def demo_lu(d, n):
+        """ Demonstration of the LU-decomposition.
+
+        Parameters
+        ----------
+        d : int
+            The dimension.
+        n : int
+            The number of grid points.
+        """
         mat = BlockMatrix(d, n)
         pr, l, u, pc = mat.get_lu()
         print("Let d = {} and n = {}. For the LU-Decomposition, Pr * A * Pl = LU, we have:\n".format(d, n))
@@ -273,6 +297,15 @@ def main():
         print("Upper Triangular Matrix (U):\n{}\n".format(u.toarray()))
 
     def demo_nnz(d, n):
+        """ Demonstration of the nonzero counting method..
+
+        Parameters
+        ----------
+        d : int
+            The dimension.
+        n : int
+            The number of grid points.
+        """
         mat = BlockMatrix(d, n)
         print("# NUMBER OF ZEROS LU DECOMPOSITION(d={}, n={}) in R^{{{}x{}}}".format(d, n, mat.extend, mat.extend))
         print("#======================================================")
@@ -286,9 +319,6 @@ def main():
         print("Cond(A) = {}".format(mat.get_cond()))
         print()
 
-    draw_cond()
-    draw_nonzero()
-
     for d in [1, 2]:
         for n in [2, 3, 4]:
             demo_construction(d, n)
@@ -296,6 +326,10 @@ def main():
 
     demo_lu(1, 5)
     demo_lu(2, 4)
+
+    print("We can also draw plots.")
+    draw_cond()
+    draw_nonzero()
 
 if __name__ == "__main__":
     main()

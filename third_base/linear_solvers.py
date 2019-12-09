@@ -8,11 +8,11 @@ Author: Christian Parpart & Kei Thoma
 Date: 2019-11-13
 License: GPL-3
 """
+import random
+
 import numpy as np
 from scipy import sparse as sm
 from scipy.sparse import linalg as slina
-
-import random
 
 import block_matrix
 
@@ -59,7 +59,7 @@ def test_validity(n_upto=20, num_test=20, show=False):
         Number of tests for each n.
     show : boolean
         Option to print out the values.
-    
+
     Returns
     -------
     boolean
@@ -98,7 +98,6 @@ def main():
     """
     print("WE SOLVE LINEAR EQUATION, Ax = b WHERE A AND b ARE KNOWN\n\n")
     test_validity(5, 1, True)
-    # test_speed()
 
 if __name__ == '__main__':
     main()
