@@ -178,8 +178,8 @@ class BlockMatrix:
         _, l, u, _ = self.get_lu()
 
         # absolute number of zeros for LU
-        nnz = l.count_nonzero() + u.count_nonzero()
-        nz = 2 * self.extend ** 2 - nnz
+        nnz = l.count_nonzero() + u.count_nonzero() - self.extend
+        nz = self.extend ** 2 - nnz
 
         # absolute number of zeros for A
         mat_nnz = self.data.count_nonzero()
