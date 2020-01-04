@@ -1,0 +1,62 @@
+
+\documentclass[refman]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+
+%
+
+\usepackage{colortbl}
+\usepackage{epigraph}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hhline}
+\usepackage{biblatex}
+
+\usepackage[procnames]{listings}
+\usepackage{longtable}
+\usepackage{tikz}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{wrapfig}
+\usepackage[nottoc,numbib]{tocbibind}
+%
+%\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ left=30mm,
+ top=30mm,
+ }
+\pagestyle{fancy}
+
+\newcommand{\idx}{\text{idx}}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\theoremstyle{definition}
+\newtheorem*{formula}{Formula}
+
+\usepackage[document]{ragged2e}
+
+\begin{document}
+
+\begin{align*}
+	u(x) := \prod_{l=1}^d x_l \sin (\kappa \pi x_l)
+\end{align*}
+
+\begin{align*}
+	=& \kappa \pi \left( \kappa \pi x_1 \sin ( \kappa \pi x ) - 2 \cos( \kappa \pi x_1) \right) \\
+	=& \kappa \pi x_2 \sin( \kappa \pi x_2) \left(  \kappa \pi x_1 \sin(\kappa \pi x_1) - 2 \cos ( \kappa \pi x_1) \right) + \\ 
+	& \kappa \pi x_1 \sin( \kappa \pi x_1) \left(  \kappa \pi x_2 \sin(\kappa \pi x_2) - 2 \cos ( \kappa \pi x_2) \right)
+\end{align*}
+
+\end{document}

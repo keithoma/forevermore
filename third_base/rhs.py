@@ -138,9 +138,9 @@ def draw_error(max_n=15):
             float
                 The solution for the partial differentiation with respect to x_l.
             """
-            _ = np.sin(k * np.pi * v[l]) + k * np.pi * v[l] * np.cos(k * np.pi * v[l])
+            _ = k * np.pi * v[l] * np.sin(k * np.pi * v[l]) - 2 * np.cos(k * np.pi * v[l])
             for i in [d for d in range(0, len(v)) if d != l]: # skip over the variable to differentiate
-                _ = _ * v[i] * np.sin(k * np.pi * v[i])
+                _ = _ * k * np.pi * v[i] * np.sin(k * np.pi * v[i])
             return _
 
         _ = 0
@@ -154,8 +154,8 @@ def draw_error(max_n=15):
         errors = []
         for n in range(2, max_n):
             hat_u = linear_solvers.solve_lu(*block_matrix.BlockMatrix(d, n).get_lu(),
-                                            rhs(d, n, example_function))
-            errors.append(compute_error(d, n, hat_u, example_derivative))
+                                            rhs(d, n, example_derivative))
+            errors.append(compute_error(d, n, hat_u, example_function))
 
         plt.plot([x for x in range(2, max_n)], errors, label="error for d = {}".format(d))
 
@@ -203,9 +203,9 @@ def main():
         def partial(v, k, l):
             """ Helper function to make my life easier. Summand of the differential.
             """
-            _ = np.sin(k * np.pi * v[l]) + k * np.pi * v[l] * np.cos(k * np.pi * v[l])
+            _ = k * np.pi * v[l] * np.sin(k * np.pi * v[l]) - 2 * np.cos(k * np.pi * v[l])
             for i in [d for d in range(0, len(v)) if d != l]: # skip over the variable to differentiate
-                _ = _ * v[i] * np.sin(k * np.pi * v[i])
+                _ = _ * k * np.pi * v[i] * np.sin(k * np.pi * v[i])
             return _
 
         _ = 0
