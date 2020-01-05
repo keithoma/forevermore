@@ -99,12 +99,12 @@ def draw_error(max_n=15):
                                             rhs(d, n, functions.f))
             errors.append(compute_error(d, n, hat_u, functions.u))
 
-        plt.plot([x for x in range(2, max_n)], errors, label="error for d = {}".format(d))
+        plt.plot([x for x in range(2, max_n)], errors, label="error for d = {}".format(d), linewidth=3)
 
-    plt.xlabel("Number of Grid Points", fontsize=14)
-    plt.ylabel("Error", fontsize=14)
-    plt.legend(fontsize=18)
-    plt.title("Plot of error of u and u_hat depending on n")
+    plt.xlabel("Number of Grid Points", fontsize=18)
+    plt.ylabel("Error", fontsize=18)
+    plt.legend(fontsize=24)
+    plt.title("Plot of error of $u$ and $\hat{u}$ depending on n", fontsize=24)
     plt.show()
 
 def draw_hilbert_cond(max_n=15):
@@ -114,19 +114,19 @@ def draw_hilbert_cond(max_n=15):
         condition.append(np.linalg.cond(hilbert, np.inf))
 
     plt.plot(range(3, max_n), [np.linalg.cond(scipy.linalg.hilbert(i), np.inf) for i in range(3, max_n)],
-             label="Condition of the Hilbert Matrix")
+             label="Condition of the Hilbert Matrix", linewidth=3)
     axis = plt.gca()
     axis.set_yscale('log')
 
-    plt.xlabel("Number of Rows/Columns of the Hilbert Matrix", fontsize=14)
-    plt.ylabel("Condition", fontsize=14)
-    plt.legend(fontsize=18)
+    plt.xlabel("Number of Rows/Columns of the Hilbert Matrix", fontsize=18)
+    plt.ylabel("Condition", fontsize=18)
+    plt.legend(fontsize=24)
     plt.show()
 
 def main():
     """ A main function for demo.
     """
-    draw_error(40)
+    #draw_error(15)
     draw_hilbert_cond(15)
 
 if __name__ == '__main__':

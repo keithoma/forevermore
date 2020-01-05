@@ -74,9 +74,11 @@ def plot_approximate_3d(n, f):
         for j in range(n-1):
             x.append(i/n)
             y.append(j/n)
+
     b = rhs.rhs(2, n, f)
     matrix = block_matrix.BlockMatrix(2, n)
     z = linear_solvers.solve_lu(*matrix.lu, b)
+
     ax.plot_trisurf(x, y, z, linewidth=0.2, antialiased=True)
     ax.set_xlabel("x")
     ax.set_ylabel("y")
@@ -98,7 +100,7 @@ def main():
     d_3 = 3
     n_error = 15
     n_hilbert = 20
-    n_solution = 11
+    n_solution = 4
     n_sparsity = 15
     test = np.array([1,2,3])
     values = range(3, n_error)

@@ -216,13 +216,13 @@ def draw_cond(max_n=15):
     for d in [1, 2, 3]:
         plt.plot([x for x in range(2, max_n)],
                  [BlockMatrix(d, x).get_cond() for x in range(2, max_n)],
-                 label="cond" + "$(A_" + str(d) + ")$")
+                 label="cond" + "$(A_" + str(d) + ")$", linewidth=3)
 
     # finilize
-    plt.xlabel('$N$', fontsize=14)
-    plt.ylabel('$cond(A)$', fontsize=14)
-    plt.legend(fontsize=18)
-    plt.title("Plot of cond(A) depending on the dimension and size")
+    plt.xlabel('$N$', fontsize=18)
+    plt.ylabel('$cond(A)$', fontsize=18)
+    plt.legend(fontsize=24)
+    plt.title("Plot of cond(A) depending on the dimension and size", fontsize=24)
     plt.show()
 
 def draw_nonzero(max_n=15):
@@ -239,17 +239,17 @@ def draw_nonzero(max_n=15):
         plt.loglog([x for x in range(2, max_n)],
                    [BlockMatrix(d, x).eval_zeros()[0] for x in range(2, max_n)],
                    label="nonzero elements of " + "$A_" + str(d) + "$",
-                   linewidth=2)
+                   linewidth=3)
         plt.loglog([x for x in range(2, max_n)],
                    [BlockMatrix(d, x).eval_zeros_lu()[0] for x in range(2, max_n)],
                    label="nonzero elements of " + "$LU_" + str(d) + "$",
-                   linestyle='--', linewidth=2)
+                   linestyle='--', linewidth=3)
 
     # finilize
-    plt.xlabel('n', fontsize=14)
-    plt.ylabel('number of nonzeros', fontsize=14)
+    plt.xlabel('N', fontsize=18)
+    plt.ylabel('number of nonzeros', fontsize=18)
     plt.legend(fontsize=18)
-    plt.title("Plot of nonzero elements of A and LU depending on the dimension and size")
+    plt.title("Plot of nonzero elements of A and LU depending on the dimension and size", fontsize=24)
     plt.show()
 
 def main():
@@ -331,7 +331,7 @@ def main():
     #demo_lu(2, 4)
 
     print("We can also draw plots.")
-    draw_cond()
+    #draw_cond()
     draw_nonzero()
 
 if __name__ == "__main__":
