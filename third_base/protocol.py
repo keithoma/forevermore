@@ -11,7 +11,7 @@ import rhs
 import functions
 
 def u(v, k=5.0):
-    """ Example function to draw an example graph.
+    """ Example function with k = 5.0.
 
     Parameters:
     v : list
@@ -30,6 +30,18 @@ def u(v, k=5.0):
     return _
 
 def f(v, k=5.0):
+    """ The derivative of above.
+
+    Parameters:
+    v : list
+        The vector containing the grid points. Must not be np.array.
+    k : float
+        A constant.
+
+    Returns:
+    float
+        The solution to the derivative.
+    """
     if len(v) == 1:
         return k * np.pi * (k * np.pi * v[0] * np.sin(k * np. pi * v[0]) - 2 * np.cos(k * np.pi * v[0]))
 
@@ -50,6 +62,12 @@ def f(v, k=5.0):
         return sum1 + sum2 + sum3
 
 def plot_analytical_3d(N):
+    """ This function draws the analytic solution for the poissons equation for d = 2.
+
+    Parameters:
+    N : int
+        The number of grid points.
+    """
     # create data
     grid = np.linspace(0.0, 1.0, N, endpoint=False)[1:]
     grid_length = len(grid)
@@ -71,6 +89,12 @@ def plot_analytical_3d(N):
     plt.show()
 
 def plot_approximation_3d(N):
+    """ This function draws the analytic solution for the poissons equation for d = 2.
+
+    Parameters:
+    N : int
+        The number of grid points.
+    """
     x = [i / N for i in range(N - 1) for j in range(N - 1)]
     y = [j / N for i in range(N - 1) for j in range(N - 1)]
     z_axis = linear_solvers.solve_lu(*block_matrix.BlockMatrix(2, N).get_lu(), rhs.rhs(2, N, f))
@@ -90,6 +114,16 @@ def plot_approximation_3d(N):
     plt.show()
 
 def main():
+    """ The main function which reproduces the results of the protocol.
+    """
+    max_n = 15 # the following plots are drawn for upto this number
+    
+    rhs.draw_error(max_n)
+    block_matrix.draw_cond(max_n)
+    rhs.draw_hilbert_cond(max_n)
+    block_matrix.draw_nonzero(max_n)
+
+    # change the number in parentheses to change the number of grid points
     plot_analytical_3d(4)
     plot_approximation_3d(4)
     plot_analytical_3d(30)

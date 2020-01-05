@@ -323,15 +323,14 @@ def main():
 
     for d in [1, 2]:
         for n in [2, 3, 4]:
-            #demo_construction(d, n)
-            #demo_nnz(d, n)
-            pass
+            demo_construction(d, n)
+            demo_nnz(d, n)
 
-    #demo_lu(1, 5)
-    #demo_lu(2, 4)
+    demo_lu(1, 5)
+    demo_lu(2, 4)
 
     print("We can also draw plots.")
-    #draw_cond()
+    draw_cond()
     draw_nonzero()
 
 if __name__ == "__main__":

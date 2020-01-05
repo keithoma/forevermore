@@ -7,7 +7,7 @@ Date: 2019-11-13
 License: GPL-3
 """
 import numpy as np
-import scipy.sparse
+from scipy.linalg import hilbert
 
 import matplotlib
 matplotlib.use('TkAgg')
@@ -104,16 +104,23 @@ def draw_error(max_n=15):
     plt.xlabel("Number of Grid Points", fontsize=18)
     plt.ylabel("Error", fontsize=18)
     plt.legend(fontsize=24)
+    # pylint: disable=anomalous-backslash-in-string
     plt.title("Plot of error of $u$ and $\hat{u}$ depending on n", fontsize=24)
     plt.show()
 
 def draw_hilbert_cond(max_n=15):
+    """ This function draws the condition for the Hilbert matrix.
+
+    Parameters
+    ----------
+    max_n : int
+        The plot is drawn from 3 upto this int.
+    """
     condition = []
     for i in range(3, max_n):
-        hilbert = scipy.linalg.hilbert(i)
-        condition.append(np.linalg.cond(hilbert, np.inf))
+        condition.append(np.linalg.cond(hilbert(i), np.inf))
 
-    plt.plot(range(3, max_n), [np.linalg.cond(scipy.linalg.hilbert(i), np.inf) for i in range(3, max_n)],
+    plt.plot(range(3, max_n), [np.linalg.cond(hilbert(i), np.inf) for i in range(3, max_n)],
              label="Condition of the Hilbert Matrix", linewidth=3)
     axis = plt.gca()
     axis.set_yscale('log')
@@ -126,8 +133,22 @@ def draw_hilbert_cond(max_n=15):
 def main():
     """ A main function for demo.
     """
-    #draw_error(15)
-    draw_hilbert_cond(15)
+    d, n = 2, 4
+
+    print("DEMONSTRATION OF MODULE")
+    print("Consider sum_{l = 1}^d x_l * sin(k * pi * x_l).")
+    print("We have d = {} and n = {}, then the right hand side of Ax = b would be:".format(d, n))
+    print(np.array(rhs(d, n, functions.f)))
+    print("And the error would be:")
+    hat_u = linear_solvers.solve_lu(*block_matrix.BlockMatrix(d, n).get_lu(),
+                                    rhs(d, n, functions.f))
+    print(compute_error(d, n, hat_u, functions.u))
+    print()
+    print("We can also the plot for the error.")
+    print()
+    print("See protocol for more information.")
+    draw_error()
+    draw_hilbert_cond()
 
 if __name__ == '__main__':
     main()
