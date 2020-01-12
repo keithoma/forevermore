@@ -1,15 +1,21 @@
 #! /usr/bin/env python3
 """
-This module implements.
+This module implements the rhs and compute error.
 
 Author: Christian Parpart & Kei Thoma
 Date: 2019-11-13
 License: GPL-3
 """
 import numpy as np
+from scipy.linalg import hilbert
 
-import block_matrix
-import linear_solvers
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt # pylint: disable=wrong-import-position
+
+import block_matrix # pylint: disable=wrong-import-position
+import linear_solvers # pylint: disable=wrong-import-position
+import functions # pylint: disable=wrong-import-position
 
 def rhs(d, n, f):
     """ Computes the right-hand side vector 'b' for a given function 'f'.
@@ -36,7 +42,7 @@ def rhs(d, n, f):
     grid = np.linspace(0.0, 1.0, n, endpoint=False)[1:]
 
     if d == 1:
-        return (1 / n) ** 2 * np.array([f(x) for x in grid])
+        return (1 / n) ** 2 * np.array([f([x]) for x in grid])
     elif d == 2:
         return (1 / n) ** 2 * np.array([f([y, x]) for x in grid for y in grid])
     elif d == 3:
@@ -68,60 +74,81 @@ def compute_error(d, n, hat_u, u):
     """
     grid = np.linspace(0.0, 1.0, n, endpoint=False)[1:]
 
-    # in the case d > 3
-    _ = 0
     if d == 1:
-        u_vec = np.array([u(x) for x in grid])
+        u_vec = np.array([u([x]) for x in grid])
     elif d == 2:
         u_vec = np.array([u([y, x]) for x in grid for y in grid])
     elif d == 3:
         u_vec = np.array([u([z, y, x]) for x in grid for y in grid for z in grid])
-    return np.linalg.norm([abs(ai - bi) for ai, bi in zip(u_vec , hat_u)], np.inf) if d >= 1 or d <= 3 else 0
+
+    # pylint: disable=misplaced-comparison-constant
+    return max([abs(ai - bi) for ai, bi in zip(u_vec, hat_u)]) if 1 <= d or d <= 3 else 0
 
 def draw_error(max_n=15):
-    pass
+    """ This function draws the error for u and u_hat.
 
-# DEBUG
+    Parameters
+    ----------
+    max_n : int
+        The plot is drawn from 2 upto this int.
+    """
+    for d in [1, 2, 3]:
+        errors = []
+        for n in range(2, max_n):
+            hat_u = linear_solvers.solve_lu(*block_matrix.BlockMatrix(d, n).get_lu(),
+                                            rhs(d, n, functions.f))
+            errors.append(compute_error(d, n, hat_u, functions.u))
 
-def test_compute_error_1():
-    def test_fun(x, k):
-        _ = 1
-        for l in range(0, x.size):
-            _ = _ * x[l] * np.sin(k * np.pi * x[l])
-        return _
+        plt.plot([x for x in range(2, max_n)], errors, label="error for d = {}".format(d), linewidth=3)
 
-    mat = block_matrix.BlockMatrix(3, 5)
+    plt.xlabel("Number of Grid Points", fontsize=18)
+    plt.ylabel("Error", fontsize=18)
+    plt.legend(fontsize=24)
+    # pylint: disable=anomalous-backslash-in-string
+    plt.title("Plot of error of $u$ and $\hat{u}$ depending on n", fontsize=24)
+    plt.show()
 
+def draw_hilbert_cond(max_n=15):
+    """ This function draws the condition for the Hilbert matrix.
 
-    sol = test_fun(np.array([0.33, 0.33]), 5)
-    print(sol)
+    Parameters
+    ----------
+    max_n : int
+        The plot is drawn from 3 upto this int.
+    """
+    condition = []
+    for i in range(3, max_n):
+        condition.append(np.linalg.cond(hilbert(i), np.inf))
 
-def test_compute_error():
-    def u_2(v):
-        x, y = v[0], v[1]
-        return x * np.sin(10*x*np.pi)*y*np.sin(10*y*np.pi)
+    plt.plot(range(3, max_n), [np.linalg.cond(hilbert(i), np.inf) for i in range(3, max_n)],
+             label="Condition of the Hilbert Matrix", linewidth=3)
+    axis = plt.gca()
+    axis.set_yscale('log')
 
-    def thef(v):
-        x, y = v[0], v[1]
-        return (-1)*((-1)*20*np.pi*y*np.sin(10*np.pi*y)*(5*np.pi*x*np.sin(10*np.pi) - np.cos(10*np.pi*x)) + (-1)*20*np.pi*np.sin(10*np.pi*x) * (5*np.pi*y*np.sin(10*np.pi*y)-np.cos(10*np.pi*y)))
-
-    n = 28
-
-    b = rhs(2, n, thef)
-
-    mat = block_matrix.BlockMatrix(2, n)
-    u_hat = linear_solvers.solve_lu(*mat.get_lu(), b)
-    print(b)
-    print()
-    print(u_hat)
-    print()
-    error = compute_error(2, n, u_hat, u_2)
-    print(error)
-
-
+    plt.xlabel("Number of Rows/Columns of the Hilbert Matrix", fontsize=18)
+    plt.ylabel("Condition", fontsize=18)
+    plt.legend(fontsize=24)
+    plt.show()
 
 def main():
-    test_compute_error()
+    """ A main function for demo.
+    """
+    d, n = 2, 4
+
+    print("DEMONSTRATION OF MODULE")
+    print("Consider sum_{l = 1}^d x_l * sin(k * pi * x_l).")
+    print("We have d = {} and n = {}, then the right hand side of Ax = b would be:".format(d, n))
+    print(np.array(rhs(d, n, functions.f)))
+    print("And the error would be:")
+    hat_u = linear_solvers.solve_lu(*block_matrix.BlockMatrix(d, n).get_lu(),
+                                    rhs(d, n, functions.f))
+    print(compute_error(d, n, hat_u, functions.u))
+    print()
+    print("We can also the plot for the error.")
+    print()
+    print("See protocol for more information.")
+    draw_error()
+    draw_hilbert_cond()
 
 if __name__ == '__main__':
     main()
