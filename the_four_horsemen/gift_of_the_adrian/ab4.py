@@ -116,7 +116,7 @@ def norm_residuum(matrix, x, b):
 
 def get_cond(matrix):
 	"""Gibt die Kondition der Matrix A und der Matrix A^T * A aus.
-	
+
 	Input
 	-----
 	matrix : numpy.ndarray
@@ -149,7 +149,7 @@ def get_data(data_folder, file, tupel_length, selection_list = None):
 	selection_list : list (optional)
 	Durch eine Liste an Integern können Zeilen aus der Datei ausgewählt werden,
 	für die die Datenpaare betrachtet werden sollen.
-	
+
 	Return
 	------
 	input_values : numpy.ndarray
@@ -168,7 +168,7 @@ def get_data(data_folder, file, tupel_length, selection_list = None):
 	return input_values
 
 def main():
-	A = get_data("C:/Users/Adrian/Downloads", "kette.txt", 2)
+	A = get_data("./", "ellipse.txt", 2)
 	print(A)
 if __name__ == '__main__':
     main()

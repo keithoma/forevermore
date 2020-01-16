@@ -4,9 +4,8 @@ import numpy as np
 from scipy import linalg
 
 def qr(A):
-    # It is necessary to round the solution because the rounding error would induce some issues later on.
-    # For example, without rounding, the function "full_rank()" would not work properly. Furthermore, as the
-    # data to input has no more than six decimal places, this should not compromise the example.
+    # Rounding should not compromise the example given in the assignment as the data there have less than
+    # six decimal places.
     return np.round(linalg.qr(A)[0], 6), np.round(linalg.qr(A)[1], 6)
 
 def full_rank(A):
@@ -30,6 +29,10 @@ def condition(A):
     sqr = np.matmul(np.transpose(A), A)
     return np.linalg.cond(A), np.linalg.cond(sqr)
 
+def input_data(file_name, indices=None):
+    with open(file_name, 'r') as f:
+        data = [[int(num) for num in line.split(',')] for line in f]
+    return [data[i][j] for (i, j) in indices] if indices is not None else data
 
 def main():
     def demo(A, b):
@@ -60,6 +63,8 @@ def main():
 
     b = [1, 2, 3, 4, 5]
     demo(A, b)
+
+    print(input_data("assignment/pegel.txt", [[0, 0], [0, 1]]))
 
 if __name__ == "__main__":
     main()
