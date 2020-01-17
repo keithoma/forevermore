@@ -23,7 +23,7 @@ def qr(A):
     """
     # Rounding should not compromise the example given in the assignment as the data there have
     # less than six decimal places.
-    return np.round(linalg.qr(A)[0], 6), np.round(linalg.qr(A)[1], 6)
+    return np.round(linalg.qr(A)[0], 12), np.round(linalg.qr(A)[1], 12)
 
 def full_rank(A):
     """
@@ -110,9 +110,14 @@ def draw(data):
     """
     (a, b) = solve_QR(np.array([[1, i] for i in data[:, 1]]), np.array(data[:, 0]))
     p1 = data[:, 1]
-    p0 = [a + b * x fnorm_residuals(data)or x in p1]
+    p0 = [a + b * x for x in p1]
     plt.plot(p0, p1)
     plt.scatter(data[:, 0], data[:, 1], color="r")
+
+    plt.xlabel('$p_0$', fontsize=18)
+    plt.ylabel('$p_1$', fontsize=18)
+    plt.legend(fontsize=18)
+    plt.title("Graph von $p_0$ und $p_1$", fontsize=24)
     plt.show()
 
 def norm_residuals(data):
@@ -169,6 +174,21 @@ def main():
     draw(data)
     print("The norm of the residuals are:")
     print("without p2: {}\nwith p2: {}".format(*norm_residuals(data)))
+    print("The condition: {}".format(condition(data)))
+
+    print("This module is also able to draw the plot for the given example.\n")
+    data = input_data("assignment/pegel1.txt")
+    draw(data)
+    print("The norm of the residuals are:")
+    print("without p2: {}\nwith p2: {}".format(*norm_residuals(data)))
+    print("The condition: {}".format(condition(data)))
+
+    print("This module is also able to draw the plot for the given example.\n")
+    data = input_data("assignment/pegel2.txt")
+    draw(data)
+    print("The norm of the residuals are:")
+    print("without p2: {}\nwith p2: {}".format(*norm_residuals(data)))
+    print("The condition: {}".format(condition(data)))
 
 if __name__ == "__main__":
     main()
