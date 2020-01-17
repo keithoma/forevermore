@@ -110,7 +110,7 @@ def draw(data):
     """
     (a, b) = solve_QR(np.array([[1, i] for i in data[:, 1]]), np.array(data[:, 0]))
     p1 = data[:, 1]
-    p0 = [a + b * x for x in p1]
+    p0 = [a + b * x fnorm_residuals(data)or x in p1]
     plt.plot(p0, p1)
     plt.scatter(data[:, 0], data[:, 1], color="r")
     plt.show()
