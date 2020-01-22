@@ -1,9 +1,3 @@
-% Copyright 2019 Clara Eleonore Pavillet
-
-% Author: Clara Eleonore Pavillet
-% Description: This is an unofficial Oxford University Beamer Template I made from scratch. Feel free to use it, modify it, share it.
-% Version: 1.0
-
 \documentclass{beamer}
 \usepackage[utf8]{inputenc}
 
@@ -15,13 +9,18 @@
 
 \newcommand\myeq{\stackrel{\mathclap{\normalfont\mbox{??}}}{=}}
 
-
-\title{Mathematical and Computational Modelling}
-%\titlegraphic{\includegraphics[width=2cm]{Theme/Logos/OxfordLogoV1.png}}
 \author{Christian Parpart, Kei Thoma}
-\date{} %\today
+\title{Lineare Regression}
 
 \begin{document}
+
+\begin{frame}
+    \maketitle
+\end{frame}
+
+\begin{frame}
+    \includegraphics[width=\textwidth]{confluence.jpg}
+\end{frame}
 
 \begin{frame}
     \frametitle{Problemstellung}
@@ -321,7 +320,13 @@
         \item Definiere \(R_1\) als die Matrix, die die ersten \(n \times n\) Einträge von \(R\) enthält.
         \item Löse \(R_1 x = z_1\) durch Rückwärtseinsetzen.
     \end{enumerate}
-    Dann gilt: \(\text{min}||Ax - b||_2 = z_2\).
+    Dann gilt: \(\text{min}||Ax - b||_2 = ||z_2||_2\).
+\end{frame}
+
+\begin{frame}
+    \centering
+    \frametitle{Theorie}
+    \includegraphics[width=\textwidth]{scatter.png}
 \end{frame}
 
 \begin{frame}
@@ -330,21 +335,39 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Implementierung und Experimente}
-
-Mit den ursprünglichen Daten ...
-
-\includegraphics[width=\textwidth]{plot.png}
-
-Kondition: $A = 74.26$, $A^T A = 5514.75$
-
-Residuum: 32.90 (ohne $p_2$), 32.09 (mit $p_2$)
+    \frametitle{Theorie}
+    \begin{center}
+        \begin{tabular}{ c c c }
+            $p_0$ & $p_1$ & $p_2$ \\
+            \hline
+            172 & 93 & 120 \\
+            309 & 193 & 258 \\
+            302 & 187 & 255 \\
+            283 & 174 & 238 \\
+            443 & 291 & 317 \\
+            298 & 184 & 246 \\
+            319 & 205 & 265 \\
+            419 & 260 & 304 \\
+            361 & 212 & 292 \\
+            267 & 169 & 242 \\
+            337 & 216 & 272 \\
+            230 & 144 & 191
+        \end{tabular}
+    \end{center}    
 \end{frame}
 
 \begin{frame}
-Hier wurde nur die ersten 6 Werte betrachtet ...
+    \frametitle{Theorie}
+    \includegraphics[width=\textwidth]{plot.png}
+    Residuum: 32.90 (ohne \(p_2\)), 32.09 (mit \(p_2\))
 
-\frametitle{Implementierung und Experimente}
+    Kondition: \(A = 74.26\), \(A^T A = 5514.75\)
+\end{frame}
+
+\begin{frame}
+Hier wurde nur die ersten 6 Werte betrachtet.
+
+\frametitle{Experimente}
 \includegraphics[width=\textwidth]{plot1.png}
 
 Kondition: $A = 72.47$, $A^T A = 5252.05$
@@ -353,34 +376,58 @@ Residuum: 1.54 (ohne $p_2$), 1.26 (mit $p_2$)
 \end{frame}
 
 \begin{frame}
-Hier wurden die Werte gerundet ...
+Hier wurden die letzten 2 Werte (von 12) stark verändert.
 
-\frametitle{Implementierung und Experimente}
+\frametitle{Experimente}
 \includegraphics[width=\textwidth]{plot2.png}
 
-Kondition: $A = 55.74$, $A^T A = 3107.40$
+Kondition: $A = 29.76$, $A^T A = 887.15$
 
-Residuum: 42.28 (ohne $p_2$), 39.43 (mit $p_2$)
+Residuum: 324.40 (ohne $p_2$), 211.25 (mit $p_2$)
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Auswertung und Zusammenfassung}
+    \frametitle{Zusammenfassung}
+    
+    \begin{itemize}
+    
+    \item {\color{white}Je weniger Werte desto kleiner das Residuum, aber wahrscheinlich wird das Modell zur Darstellung von physikalischen Phänomene inakkurater.}
+    \item {\color{white}Sollten sich einige Werte sich stark von anderen unterscheiden, sollte man in Betracht ziehen diese Werte zu ignorieren. (Möglicherweise sollte ein Algorithmus benutzt werden, die eine Gewichtung den Werten zuweist.)}
+    \end{itemize}
+    
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Zusammenfassung}
 
 \begin{itemize}
 
-
-\item Je weniger Werte, desto kleiner das Residuum, aber das Ergebnis wird wahrscheinlich recht inakkurat.
-\item Präzisere Inputwerte sind vorzuziehen.
+\item Je weniger Werte desto kleiner das Residuum, aber wahrscheinlich wird das Modell zur Darstellung von physikalischen Phänomene inakkurater. 
+\item {\color{white}Sollten sich einige Werte sich stark von anderen unterscheiden, sollte man in Betracht ziehen diese Werte zu ignorieren. (Möglicherweise sollte ein Algorithmus benutzt werden, die eine Gewichtung den Werten zuweist.)}
 \end{itemize}
 
 \end{frame}
+
+\begin{frame}
+    \frametitle{Zusammenfassung}
+    
+    \begin{itemize}
+    
+    \item Je weniger Werte desto kleiner das Residuum, aber wahrscheinlich wird das Modell zur Darstellung von physikalischen Phänomene inakkurater. 
+    \item Sollten sich einige Werte sich stark von anderen unterscheiden, sollte man in Betracht ziehen diese Werte zu ignorieren. (Möglicherweise sollte ein Algorithmus benutzt werden, die eine Gewichtung den Werten zuweist.)
+    \end{itemize}
+    
+\end{frame}
+
 
 \begin{frame}
 \frametitle{Literatur}
 \begin{enumerate}
 
 \item \textit{Numerische Lineare Algebra}, Prof. Dr. Caren Tischendorf
+\item Titelbild Quelle: \textit{Wikipedia}, https://en.wikipedia.org/wiki/Confluence
 
 \end{enumerate}
 
