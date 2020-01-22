@@ -1,0 +1,168 @@
+\documentclass[refman]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+
+%
+
+\usepackage{colortbl}
+\usepackage{epigraph}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hhline}
+%\usepackage{biblatex}
+\usepackage{wrapfig}
+
+\usepackage[procnames]{listings}
+\usepackage{longtable}
+\usepackage{tikz}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{wrapfig}
+\usepackage[nottoc,numbib]{tocbibind}
+%
+%\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ left=30mm,
+ top=30mm,
+ }
+\pagestyle{fancy}
+
+\newcommand{\idx}{\text{idx}}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\theoremstyle{definition}
+\newtheorem*{formula}{Formula}
+
+\usepackage[document]{ragged2e}
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	%\includegraphics[width=0.15\textwidth]{graphics/huberlin_logo}\par\vspace{1cm}
+	{\scshape\LARGE Humboldt University of Berlin \par}
+	\vspace{1cm}
+	{\scshape\Large Projektpraktikum \par}
+	\vspace{1.5cm}
+	{\huge\bfseries Documentation of qr.py \par}
+	\vspace{2cm}
+	{\Large\itshape Christian Parpart \& Kei Thoma \par}
+	\vfill
+
+	\vfill
+
+% Bottom of the page
+	{\large \today\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+The following is the documentation for the module \texttt{qr.py}.
+
+\section{qr(A)}
+This function computes the QR-decomposition.
+\subsection*{Arguments}
+A (ndarray): Two dimensional ndarray.
+\subsection*{Returns}
+(ndarray): Two dimensional ndarray of the QR-decomposition, Q.
+
+(ndarray): Two dimensional ndarray of the QR-decomposition, R.
+
+\section{full\_rank(A)}
+A boolean-function to check if the matrix has full column rank.
+\subsection*{Arguments}
+A (ndarray): Two dimensional ndarray.
+\subsection*{Returns}
+(boolean): True if A has full column rank and False otherwise.
+
+\section{solve\_QR(A, b)}
+Solves the equation Ax = b for x with the QR-decomposition.
+\subsection*{Arguments}
+A (ndarray): Two dimensional ndarray. Should have full column rank.
+
+b (ndarray): One dimensional ndarray.
+\subsection*{Returns}
+(ndarray): One dimensional ndarray for x.
+
+\section{norm(A, b)}
+
+Computes the normed error induced by solving the linear equation with the function above.
+
+\subsection*{Arguments}
+
+A (ndarray): Two dimensional ndarray. Should have full column rank.
+
+b (ndarray): One dimensional ndarray.
+
+\subsection*{Returns}
+
+(float): The normed difference between Ax and b.
+
+\section{condition(A)}
+
+Calculates the condition of $A$ and $A^T A$.
+
+\subsection*{Arguments}
+
+A (ndarray): Two dimensional ndarray.
+
+\subsection*{Returns}
+
+(float, float): The condition of $A$ and $A^T A$.
+
+\section{input\_data(file\_name, indices=None)}
+
+Takes a properly formated text file and builds a two dimensional ndarray. Additionally, a list of indices can be passed to return specific entries.
+
+\subsection*{Arguments}
+
+file\_name (String): The path and the name of the text file.
+        
+indices (list): List of indices.
+
+\subsection*{Returns}
+
+(ndarray): The entries of the matrix with the passed indices. If the argument indices were left out, this returns the entire matrix.
+
+\section{draw(data)}
+
+Draws the plot of the linear regression according to the data passed.
+
+\subsection*{Arguments}
+
+data (ndarray): Two dimensional ndarray.
+
+\section{norm\_residuals(data)}
+
+    Computes the residuals for the solution with and without $p_2$.
+
+\subsection*{Arguments}
+
+    data (ndarray): Two dimensional ndarray.
+
+\subsection*{Returns}
+
+(float, float): The residuals for Ax = b without taking p2 into consideration and with.
+
+\section{main()}
+
+The main-function to demonstrate the capabilities of the module.
+
+
+
+
+
+
+\end{document}
