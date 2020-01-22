@@ -7,7 +7,15 @@
 \documentclass{beamer}
 \usepackage[utf8]{inputenc}
 
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+\usepackage{xcolor}
 \usepackage{graphicx}
+
+\newcommand\myeq{\stackrel{\mathclap{\normalfont\mbox{??}}}{=}}
+
+
 \title{Mathematical and Computational Modelling}
 %\titlegraphic{\includegraphics[width=2cm]{Theme/Logos/OxfordLogoV1.png}}
 \author{Christian Parpart, Kei Thoma}
@@ -16,27 +24,199 @@
 \begin{document}
 
 \begin{frame}
-\frametitle{Problemstellung}
+    \frametitle{Problemstellung}
+    \small
+    \begin{alignat*}{5}
+           && p_1 &&     && && p_0 \\
+        {\color{white}a +}&& 93  &&   {\color{white}b} &&{\color{white}=}&& 172 \\
+        {\color{white}a +}&& 193 &&   {\color{white}b} &&{\color{white}=}&& 309 \\
+        {\color{white}a +}&& 187 &&   {\color{white}b} &&{\color{white}=}&& 302 \\
+        {\color{white}a +}&& 174 &&   {\color{white}b} &&{\color{white}=}&& 283 \\
+        {\color{white}a +}&& 291 &&   {\color{white}b} &&{\color{white}=}&& 443 \\
+        {\color{white}a +}&& 184 &&   {\color{white}b} &&{\color{white}=}&& 298 \\
+        {\color{white}a +}&& 205 &&   {\color{white}b} &&{\color{white}=}&& 319 \\
+        {\color{white}a +}&& 260 &&   {\color{white}b} &&{\color{white}=}&& 419 \\
+        {\color{white}a +}&& 212 &&   {\color{white}b} &&{\color{white}=}&& 361 \\
+        {\color{white}a +}&& 169 &&   {\color{white}b} &&{\color{white}=}&& 267 \\
+        {\color{white}a +}&& 216 &&   {\color{white}b} &&{\color{white}=}&& 337 \\
+        {\color{white}a +}&& 144 &&   {\color{white}b} &&{\color{white}=}&& 230
+    \end{alignat*}
+\end{frame}
 
-\begin{center}
-\begin{tabular}{ c c c }
-$p_0$ & $p_1$ & $p_2$ \\
-\hline
-172 & 93 & 120 \\
-309 & 193 & 258 \\
-302 & 187 & 255 \\
-283 & 174 & 238 \\
-443 & 291 & 317 \\
-298 & 184 & 246 \\
-319 & 205 & 265 \\
-419 & 260 & 304 \\
-361 & 212 & 292 \\
-267 & 169 & 242 \\
-337 & 216 & 272 \\
-230 & 144 & 191
-\end{tabular}
-\end{center}
+\begin{frame}
+    \centering
+    \frametitle{Problemstellung}
+    \includegraphics[width=\textwidth]{scatter.png}
+\end{frame}
 
+\begin{frame}
+    \frametitle{Problemstellung}
+    \small
+    \begin{alignat*}{5}
+           && p_1 &&     && && p_0 \\
+        {\color{white}a +}&&                     93 &&   {\color{white}b} &&{\color{white}=}&&                    172 \\
+        {\color{white}a +}&&                    193 &&   {\color{white}b} &&{\color{white}=}&&                    309 \\
+        {\color{white}a +}&& {\color{lightgray}187} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}302} \\
+        {\color{white}a +}&& {\color{lightgray}174} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}283} \\
+        {\color{white}a +}&& {\color{lightgray}291} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}443} \\
+        {\color{white}a +}&& {\color{lightgray}184} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}298} \\
+        {\color{white}a +}&& {\color{lightgray}205} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}319} \\
+        {\color{white}a +}&& {\color{lightgray}260} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}419} \\
+        {\color{white}a +}&& {\color{lightgray}212} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}361} \\
+        {\color{white}a +}&& {\color{lightgray}169} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}267} \\
+        {\color{white}a +}&& {\color{lightgray}216} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}337} \\
+        {\color{white}a +}&& {\color{lightgray}144} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}230}
+    \end{alignat*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Problemstellung}
+    \small
+    \begin{alignat*}{5}
+           && p_1 &&     && && p_0 \\
+        {\color{red}a} +&&                     93 &&   {\color{teal}b}    &&               =&&                    172 \\
+        {\color{red}a} +&&                    193 &&   {\color{teal}b}    &&               =&&                    309 \\
+        {\color{white}a +}&& {\color{lightgray}187} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}302} \\
+        {\color{white}a +}&& {\color{lightgray}174} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}283} \\
+        {\color{white}a +}&& {\color{lightgray}291} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}443} \\
+        {\color{white}a +}&& {\color{lightgray}184} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}298} \\
+        {\color{white}a +}&& {\color{lightgray}205} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}319} \\
+        {\color{white}a +}&& {\color{lightgray}260} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}419} \\
+        {\color{white}a +}&& {\color{lightgray}212} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}361} \\
+        {\color{white}a +}&& {\color{lightgray}169} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}267} \\
+        {\color{white}a +}&& {\color{lightgray}216} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}337} \\
+        {\color{white}a +}&& {\color{lightgray}144} &&   {\color{white}b} &&{\color{white}=}&& {\color{lightgray}230}
+    \end{alignat*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Problemstellung}
+    \small
+    \begin{alignat*}{5}
+           && p_1 &&     && && p_0 \\
+        {\color{red}a} +&& 93  &&   {\color{teal}b} &&=&& 172 \\
+        {\color{red}a} +&& 193 &&   {\color{teal}b} &&=&& 309 \\
+        {\color{red}a} +&& 187 &&   {\color{teal}b} &&=&& 302 \\
+        {\color{red}a} +&& 174 &&   {\color{teal}b} &&=&& 283 \\
+        {\color{red}a} +&& 291 &&   {\color{teal}b} &&=&& 443 \\
+        {\color{red}a} +&& 184 &&   {\color{teal}b} &&=&& 298 \\
+        {\color{red}a} +&& 205 &&   {\color{teal}b} &&=&& 319 \\
+        {\color{red}a} +&& 260 &&   {\color{teal}b} &&=&& 419 \\
+        {\color{red}a} +&& 212 &&   {\color{teal}b} &&=&& 361 \\
+        {\color{red}a} +&& 169 &&   {\color{teal}b} &&=&& 267 \\
+        {\color{red}a} +&& 216 &&   {\color{teal}b} &&=&& 337 \\
+        {\color{red}a} +&& 144 &&   {\color{teal}b} &&=&& 230
+    \end{alignat*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Problemstellung}
+    \small
+    \begin{alignat*}{5}
+           && p_1 &&     && && p_0 \\
+        1{\color{red}a} +&& 93  &&   {\color{teal}b} &&=&& 172 \\
+        1{\color{red}a} +&& 193 &&   {\color{teal}b} &&=&& 309 \\
+        1{\color{red}a} +&& 187 &&   {\color{teal}b} &&=&& 302 \\
+        1{\color{red}a} +&& 174 &&   {\color{teal}b} &&=&& 283 \\
+        1{\color{red}a} +&& 291 &&   {\color{teal}b} &&=&& 443 \\
+        1{\color{red}a} +&& 184 &&   {\color{teal}b} &&=&& 298 \\
+        1{\color{red}a} +&& 205 &&   {\color{teal}b} &&=&& 319 \\
+        1{\color{red}a} +&& 260 &&   {\color{teal}b} &&=&& 419 \\
+        1{\color{red}a} +&& 212 &&   {\color{teal}b} &&=&& 361 \\
+        1{\color{red}a} +&& 169 &&   {\color{teal}b} &&=&& 267 \\
+        1{\color{red}a} +&& 216 &&   {\color{teal}b} &&=&& 337 \\
+        1{\color{red}a} +&& 144 &&   {\color{teal}b} &&=&& 230
+    \end{alignat*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Problemstellung}
+    \small
+    \begin{align*}
+        \underbrace{
+        \begin{pmatrix}
+            1 &  93 \\
+            1 & 193 \\
+            1 & 187 \\
+            1 & 174 \\
+            1 & 291 \\
+            1 & 184 \\
+            1 & 205 \\
+            1 & 260 \\
+            1 & 212 \\
+            1 & 169 \\
+            1 & 216 \\
+            1 & 144
+        \end{pmatrix}
+        }_A
+        \underbrace{
+        \begin{pmatrix}
+            a \\ b
+        \end{pmatrix}
+        }_x
+        =
+        \underbrace{
+        \begin{pmatrix}        
+            172 \\
+            309 \\
+            302 \\
+            283 \\
+            443 \\
+            298 \\
+            319 \\
+            419 \\
+            361 \\
+            267 \\
+            337 \\
+            230
+        \end{pmatrix}
+        }_v
+    \end{align*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Problemstellung}
+    \small
+    \begin{align*}
+        \underbrace{
+        \begin{pmatrix}
+            1 &  93 \\
+            1 & 193 \\
+            1 & 187 \\
+            1 & 174 \\
+            1 & 291 \\
+            1 & 184 \\
+            1 & 205 \\
+            1 & 260 \\
+            1 & 212 \\
+            1 & 169 \\
+            1 & 216 \\
+            1 & 144
+        \end{pmatrix}
+        }_A
+        \underbrace{
+        \begin{pmatrix}
+            a \\ b
+        \end{pmatrix}
+        }_x
+        {\color{red}\myeq}
+        \underbrace{
+        \begin{pmatrix}        
+            172 \\
+            309 \\
+            302 \\
+            283 \\
+            443 \\
+            298 \\
+            319 \\
+            419 \\
+            361 \\
+            267 \\
+            337 \\
+            230
+        \end{pmatrix}
+        }_v
+    \end{align*}
 \end{frame}
 
 \begin{frame}
