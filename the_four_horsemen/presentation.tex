@@ -220,50 +220,114 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Theorie}
-\begin{align*}
-p_0 =& a + b \cdot p_1 \\
-\text{bzw.} \\
-p_0 =& a + b \cdot p_1 + c \cdot p_2
-\end{align*}
-
-Wir können anhand dieser Gleichung eine Matrix aufstellen. Die wir mit der QR-Zerlegung lösen!
-
-Wieso QR-Zerlegung? $\rightarrow$ Die Kondition kann nicht schlechter werden.
-
+    \frametitle{Theorie}
+    \begin{align*}
+        ||Ax - b||_2
+    \end{align*}
+    {\color{white}Frage: Wie bestimmen wir \(x = (a, b)^T\), sodass die obige Gleichung minimal ist?}
+    \begin{enumerate}
+        \item {\color{white}Bestimme die QR-Zerlegung von \(A\). Also \(A = QR\).}
+        \item {\color{white}Berechne \(z := Q^T v\). Definiere \(z_1\) als die ersten \(n\) Einträge (Breite von \(A\), hier \(n = 2\)) von \(z\).}
+        \item {\color{white}Definiere \(R_1\) als die Matrix, die die ersten \(n \times n\) Einträge von \(R\) enthält.}
+        \item {\color{white}Löse \(R_1 x = z_1\) durch Rückwärtseinsetzen.}
+    \end{enumerate}
+    {\color{white}Dann gilt: \(\text{min}||Ax - b||_2 = z_2\).}
 \end{frame}
 
 \begin{frame}
-\frametitle{Algorithmus: QR-Zerlegung (vom NLA Skript)}
-\includegraphics[width=\textwidth]{alg1.png}
+    \frametitle{Theorie}
+    \begin{align*}
+        ||Ax - b||_2
+    \end{align*}
+    Frage: Wie bestimmen wir \(x = (a, b)^T\), sodass die obige Gleichung minimal ist?
+    \begin{enumerate}
+        \item {\color{white}Bestimme die QR-Zerlegung von \(A\). Also \(A = QR\).}
+        \item {\color{white}Berechne \(z := Q^T v\). Definiere \(z_1\) als die ersten \(n\) Einträge (Breite von \(A\), hier \(n = 2\)) von \(z\).}
+        \item {\color{white}Definiere \(R_1\) als die Matrix, die die ersten \(n \times n\) Einträge von \(R\) enthält.}
+        \item {\color{white}Löse \(R_1 x = z_1\) durch Rückwärtseinsetzen.}
+    \end{enumerate}
+    {\color{white}Dann gilt: \(\text{min}||Ax - b||_2 = z_2\).}
 \end{frame}
 
 \begin{frame}
-\frametitle{Algorithmus: QR-Zerlegung (vom NLA Skript)}
-\includegraphics[width=\textwidth]{alg2.png}
+    \frametitle{Theorie}
+    \begin{align*}
+        ||Ax - b||_2
+    \end{align*}
+    Frage: Wie bestimmen wir \(x = (a, b)^T\), sodass die obige Gleichung minimal ist?
+    \begin{enumerate}
+        \item Bestimme die QR-Zerlegung von \(A\). Also \(A = QR\).
+        \item {\color{white}Berechne \(z := Q^T v\). Definiere \(z_1\) als die ersten \(n\) Einträge (Breite von \(A\), hier \(n = 2\)) von \(z\).}
+        \item {\color{white}Definiere \(R_1\) als die Matrix, die die ersten \(n \times n\) Einträge von \(R\) enthält.}
+        \item {\color{white}Löse \(R_1 x = z_1\) durch Rückwärtseinsetzen.}
+    \end{enumerate}
+    {\color{white}Dann gilt: \(\text{min}||Ax - b||_2 = z_2\).}
 \end{frame}
 
 \begin{frame}
-\frametitle{Algorithmus: QR-Zerlegung, was dann?}
-
-Bestimme dann zuerst:
-
-\begin{align*}
-A = QR \\
-\begin{pmatrix}
-z_1 \\
-z_2
-\end{pmatrix} = Q^T b \\
-R = \begin{pmatrix}
-R_1 \\
-0
-\end{pmatrix}
-\end{align*}
-
-Dann durch Rückwärtseinsetzen $R_1 z_1$ lösen um $x$ zu bestimmen.
-
+    \frametitle{Theorie}
+    \begin{align*}
+        ||Ax - b||_2
+    \end{align*}
+    Frage: Wie bestimmen wir \(x = (a, b)^T\), sodass die obige Gleichung minimal ist?
+    \begin{enumerate}
+        \item Bestimme die QR-Zerlegung von \(A\). Also \(A = QR\).
+        \item Berechne \(z := Q^T v\). Definiere \(z_1\) als die ersten \(n\) Einträge (Breite von \(A\), hier \(n = 2\)) von \(z\).
+        \item {\color{white}Definiere \(R_1\) als die Matrix, die die ersten \(n \times n\) Einträge von \(R\) enthält.}
+        \item {\color{white}Löse \(R_1 x = z_1\) durch Rückwärtseinsetzen.}
+    \end{enumerate}
+    {\color{white}Dann gilt: \(\text{min}||Ax - b||_2 = z_2\).}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Theorie}
+    \begin{align*}
+        ||Ax - b||_2
+    \end{align*}
+    Frage: Wie bestimmen wir \(x = (a, b)^T\), sodass die obige Gleichung minimal ist?
+    \begin{enumerate}
+        \item Bestimme die QR-Zerlegung von \(A\). Also \(A = QR\).
+        \item Berechne \(z := Q^T v\). Definiere \(z_1\) als die ersten \(n\) Einträge (Breite von \(A\), hier \(n = 2\)) von \(z\).
+        \item Definiere \(R_1\) als die Matrix, die die ersten \(n \times n\) Einträge von \(R\) enthält.
+        \item {\color{white}Löse \(R_1 x = z_1\) durch Rückwärtseinsetzen.}
+    \end{enumerate}
+    {\color{white}Dann gilt: \(\text{min}||Ax - b||_2 = z_2\).}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Theorie}
+    \begin{align*}
+        ||Ax - b||_2
+    \end{align*}
+    Frage: Wie bestimmen wir \(x = (a, b)^T\), sodass die obige Gleichung minimal ist?
+    \begin{enumerate}
+        \item Bestimme die QR-Zerlegung von \(A\). Also \(A = QR\).
+        \item Berechne \(z := Q^T v\). Definiere \(z_1\) als die ersten \(n\) Einträge (Breite von \(A\), hier \(n = 2\)) von \(z\).
+        \item Definiere \(R_1\) als die Matrix, die die ersten \(n \times n\) Einträge von \(R\) enthält.
+        \item Löse \(R_1 x = z_1\) durch Rückwärtseinsetzen.
+    \end{enumerate}
+    {\color{white}Dann gilt: \(\text{min}||Ax - b||_2 = z_2\).}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Theorie}
+    \begin{align*}
+        ||Ax - b||_2
+    \end{align*}
+    Frage: Wie bestimmen wir \(x = (a, b)^T\), sodass die obige Gleichung minimal ist?
+    \begin{enumerate}
+        \item Bestimme die QR-Zerlegung von \(A\). Also \(A = QR\).
+        \item Berechne \(z := Q^T v\). Definiere \(z_1\) als die ersten \(n\) Einträge (Breite von \(A\), hier \(n = 2\)) von \(z\).
+        \item Definiere \(R_1\) als die Matrix, die die ersten \(n \times n\) Einträge von \(R\) enthält.
+        \item Löse \(R_1 x = z_1\) durch Rückwärtseinsetzen.
+    \end{enumerate}
+    Dann gilt: \(\text{min}||Ax - b||_2 = z_2\).
+\end{frame}
+
+\begin{frame}
+    \frametitle{Theorie}
+    \includegraphics[width=\textwidth]{plot.png}
+\end{frame}
 
 \begin{frame}
 \frametitle{Implementierung und Experimente}
