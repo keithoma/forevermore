@@ -13,7 +13,7 @@ import linear_solvers
 import rhs
 import functions
 
-def u(v, k=3.1):
+def u(v, k=5):
     """ Example function with k = 5.0.
 
     Parameters:
@@ -32,7 +32,7 @@ def u(v, k=3.1):
         _ = _ * v[l] * np.sin(k * np.pi * v[l])
     return _
 
-def f(v, k=3.1):
+def f(v, k=5):
     """ The derivative of above.
 
     Parameters:
@@ -74,7 +74,12 @@ def plot_analytical_3d(N):
     grid = np.linspace(0.0, 1.0, N + 1, endpoint=True)
     grid_length = len(grid)
     x_grid, y_grid = np.meshgrid(grid, grid)
+
+    print("x_grid:\n{}\ny_grid:\n{}".format(x_grid, y_grid))
+
     z_axis = u([x_grid, y_grid])
+
+    print("z axis (analytical)\n{}".format(z_axis))
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -107,7 +112,6 @@ def plot_approximation_3d(N):
     x_grid, y_grid = np.meshgrid(grid, grid)
 
     b = linear_solvers.solve_lu(*block_matrix.BlockMatrix(2, N).get_lu(), rhs.rhs(2, N, f))
-
     z_grid = np.zeros((N + 1, N + 1))
 
     for i in range(N + 1):
@@ -116,7 +120,7 @@ def plot_approximation_3d(N):
                 z_grid[i][j] = b[0]
                 b = np.delete(b, 0)
 
-    print(z_grid)
+    print("z axis (approximation)\n{}".format(z_grid))
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -144,10 +148,10 @@ def main():
     # block_matrix.draw_nonzero(max_n)
 
     # change the number in parentheses to change the number of grid points
-    plot_analytical_3d(4)
-    plot_approximation_3d(4)
-    plot_analytical_3d(30)
-    plot_approximation_3d(30)
+    plot_analytical_3d(6)
+    plot_approximation_3d(6)
+    plot_analytical_3d(40)
+    plot_approximation_3d(40)
 
 if __name__ == '__main__':
     main()
