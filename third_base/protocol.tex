@@ -104,7 +104,39 @@ we have
 	& \kappa \pi x_1 \sin( \kappa \pi x_1) \kappa \pi x_2 \sin(\kappa \pi x_2)  \left(  \kappa \pi x_3 \sin(\kappa \pi x_3) - 2 \cos ( \kappa \pi x_3) \right) \text{.}
 \end{align*}
 
-We want to now solve the given linear equation for \(u\) (we will denote the numerical solution with \(\hat{u}\)) for each dimension and compare it with the original \(u\). To do this, we first apply the LU-decomposition to \(A^{(d)}\) and multiply the inverse of \(L\) and \(U\) with \(b\) to get \(b\).
+We want to now solve the given linear equation for \(u\) (we will denote the numerical solution with \(\hat{u}\)) for each dimension and compare it with the original \(u\).
+
+\section{Theory}
+
+\subsection{LU Decomposition}
+
+To do this, we first apply the LU-decomposition to \(A^{(d)}\). We refer for the the algorithm and the proof of its validity to \cite{nla}. We then have
+
+\begin{align*}
+	A^{(d)} = LU
+\end{align*}
+
+where \(L \in \mathbb{R}^{(N-1)^d \times (N-1)^d}\) is the lower triangular matrix with only 1 in the diagonal and \(U \in \mathbb{R}^{(N-1)^d \times (N-1)^d}\) is the upper triangular matrix. To solve the following equation
+
+\begin{align*}
+	Ax = b \iff LUx = b
+\end{align*}
+
+we first solve \(Ly = b\) for \(y\) via forward substitution and then get the result by computing \(Ux = y\) with backward substitution.
+
+\subsection{Condition}
+
+Another important concept is the conditioning of a matrix. For a square matrix we have
+
+\begin{align*}
+	\text{cond}_2(A) = ||A^{-1}||_2 ||A||_2 \text{,}
+\end{align*}
+
+where \(|| \cdot ||_2\) is the euclidean norm \cite{nla}. The above number represents an upper limit for the effect of the pertubation of the input on the output. More precisely, if \(x, y\) are the input and the output, and \(\Delta x, \Delta y\) their pertubation, then we have for the condition number \(\kappa\)
+
+\begin{align*}
+	\frac{||\Delta y||}{||y||} \leq \kappa \frac{||\Delta x||}{||x||} \text{.}
+\end{align*}
 
 \section{User Manual}
 
@@ -122,8 +154,8 @@ We have drawn the plot of the absolute difference of \(u\) and \(\hat{u}\) for \
 
 It turns out that the absolute error converges to a relativly small number. This is counter-intuitive at first because the condition number of the matrix \(A^{(d)}\) increases drastically for large \(N\) as seen on figure \ref{fig:plot_error}.
 
-\begin{wrapfigure}{hr}{0.67\textwidth}
-	\includegraphics[width=0.65\textwidth]{graphics/hilbert_condition.png}
+\begin{wrapfigure}{hr}{0.47\textwidth}
+	\includegraphics[width=0.45\textwidth]{graphics/hilbert_condition.png}
 	\caption{Condition of the Hilbert Matrix}
 	\label{fig:hilbert_condition}
 \end{wrapfigure}
@@ -151,17 +183,29 @@ Figure \ref{fig:plots} illustrates this point. Here, we have plotted the analyti
 
 The sparsity structure of \(A^{(d)}\) is important because it allows us to save precious memory which in turn allows for larger computation. In this section, we want to compare the number of nonzero entries of \(A^{(d)}\) and its LU-decomposition. See figure \ref{fig:boat1} for the resulting plot.
 
-With increasing size of \(A^{(d)}\) the amount of nonzero entries increases as well, and the LU-decomposition further adds more nonzeros to the problem. However, the speed by which the number of nonzero increases slows down. This means that larger matrices need more computation time, of course, but they are more sparse and hence less memory intensive.
+With increasing size of \(A^{(d)}\) the amount of nonzero entries increases as well, and the LU-decomposition further adds more nonzeros to the problem. Interestingly, however, if \(d = 1\), then the LU-decomposition seemingly does not add more memory usage. This means if we are solving the Poisson's equation for the first dimension, then the memory used for the matrix \(L\) and \(U\) are roughly the same.
+
+\begin{wrapfigure}{hr}{0.47\textwidth}
+	\includegraphics[width=0.45\textwidth]{graphics/hilbert_condition.png}
+	\caption{Difference of nonzero elements of LU and A for d = 2}
+	\label{fig:Line}
+\end{wrapfigure}
+
+When we plot the difference between the nonzero number of LU and A (see figure \ref{fig:Line}), the resulting graph is a straight line. Since we used double log scale, this means that the growth of memory usage for LU is quadratic.
 
 \section{Conclusion}
 
-In short, the Poisson's equation can be solved numerically via discretization of the domain, approximating the partial derivatives by finite differences and LU-decomposition. While the condition of the matrix \(A^{(d)}\) increases with its size, but this is counteracted by the fact that the numerical approximation of the Poisson's equation becomes more accurate as the number of grid points increases. Memory is also not a big issue thanks to the sparse structure of \(A^{(d)}\).
+In short, the Poisson's equation can be solved numerically via discretization of the domain, approximating the partial derivatives by finite differences and LU-decomposition. While the condition of the matrix \(A^{(d)}\) increases with its size, but this is counteracted by the fact that the numerical approximation of the Poisson's equation becomes more accurate as the number of grid points increases.
 
 \begin{thebibliography}{9}
 	\bibitem{protocol}
 	Christian Parpart, Kei Thoma. 
 	\textit{Numerical Approach to the Laplace Problem}. 
 	2019.
+	\bibitem{nla}
+	Prof. Dr. Caren Tischendorf
+	\textit{Numerische Lineare Algebra}.
+	2020.
 \end{thebibliography}
 
 \end{document}

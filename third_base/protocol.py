@@ -145,7 +145,7 @@ def main():
     # rhs.draw_error(max_n)
     # block_matrix.draw_cond(max_n)
     # rhs.draw_hilbert_cond(max_n)
-    # block_matrix.draw_nonzero(max_n)
+    block_matrix.draw_nonzero(max_n)
 
     # change the number in parentheses to change the number of grid points
     plot_analytical_3d(6)

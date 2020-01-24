@@ -239,23 +239,34 @@ def draw_nonzero(max_n=15):
     """
     # get the values for the plot
     for d in [1, 2, 3]:
-        plt.plot([x for x in range(2, max_n)],
-                   [BlockMatrix(d, x).eval_zeros()[2] for x in range(2, max_n)],
+        plt.loglog([x for x in range(2, max_n)],
+                   [BlockMatrix(d, x).eval_zeros()[0] for x in range(2, max_n)],
                    label="nonzero elements of " + "$A_" + str(d) + "$",
                    linewidth=3)
-        plt.plot([x for x in range(2, max_n)],
-                   [BlockMatrix(d, x).eval_zeros_lu()[2] for x in range(2, max_n)],
+        plt.loglog([x for x in range(2, max_n)],
+                   [BlockMatrix(d, x).eval_zeros_lu()[0] for x in range(2, max_n)],
                    label="nonzero elements of " + "$LU_" + str(d) + "$",
                    linestyle='--', linewidth=3)
-
-    # plt.loglog([x for x in range(2, max_n)],
-    #            [x ** 2 for x in range(2, max_n)], linestyle=":")
 
     # finilize
     plt.xlabel('N', fontsize=18)
     plt.ylabel('number of nonzeros', fontsize=18)
     plt.legend(fontsize=18)
     plt.title("Plot of nonzero elements of A and LU depending on the dimension and size", fontsize=24)
+    plt.show()
+
+    a0 = [BlockMatrix(2, x).eval_zeros()[0] for x in range(3, max_n)]
+    lu = [BlockMatrix(d, x).eval_zeros_lu()[0] for x in range(3, max_n)]
+
+    # -----
+    plt.loglog([x for x in range(3, max_n)], [b - a for (a, b) in zip(a0, lu)],
+             label="nonzero elements of " + "$A_" + str(d) + "$",
+             linewidth=3)
+
+    plt.xlabel('N', fontsize=18)
+    plt.ylabel('number of nonzeros', fontsize=18)
+    plt.legend(fontsize=18)
+    plt.title("Difference of the nonzero LU and A", fontsize=24)
     plt.show()
 
 def main():
