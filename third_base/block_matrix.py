@@ -15,6 +15,9 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt # pylint: disable=wrong-import-position
 
+matplotlib.rc('xtick', labelsize=20)     
+matplotlib.rc('ytick', labelsize=20)
+
 def construct(d, n):
     """
         Constructs block matrices arising from finite difference approximations of the Laplace
@@ -214,7 +217,7 @@ def draw_cond(max_n=15):
     """
     # get the values for the plot
     for d in [1, 2, 3]:
-        plt.plot([x for x in range(2, max_n)],
+        plt.loglog([x for x in range(2, max_n)],
                  [BlockMatrix(d, x).get_cond() for x in range(2, max_n)],
                  label="cond" + "$(A_" + str(d) + ")$", linewidth=3)
 
@@ -236,14 +239,17 @@ def draw_nonzero(max_n=15):
     """
     # get the values for the plot
     for d in [1, 2, 3]:
-        plt.loglog([x for x in range(2, max_n)],
-                   [BlockMatrix(d, x).eval_zeros()[0] for x in range(2, max_n)],
+        plt.plot([x for x in range(2, max_n)],
+                   [BlockMatrix(d, x).eval_zeros()[2] for x in range(2, max_n)],
                    label="nonzero elements of " + "$A_" + str(d) + "$",
                    linewidth=3)
-        plt.loglog([x for x in range(2, max_n)],
-                   [BlockMatrix(d, x).eval_zeros_lu()[0] for x in range(2, max_n)],
+        plt.plot([x for x in range(2, max_n)],
+                   [BlockMatrix(d, x).eval_zeros_lu()[2] for x in range(2, max_n)],
                    label="nonzero elements of " + "$LU_" + str(d) + "$",
                    linestyle='--', linewidth=3)
+
+    # plt.loglog([x for x in range(2, max_n)],
+    #            [x ** 2 for x in range(2, max_n)], linestyle=":")
 
     # finilize
     plt.xlabel('N', fontsize=18)

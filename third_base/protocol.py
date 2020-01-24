@@ -5,12 +5,15 @@ import matplotlib
 matplotlib.use('TkAgg')
 from mpl_toolkits.mplot3d import Axes3D
 
+matplotlib.rc('xtick', labelsize=20)     
+matplotlib.rc('ytick', labelsize=20)
+
 import block_matrix
 import linear_solvers
 import rhs
 import functions
 
-def u(v, k=5.0):
+def u(v, k=3.1):
     """ Example function with k = 5.0.
 
     Parameters:
@@ -29,7 +32,7 @@ def u(v, k=5.0):
         _ = _ * v[l] * np.sin(k * np.pi * v[l])
     return _
 
-def f(v, k=5.0):
+def f(v, k=3.1):
     """ The derivative of above.
 
     Parameters:
@@ -51,15 +54,14 @@ def f(v, k=5.0):
         return sum1 + sum2
 
     elif len(v) == 3:
-        sum1 = k * np.pi * v[1] * np.sin(k * np.pi * v[1]) * k * np.pi * v[2] * np.sin(k * np.pi * v[2])
-        sum1 = sum1 * (k * np.pi * v[0] * np.sin(k * np.pi * v[0]) - 2 * np.cos(k * np.pi * v[0]))
+        x1, x2, x3 = v[0], v[1], v[2]
+        kpi = k * np.pi
 
-        sum2 = k * np.pi * v[0] * np.sin(k * np.pi * v[0]) * k * np.pi * v[2] * np.sin(k * np.pi * v[2])
-        sum2 = sum1 * (k * np.pi * v[1] * np.sin(k * np.pi * v[1]) - 2 * np.cos(k * np.pi * v[1]))
+        sum1 = kpi * x2 * x3 * np.sin(kpi * x2) * np.sin(kpi * x3) * (2 * np.cos(kpi * x1) - kpi * x1 * np.sin(kpi * x1))
+        sum2 = kpi * x1 * x3 * np.sin(kpi * x1) * np.sin(kpi * x3) * (2 * np.cos(kpi * x2) - kpi * x2 * np.sin(kpi * x2))
+        sum3 = kpi * x1 * x2 * np.sin(kpi * x1) * np.sin(kpi * x2) * (2 * np.cos(kpi * x3) - kpi * x3 * np.sin(kpi * x3))
 
-        sum3 = k * np.pi * v[0] * np.sin(k * np.pi * v[0]) * k * np.pi * v[1] * np.sin(k * np.pi * v[1])
-        sum3 = sum1 * (k * np.pi * v[2] * np.sin(k * np.pi * v[2]) - 2 * np.cos(k * np.pi * v[2]))
-        return sum1 + sum2 + sum3
+        return -(sum1 + sum2 + sum3)
 
 def plot_analytical_3d(N):
     """ This function draws the analytic solution for the poissons equation for d = 2.
@@ -69,7 +71,7 @@ def plot_analytical_3d(N):
         The number of grid points.
     """
     # create data
-    grid = np.linspace(0.0, 1.0, N, endpoint=False)[1:]
+    grid = np.linspace(0.0, 1.0, N + 1, endpoint=True)
     grid_length = len(grid)
     x_grid, y_grid = np.meshgrid(grid, grid)
     z_axis = u([x_grid, y_grid])
@@ -81,9 +83,14 @@ def plot_analytical_3d(N):
     else:
         ax.plot_surface(x_grid, y_grid, z_axis, linewidth=0)
 
-    ax.set_xlabel("$x$", fontsize=14)
-    ax.set_ylabel("$y$", fontsize=14)
-    ax.set_zlabel("$u(x, y)$", fontsize=14)
+    print("analytical")
+    print(grid)
+    print()
+
+    lim = (-0.1, 1.1)
+    ax.set_xlabel("$x$", fontsize=14), ax.set_xlim(lim)
+    ax.set_ylabel("$y$", fontsize=14), ax.set_ylim(lim)
+    ax.set_zlabel("$u(x, y)$", fontsize=14), ax.set_zlim(lim)
     plt.title("Plot of the Analytic Solution (N = " + str(N) + ")", fontsize=18)
 
     plt.show()
@@ -95,20 +102,33 @@ def plot_approximation_3d(N):
     N : int
         The number of grid points.
     """
-    x = [i / N for i in range(N - 1) for j in range(N - 1)]
-    y = [j / N for i in range(N - 1) for j in range(N - 1)]
-    z_axis = linear_solvers.solve_lu(*block_matrix.BlockMatrix(2, N).get_lu(), rhs.rhs(2, N, f))
+    grid = np.linspace(0.0, 1.0, N + 1, endpoint=True)
+    grid_length = len(grid)
+    x_grid, y_grid = np.meshgrid(grid, grid)
+
+    b = linear_solvers.solve_lu(*block_matrix.BlockMatrix(2, N).get_lu(), rhs.rhs(2, N, f))
+
+    z_grid = np.zeros((N + 1, N + 1))
+
+    for i in range(N + 1):
+        for j in range(N + 1):
+            if i != 0 and i != N and j != 0 and j != N:
+                z_grid[i][j] = b[0]
+                b = np.delete(b, 0)
+
+    print(z_grid)
 
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection="3d")
+    ax = fig.add_subplot(111, projection='3d')
     if N >= 10:
-        ax.plot_trisurf(x, y, z_axis, linewidth=0.2, antialiased=True, cmap=plt.cm.CMRmap)
+        ax.plot_surface(x_grid, y_grid, z_grid, cmap=plt.cm.CMRmap, linewidth=0)
     else:
-        ax.plot_trisurf(x, y, z_axis, linewidth=0.2, antialiased=True)
+        ax.plot_surface(x_grid, y_grid, z_grid, linewidth=0)
 
-    ax.set_xlabel("$x$", fontsize=14)
-    ax.set_ylabel("$y$", fontsize=14)
-    ax.set_zlabel("$\hat{u}(x, y)$", fontsize=14)
+    lim = (-0.1, 1.1)
+    ax.set_xlabel("$x$", fontsize=14), ax.set_xlim(lim)
+    ax.set_ylabel("$y$", fontsize=14), ax.set_ylim(lim)
+    ax.set_zlabel("$\hat{u}(x, y)$", fontsize=14), ax.set_zlim(lim)
     plt.title("Plot of the Approximated Solution (N = " + str(N) + ")", fontsize=18)
 
     plt.show()
@@ -118,10 +138,10 @@ def main():
     """
     max_n = 15 # the following plots are drawn for upto this number
     
-    rhs.draw_error(max_n)
-    block_matrix.draw_cond(max_n)
-    rhs.draw_hilbert_cond(max_n)
-    block_matrix.draw_nonzero(max_n)
+    # rhs.draw_error(max_n)
+    # block_matrix.draw_cond(max_n)
+    # rhs.draw_hilbert_cond(max_n)
+    # block_matrix.draw_nonzero(max_n)
 
     # change the number in parentheses to change the number of grid points
     plot_analytical_3d(4)

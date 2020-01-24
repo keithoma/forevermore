@@ -52,15 +52,14 @@ def f(v, k=1.0):
         return sum1 + sum2
 
     elif len(v) == 3:
-        sum1 = k * np.pi * v[1] * np.sin(k * np.pi * v[1]) * k * np.pi * v[2] * np.sin(k * np.pi * v[2])
-        sum1 = sum1 * (k * np.pi * v[0] * np.sin(k * np.pi * v[0]) - 2 * np.cos(k * np.pi * v[0]))
+        x1, x2, x3 = v[0], v[1], v[2]
+        kpi = k * np.pi
 
-        sum2 = k * np.pi * v[0] * np.sin(k * np.pi * v[0]) * k * np.pi * v[2] * np.sin(k * np.pi * v[2])
-        sum2 = sum1 * (k * np.pi * v[1] * np.sin(k * np.pi * v[1]) - 2 * np.cos(k * np.pi * v[1]))
+        sum1 = kpi * x2 * x3 * np.sin(kpi * x2) * np.sin(kpi * x3) * (2 * np.cos(kpi * x1) - kpi * x1 * np.sin(kpi * x1))
+        sum2 = kpi * x1 * x3 * np.sin(kpi * x1) * np.sin(kpi * x3) * (2 * np.cos(kpi * x2) - kpi * x2 * np.sin(kpi * x2))
+        sum3 = kpi * x1 * x2 * np.sin(kpi * x1) * np.sin(kpi * x2) * (2 * np.cos(kpi * x3) - kpi * x3 * np.sin(kpi * x3))
 
-        sum3 = k * np.pi * v[0] * np.sin(k * np.pi * v[0]) * k * np.pi * v[1] * np.sin(k * np.pi * v[1])
-        sum3 = sum1 * (k * np.pi * v[2] * np.sin(k * np.pi * v[2]) - 2 * np.cos(k * np.pi * v[2]))
-        return sum1 + sum2 + sum3
+        return -(sum1 + sum2 + sum3)
 
     return None
 

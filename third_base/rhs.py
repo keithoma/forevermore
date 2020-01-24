@@ -99,7 +99,7 @@ def draw_error(max_n=15):
                                             rhs(d, n, functions.f))
             errors.append(compute_error(d, n, hat_u, functions.u))
 
-        plt.plot([x for x in range(2, max_n)], errors, label="error for d = {}".format(d), linewidth=3)
+        plt.loglog([x for x in range(2, max_n)], errors, label="error for d = {}".format(d), linewidth=3)
 
     plt.xlabel("Number of Grid Points", fontsize=18)
     plt.ylabel("Error", fontsize=18)
@@ -120,7 +120,7 @@ def draw_hilbert_cond(max_n=15):
     for i in range(3, max_n):
         condition.append(np.linalg.cond(hilbert(i), np.inf))
 
-    plt.plot(range(3, max_n), [np.linalg.cond(hilbert(i), np.inf) for i in range(3, max_n)],
+    plt.loglog(range(3, max_n), [np.linalg.cond(hilbert(i), np.inf) for i in range(3, max_n)],
              label="Condition of the Hilbert Matrix", linewidth=3)
     axis = plt.gca()
     axis.set_yscale('log')
