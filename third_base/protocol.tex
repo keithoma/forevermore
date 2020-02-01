@@ -183,15 +183,15 @@ Figure \ref{fig:plots} illustrates this point. Here, we have plotted the analyti
 
 The sparsity structure of \(A^{(d)}\) is important because it allows us to save precious memory which in turn allows for larger computation. In this section, we want to compare the number of nonzero entries of \(A^{(d)}\) and its LU-decomposition. See figure \ref{fig:boat1} for the resulting plot.
 
-With increasing size of \(A^{(d)}\) the amount of nonzero entries increases as well, and the LU-decomposition further adds more nonzeros to the problem. Interestingly, however, if \(d = 1\), then the LU-decomposition seemingly does not add more memory usage. This means if we are solving the Poisson's equation for the first dimension, then the memory used for the matrix \(L\) and \(U\) are roughly the same.
+With increasing size of \(A^{(d)}\) the amount of nonzero entries increases as well, and the LU-decomposition further adds more nonzeros to the problem. Interestingly, however, if \(d = 1\), then the LU-decomposition seemingly does not add more memory usage. This means if we are solving the Poisson's equation for the first dimension, then the memory used for the matrix \(L\) and \(U\) are roughly the same as \(A^{d}\).
 
 \begin{wrapfigure}{hr}{0.47\textwidth}
-	\includegraphics[width=0.45\textwidth]{graphics/hilbert_condition.png}
+	\includegraphics[width=0.45\textwidth]{graphics/line.png}
 	\caption{Difference of nonzero elements of LU and A for d = 2}
 	\label{fig:Line}
 \end{wrapfigure}
 
-When we plot the difference between the nonzero number of LU and A (see figure \ref{fig:Line}), the resulting graph is a straight line. Since we used double log scale, this means that the growth of memory usage for LU is quadratic.
+When we plot the difference between the nonzero number of LU and A (see figure \ref{fig:Line}), the resulting graph resembles a straight line. Since we used double log scale, this probably means that the growth is quadratic.
 
 \section{Conclusion}
 

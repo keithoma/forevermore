@@ -1,17 +1,19 @@
+""" This module demonstrates the experiments used in the protocol.
+"""
 import numpy as np
 
 import matplotlib.pyplot as plt
 import matplotlib
-matplotlib.use('TkAgg')
-from mpl_toolkits.mplot3d import Axes3D
-
-matplotlib.rc('xtick', labelsize=20)     
-matplotlib.rc('ytick', labelsize=20)
+# from mpl_toolkits.mplot3d import Axes3D
 
 import block_matrix
 import linear_solvers
 import rhs
-import functions
+# import functions
+
+matplotlib.use('TkAgg')
+matplotlib.rc('xtick', labelsize=20)
+matplotlib.rc('ytick', labelsize=20)
 
 def u(v, k=5):
     """ Example function with k = 5.0.
@@ -49,19 +51,23 @@ def f(v, k=5):
         return k * np.pi * (k * np.pi * v[0] * np.sin(k * np. pi * v[0]) - 2 * np.cos(k * np.pi * v[0]))
 
     elif len(v) == 2:
-        sum1 = k * np.pi * v[1] * np.sin(k * np.pi * v[1]) * (k * np.pi * v[0] * np.sin(k * np.pi * v[0]) - 2 * np.cos(k * np.pi * v[0]))
-        sum2 = k * np.pi * v[0] * np.sin(k * np.pi * v[0]) * (k * np.pi * v[1] * np.sin(k * np.pi * v[1]) - 2 * np.cos(k * np.pi * v[1]))
+        x1, x2 = v[0], v[1]
+        kpi = k * np.pi
+
+        sum1 = kpi * x2 * np.sin(kpi * x2) * (kpi * x1 * np.sin(kpi * x1) - 2 * np.cos(kpi * x1))
+        sum2 = kpi * x1 * np.sin(kpi * x1) * (kpi * x2 * np.sin(kpi * x2) - 2 * np.cos(kpi * x2))
         return sum1 + sum2
 
     elif len(v) == 3:
         x1, x2, x3 = v[0], v[1], v[2]
         kpi = k * np.pi
 
-        sum1 = kpi * x2 * x3 * np.sin(kpi * x2) * np.sin(kpi * x3) * (2 * np.cos(kpi * x1) - kpi * x1 * np.sin(kpi * x1))
-        sum2 = kpi * x1 * x3 * np.sin(kpi * x1) * np.sin(kpi * x3) * (2 * np.cos(kpi * x2) - kpi * x2 * np.sin(kpi * x2))
-        sum3 = kpi * x1 * x2 * np.sin(kpi * x1) * np.sin(kpi * x2) * (2 * np.cos(kpi * x3) - kpi * x3 * np.sin(kpi * x3))
+        s1 = kpi * x2 * x3 * np.sin(kpi * x2) * np.sin(kpi * x3) * (2 * np.cos(kpi * x1) - kpi * x1 * np.sin(kpi * x1))
+        s2 = kpi * x1 * x3 * np.sin(kpi * x1) * np.sin(kpi * x3) * (2 * np.cos(kpi * x2) - kpi * x2 * np.sin(kpi * x2))
+        s3 = kpi * x1 * x2 * np.sin(kpi * x1) * np.sin(kpi * x2) * (2 * np.cos(kpi * x3) - kpi * x3 * np.sin(kpi * x3))
 
-        return -(sum1 + sum2 + sum3)
+        return -(s1 + s2 + s3)
+    return 0.0
 
 def plot_analytical_3d(N):
     """ This function draws the analytic solution for the poissons equation for d = 2.
@@ -72,7 +78,7 @@ def plot_analytical_3d(N):
     """
     # create data
     grid = np.linspace(0.0, 1.0, N + 1, endpoint=True)
-    grid_length = len(grid)
+    # grid_length = len(grid)
     x_grid, y_grid = np.meshgrid(grid, grid)
 
     print("x_grid:\n{}\ny_grid:\n{}".format(x_grid, y_grid))
@@ -108,7 +114,7 @@ def plot_approximation_3d(N):
         The number of grid points.
     """
     grid = np.linspace(0.0, 1.0, N + 1, endpoint=True)
-    grid_length = len(grid)
+    # grid_length = len(grid)
     x_grid, y_grid = np.meshgrid(grid, grid)
 
     b = linear_solvers.solve_lu(*block_matrix.BlockMatrix(2, N).get_lu(), rhs.rhs(2, N, f))
@@ -141,10 +147,10 @@ def main():
     """ The main function which reproduces the results of the protocol.
     """
     max_n = 15 # the following plots are drawn for upto this number
-    
-    # rhs.draw_error(max_n)
-    # block_matrix.draw_cond(max_n)
-    # rhs.draw_hilbert_cond(max_n)
+
+    rhs.draw_error(max_n)
+    block_matrix.draw_cond(max_n)
+    rhs.draw_hilbert_cond(max_n)
     block_matrix.draw_nonzero(max_n)
 
     # change the number in parentheses to change the number of grid points

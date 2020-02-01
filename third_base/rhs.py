@@ -121,7 +121,7 @@ def draw_hilbert_cond(max_n=15):
         condition.append(np.linalg.cond(hilbert(i), np.inf))
 
     plt.loglog(range(3, max_n), [np.linalg.cond(hilbert(i), np.inf) for i in range(3, max_n)],
-             label="Condition of the Hilbert Matrix", linewidth=3)
+               label="Condition of the Hilbert Matrix", linewidth=3)
     axis = plt.gca()
     axis.set_yscale('log')
 

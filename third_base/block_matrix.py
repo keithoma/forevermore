@@ -15,7 +15,7 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt # pylint: disable=wrong-import-position
 
-matplotlib.rc('xtick', labelsize=20)     
+matplotlib.rc('xtick', labelsize=20)
 matplotlib.rc('ytick', labelsize=20)
 
 def construct(d, n):
@@ -218,8 +218,8 @@ def draw_cond(max_n=15):
     # get the values for the plot
     for d in [1, 2, 3]:
         plt.loglog([x for x in range(2, max_n)],
-                 [BlockMatrix(d, x).get_cond() for x in range(2, max_n)],
-                 label="cond" + "$(A_" + str(d) + ")$", linewidth=3)
+                   [BlockMatrix(d, x).get_cond() for x in range(2, max_n)],
+                   label="cond" + "$(A_" + str(d) + ")$", linewidth=3)
 
     # finilize
     plt.xlabel('$N$', fontsize=18)
@@ -256,12 +256,12 @@ def draw_nonzero(max_n=15):
     plt.show()
 
     a0 = [BlockMatrix(2, x).eval_zeros()[0] for x in range(3, max_n)]
-    lu = [BlockMatrix(d, x).eval_zeros_lu()[0] for x in range(3, max_n)]
+    lu = [BlockMatrix(2, x).eval_zeros_lu()[0] for x in range(3, max_n)]
 
     # -----
     plt.loglog([x for x in range(3, max_n)], [b - a for (a, b) in zip(a0, lu)],
-             label="nonzero elements of " + "$A_" + str(d) + "$",
-             linewidth=3)
+               label="nonzero elements of " + "$A_" + str(2) + "$",
+               linewidth=3)
 
     plt.xlabel('N', fontsize=18)
     plt.ylabel('number of nonzeros', fontsize=18)
