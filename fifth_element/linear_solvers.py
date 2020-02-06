@@ -44,7 +44,7 @@ def solve_lu(pr, l, u, pc, b):
     _ = slina.spsolve(sm.csc_matrix(slina.inv(sm.csc_matrix(pc))), _)
     return _
 
-def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=100, min_red=1e-4), omega=1.5):
+def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omega=1.5):
     """ Solves the linear system Ax = b via the successive over relaxation method.
 
     Parameters
@@ -84,28 +84,35 @@ def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=100, min_red=1e-4), omega
     ValueError
         If no termination condition is active, i.e., ‘eps=0‘ and ‘max_iter=0‘, etc.
     """
-    def termination(x_k, it):
-        _ = A.multiply(x_k).todense()
+    def termination(x_k, it, last_residual):
+        _ = np.matmul(A.toarray(), x_k)
         _ = np.subtract(_, b)
         residual = np.linalg.norm(_, np.inf)
         if residual < params["eps"]:
             return True
         elif it > params["max_iter"]:
             return True
+        elif abs(last_residual - residual) < params["min_red"]:
+            return True
+        else:
+            return False
 
-    def next_x(x_k, it=0):
+    def next_x(x_k, it=0, last_residual=0):
         # print("x_k = {}".format(x_k))
         it += 1
-        if termination(x_k, it):
+        if termination(x_k, it, last_residual):
             return x_k
         else:
             sol_x = []
             for i in range(x0.size):
                 sum1 = sum([A[i, j] * sol_x[j] for j in range(i)])
                 sum2 = sum([A[i, j] * x_k[j] for j in range(i + 1, x0.size)])
-                print("i = {}\nsum1 = {}\nsum2 = {}".format(i, sum1, sum2))
                 sol_x.append((1 - omega) * x_k[i] + (omega / A[i, i]) * (b[i] - sum1 - sum2))
-            return next_x(sol_x, it)
+            
+            _ = np.matmul(A.toarray(), x_k)
+            _ = np.subtract(_, b)
+            this_residual = np.linalg.norm(_, np.inf)
+            return next_x(sol_x, it, this_residual)
     
     return next_x(x0)
 
@@ -120,12 +127,7 @@ def main():
         [0, 0, 0, 1]
     ]))
 
-    mat2 = mat.todense()
-    # print(mat)
-    # print(mat[1, 2])
-
     b = np.array([1, 2, 3, 4])
-
     x0 = np.array([0, 0, 0, 0])
 
     print(solve_sor(mat, b, x0))
