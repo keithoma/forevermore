@@ -44,7 +44,7 @@ def solve_lu(pr, l, u, pc, b):
     _ = slina.spsolve(sm.csc_matrix(slina.inv(sm.csc_matrix(pc))), _)
     return _
 
-def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=5, min_red=1e-4), omega=1.5):
+def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=100, min_red=1e-4), omega=1.5):
     """ Solves the linear system Ax = b via the successive over relaxation method.
 
     Parameters
@@ -102,7 +102,8 @@ def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=5, min_red=1e-4), omega=1
             sol_x = []
             for i in range(x0.size):
                 sum1 = sum([A[i, j] * sol_x[j] for j in range(i)])
-                sum2 = sum([A[i, j] * x_k[j] for j in range(i, x0.size)])
+                sum2 = sum([A[i, j] * x_k[j] for j in range(i + 1, x0.size)])
+                print("i = {}\nsum1 = {}\nsum2 = {}".format(i, sum1, sum2))
                 sol_x.append((1 - omega) * x_k[i] + (omega / A[i, i]) * (b[i] - sum1 - sum2))
             return next_x(sol_x, it)
     
