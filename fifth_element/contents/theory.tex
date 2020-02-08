@@ -1,0 +1,11 @@
+\section{Theory}
+
+The successive over-relaxation is an iterative algorithm. The validity of this algorithm can be found in the lecture notes\ref{XXX}. We start by separating \(A\) as follows
+\[
+    A = L + D + U
+\]
+where \(L\) and \(U\) are a lower and upper diagonal matrix with \(0\) in their diagonals and \(D\) a diagonal matrix. We start with an initial guess of the solution \(x_0\). For example, \(x_0 = 0\). Then the algorithm is as follows
+\[
+    x_{n + 1} = \omega (-D^{-1} U x_n - D^{-1}L x_{n + 1} + D^{-1} b) + (1 - \omega) x_n \text{,}
+\]
+where \(\omega \in (0, 2)\) is the relaxation factor. In practice, we will not compute the inverse of a triangular matrix, but instead use the forward substitution.

@@ -1,0 +1,39 @@
+\section{Introduction}
+In numerical linear algebra, there are many algorithms to compute the solution to a system of 
+linear equations. We have already explored the method using the LU-decomposition\ref{XXX} and 
+in this protocol, we will explore successive over-relaxation. As before, denote the dimension 
+with \(d\), then the domain \(\Omega := [0, 1]^d\) is discretized into \(N^d\) points and the 
+problem is reduced to a linear equation that is
+
+\begin{align*}
+	A^{(d)} u = b
+\end{align*}
+
+where \(A^{(d)}\) is the matrix defined in a previous protocol\ref{XXX}. Using this as our 
+starting point, we will explore the method of successive over-relaxation. For this, consider the 
+function
+
+\begin{align*}
+	u(x) := \prod_{l=1}^d x_l \sin (\kappa \pi x_l)
+\end{align*}
+
+and since the Poisson's equation we want to solve is the following
+
+\begin{align*}
+	f(x) = - \Delta u(x) = -\sum_{l = 1}^d \frac{\partial^2 u}{\partial x_l^2} (x)
+\end{align*}
+
+we have
+
+\begin{align*}
+	f_{d=1} (x_1) =& \kappa \pi \left( \kappa \pi x_1 \sin ( \kappa \pi x ) - 2 \cos( \kappa \pi x_1) \right) \\
+%	
+	f_{d=2} (x_1, x_2) =& \kappa \pi x_2 \sin( \kappa \pi x_2) \left(  \kappa \pi x_1 \sin(\kappa \pi x_1) - 2 \cos ( \kappa \pi x_1) \right) + \\ 
+	& \kappa \pi x_1 \sin( \kappa \pi x_1) \left(  \kappa \pi x_2 \sin(\kappa \pi x_2) - 2 \cos ( \kappa \pi x_2) \right) \\
+%
+	f_{d=3} (x_1, x_2, x_3) =& \kappa \pi x_2 \sin( \kappa \pi x_2) \kappa \pi x_3 \sin(\kappa \pi x_3)  \left(  \kappa \pi x_1 \sin(\kappa \pi x_1) - 2 \cos ( \kappa \pi x_1) \right) + \\
+	& \kappa \pi x_1 \sin( \kappa \pi x_1) \kappa \pi x_3 \sin(\kappa \pi x_3)  \left(  \kappa \pi x_2 \sin(\kappa \pi x_2) - 2 \cos ( \kappa \pi x_2) \right) + \\
+	& \kappa \pi x_1 \sin( \kappa \pi x_1) \kappa \pi x_2 \sin(\kappa \pi x_2)  \left(  \kappa \pi x_3 \sin(\kappa \pi x_3) - 2 \cos ( \kappa \pi x_3) \right) \text{.}
+\end{align*}
+
+We want to now solve the given linear equation for \(u\) (we will denote the numerical solution with \(\hat{u}\)) for each dimension and compare it with the original \(u\).

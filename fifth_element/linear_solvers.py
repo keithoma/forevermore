@@ -44,7 +44,7 @@ def solve_lu(pr, l, u, pc, b):
     _ = slina.spsolve(sm.csc_matrix(slina.inv(sm.csc_matrix(pc))), _)
     return _
 
-def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omega=1.5):
+def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omega=1.99):
     """ Solves the linear system Ax = b via the successive over relaxation method.
 
     Parameters
