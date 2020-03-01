@@ -62,8 +62,12 @@ def f(v, k=1.0):
 def main():
     """
     As this module is purely there to seperate the example function, the main function does nothing.
+
+    ... which of course is not a good thing, so let's have something here.
     """
-    pass
+    x = np.array([0.5, 0.5, 0.5])
+    print("x = {}, then f(x) = {}".format(x, f(x)))
+    print("x = {}, then u(x) = {}".format(x, u(x)))
 
 if __name__ == '__main__':
     main()

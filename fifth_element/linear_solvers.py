@@ -8,8 +8,6 @@ Author: Christian Parpart & Kei Thoma
 Date: 2019-11-13
 License: GPL-3
 """
-import random
-
 import numpy as np
 from scipy import sparse as sm
 from scipy.sparse import linalg as slina
@@ -44,7 +42,7 @@ def solve_lu(pr, l, u, pc, b):
     _ = slina.spsolve(sm.csc_matrix(slina.inv(sm.csc_matrix(pc))), _)
     return _
 
-def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omega=1.99):
+def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omega=1.5):
     """ Solves the linear system Ax = b via the successive over relaxation method.
 
     Parameters
@@ -75,62 +73,71 @@ def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omeg
     str
         reason of termination. Key of the respective termination parameter.
     list
-        iterates of the algorithm. First entry is ‘x0‘.
+        iterates of the algorithm. First entry is 'x0'.
     list
         residuals of the iterates
 
     Raises
     ------
     ValueError
-        If no termination condition is active, i.e., ‘eps=0‘ and ‘max_iter=0‘, etc.
+        If no termination condition is active, i.e., 'eps=0' and 'max_iter=0', etc.
     """
-    def termination(x_k, it, last_residual):
-        _ = np.matmul(A.toarray(), x_k)
-        _ = np.subtract(_, b)
-        residual = np.linalg.norm(_, np.inf)
-        if residual < params["eps"]:
-            return True
-        elif it > params["max_iter"]:
-            return True
-        elif abs(last_residual - residual) < params["min_red"]:
-            return True
-        else:
-            return False
+    if params["max_iter"] <= 0 and params["eps"] <= 0 and params["min_red"] <= 0:
+        raise ValueError("At least one of the termination conditions must be active!")
 
-    def next_x(x_k, it=0, last_residual=0):
-        # print("x_k = {}".format(x_k))
-        it += 1
-        if termination(x_k, it, last_residual):
-            return x_k
-        else:
-            sol_x = []
-            for i in range(x0.size):
-                sum1 = sum([A[i, j] * sol_x[j] for j in range(i)])
-                sum2 = sum([A[i, j] * x_k[j] for j in range(i + 1, x0.size)])
-                sol_x.append((1 - omega) * x_k[i] + (omega / A[i, i]) * (b[i] - sum1 - sum2))
-            
-            _ = np.matmul(A.toarray(), x_k)
-            _ = np.subtract(_, b)
-            this_residual = np.linalg.norm(_, np.inf)
-            return next_x(sol_x, it, this_residual)
-    
-    return next_x(x0)
+    def termination(list_of_x, list_of_residual):
+        if len(list_of_x) > params["max_iter"] and params["max_iter"] > 0:
+            return True, "max_iter"
+        elif list_of_residual[-1] < params["eps"] and params["eps"] > 0:
+            return True, "eps"
+        elif len(list_of_residual) >= 2 and params["min_red"] > 0:
+            if abs(list_of_residual[-2] - list_of_residual[-1]) < params["min_red"]:
+                return True, "min_red"
+        return False, None
+
+    def next_x(x_k):
+        sol_x = []
+        for i in range(x_k.size):
+            sum1 = sum([A[i, j] * sol_x[j] for j in range(i)])
+            sum2 = sum([A[i, j] * x_k[j] for j in range(i + 1, x_k.size)])
+            sol_x.append((1 - omega) * x_k[i] + (omega / A[i, i]) * (b[i] - sum1 - sum2))
+        return np.array(sol_x)
+
+    def residual(x_k):
+        _ = A.toarray()
+        _ = np.matmul(_, x_k)
+        return np.linalg.norm(np.subtract(_, b), np.inf) # we can optimize here
+
+    list_of_x, list_of_residual = [x0], [residual(x0)]
+    while True:
+        end, reason = termination(list_of_x, list_of_residual)
+        if end:
+            break
+        list_of_x.append(next_x(list_of_x[-1]))
+        list_of_residual.append(residual(list_of_x[-1]))
+
+    return reason, list_of_x, list_of_residual
 
 def main():
     """
     JOIN THE GLORIOUS MAIN FUNCTION. Uses the test function to demonstrate.
     """
     mat = sm.csr_matrix(np.array([
-        [1, 0, 0, 0],
-        [0, 1, 0, 0],
-        [0, 0, 1, 0],
-        [0, 0, 0, 1]
+        [ 4, -1, -6,  0],
+        [-5, -4, 10,  8],
+        [ 0,  9,  4, -2],
+        [ 1,  0, -7,  5]
     ]))
 
-    b = np.array([1, 2, 3, 4])
+    b = np.array([2, 21, -12, -6])
     x0 = np.array([0, 0, 0, 0])
 
-    print(solve_sor(mat, b, x0))
+    reason, list1, list2 = solve_sor(mat, b, x0, omega=0.5)
+
+    print(reason)
+
+    for item in list1:
+        print(item)
 
 if __name__ == '__main__':
     main()
