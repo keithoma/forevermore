@@ -36,11 +36,22 @@ def solve_lu(pr, l, u, pc, b):
     x : numpy.ndarray
         solution of the linear system
     """
-    _ = slina.spsolve(sm.csc_matrix(slina.inv(sm.csc_matrix(pr))), b)
-    _ = slina.spsolve_triangular(l, _, lower=True)
-    _ = slina.spsolve_triangular(u, _, lower=False)
-    _ = slina.spsolve(sm.csc_matrix(slina.inv(sm.csc_matrix(pc))), _)
-    return _
+    return slina.spsolve(
+        sm.csc_matrix(
+            slina.inv(sm.csc_matrix(pc))
+        ),
+        slina.spsolve_triangular(
+            u,
+            slina.spsolve_triangular(
+                l,
+                slina.spsolve(
+                    sm.csc_matrix(slina.inv(sm.csc_matrix(pr))),
+                    b
+                ),
+                lower=True),
+            lower=False
+        )
+    )
 
 def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omega=1.5):
     """ Solves the linear system Ax = b via the successive over relaxation method.
