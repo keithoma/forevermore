@@ -97,9 +97,18 @@ def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omeg
 
     def next_x(x_k):
         sol_x = []
+        def fsum1(i):
+            for j in range(i):
+                yield A[i, j] * sol_x[j]
+        def fsum2(i_plus_1, x_k_size):
+            for j in range(i_plus_1, x_k_size):
+                yield A[i, j] * x_k[j]
+
         for i in range(x_k.size):
-            sum1 = sum([A[i, j] * sol_x[j] for j in range(i)])
-            sum2 = sum([A[i, j] * x_k[j] for j in range(i + 1, x_k.size)])
+            #sum1 = sum([A[i, j] * sol_x[j] for j in range(i)])
+            #sum2 = sum([A[i, j] * x_k[j] for j in range(i + 1, x_k.size)])
+            sum1 = sum(fsum1(i))
+            sum2 = sum(fsum2(i + 1, x_k.size))
             sol_x.append((1 - omega) * x_k[i] + (omega / A[i, i]) * (b[i] - sum1 - sum2))
         return np.array(sol_x)
 
