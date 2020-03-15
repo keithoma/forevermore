@@ -118,7 +118,7 @@ def compare_lu_sor(cs, ds, k=None):
 def main():
     # setting_a = cs(2, 15)
     # plot_omega(setting_a)
-    setting_b = cs(2, 20) # matrix size about 262,000
+    setting_b = cs(3, 5) # matrix size about 262,000
     plot_omega(setting_b)
 
 def main2():

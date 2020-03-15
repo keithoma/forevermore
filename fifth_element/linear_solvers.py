@@ -107,24 +107,23 @@ def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omeg
         return False, None
 
     def next_x(x_k):
+        """ Benutzt Summen-Formel """
         sol_x = []
-        def fsum1(i):
-            for j in range(i):
-                yield A[i, j] * sol_x[j]
-        def fsum2(i_plus_1, x_k_size):
-            for j in range(i_plus_1, x_k_size):
-                yield A[i, j] * x_k[j]
+
+        p1 = np.vectorize(lambda i, j: A[i, j] * sol_x[j])
+        p2 = np.vectorize(lambda i, j: A[i, j] * x_k[j])
+        vsum = np.vectorize(lambda a, b: a - b)
 
         for i in range(x_k.size):
-            sum1 = sum(fsum1(i))
-            sum2 = sum(fsum2(i + 1, x_k.size))
-            sol_x.append((1 - omega) * x_k[i] + (omega / A[i, i]) * (b[i] - sum1 - sum2))
+            diff = vsum(
+                p1(i, range(i)),
+                p2(i + 1, range(i + 1, x_k.size))
+            )
+            sol_x.append((1 - omega) * x_k[i] + (omega / A[i, i]) * (b[i] - diff))
         return np.array(sol_x)
 
     def next_x2(x_k):
-        """
-            returns : numpy.array
-        """
+        """ Benutzt alternative Formel """
         L = sm.tril(A, k=-1)
         D = sm.diags(A.diagonal(), shape=A.shape, format="csr")
         U = sm.triu(A, k=1)
