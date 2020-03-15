@@ -150,15 +150,17 @@ def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omeg
         _ = np.matmul(_, x_k)
         return np.linalg.norm(np.subtract(_, b), np.inf) # we can optimize here
 
-    list_of_x, list_of_residual = [x0], [residual(x0)]
-    while True:
-        end, reason = termination(list_of_x, list_of_residual)
-        if end:
-            break
-        list_of_x.append(next_x2(list_of_x[-1]))
-        list_of_residual.append(residual(list_of_x[-1]))
+    def construct():
+        list_of_x, list_of_residual = [x0], [residual(x0)]
+        while True:
+            end, reason = termination(list_of_x, list_of_residual)
+            if end:
+                break
+            list_of_x.append(next_x2(list_of_x[-1]))
+            list_of_residual.append(residual(list_of_x[-1]))
+        return reason, list_of_x, list_of_residual
 
-    return reason, list_of_x, list_of_residual
+    return construct()
 
 def main():
     """
