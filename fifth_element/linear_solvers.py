@@ -103,6 +103,15 @@ def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omeg
             sol_x.append((1 - omega) * x_k[i] + (omega / A[i, i]) * (b[i] - sum1 - sum2))
         return np.array(sol_x)
 
+    def next_x2(x_k):
+        L = sm.tril(A, k=-1)
+        D = sm.diags(A.diagonal(), shape=A.shape, format="csr")
+        U = sm.triu(A, k=-1)
+
+        temp_mat = slina.inv( np.add(D, L.multiply(omega) ) )
+        temp_vec = b * omega - np.add(U.multiply(omega), D.multiply((omega - 1))).multiply(x_k)
+        return temp_mat.multiply(temp_vec)
+
     def residual(x_k):
         _ = A.toarray()
         _ = np.matmul(_, x_k)
@@ -113,7 +122,7 @@ def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omeg
         end, reason = termination(list_of_x, list_of_residual)
         if end:
             break
-        list_of_x.append(next_x(list_of_x[-1]))
+        list_of_x.append(next_x2(list_of_x[-1]))
         list_of_residual.append(residual(list_of_x[-1]))
 
     return reason, list_of_x, list_of_residual
