@@ -1,0 +1,5 @@
+\section{User Manual}
+
+First of all, since the successive over-relaxation is an iterative algorithm, we need a termination condition. In this protocol, we will use the following conditions, \(\epsilon = \frac{1}{10^{-8}}\) is the tolerance for the norm of the residual in the infinity norm, \(\texttt{max\_iter} = 1000\) is the number of maximum iteration, and \(\texttt{min\_red} = \frac{1}{10^{-4}}\) is the minimal reduction of the residual in the infinity norm in every step.
+
+All results in this protocol can be found in the Python file \texttt{protocol.py}. Furthermore, one can change the global variable \texttt{PRESET} and \texttt{MAX\_N} at the top to alter the plots produced by the module. Alternatively, the function parameters can be edited in the main function.

@@ -1,7 +1,7 @@
 \section{Experiments}
 \subsection{Optimal Omega}
 
-We first want to focus on finding an optimal value for \(\omega\) to minimize the error given a practical termination condition (see user manual). If we take \(d = 1\) and \(n = 10\), then \(\omega_{\text{opt}}\) is between \(1.3\) and \(1.4\). Interestingly, if we fix \(n\), but change the dimension, the optimal value for \(\omega\) is still between \(1.3\) and \(1.4\), therefore, we can conjecture that \(\omega_\text{opt}\) is not dependent on \(d\). However, it is most definitely dependent on \(n\) since if we keep \(d = 1\), but take \(n = 15\), then \(\omega_{\text{opt}}\) is between \(1.9\) and \(2\).
+We first want to focus on finding an optimal value for \(\omega\) to minimize the error given a practical termination condition (see user manual). If we take \(d = 1\) and \(n = 10\), then \(\omega_{\text{opt}}\) is between \(1.2\) and \(1.3\). Interestingly, if we fix \(n\), but change the dimension, the optimal value for \(\omega\) is still between \(1.2\) and \(1.3\), therefore, we can conjecture that \(\omega_\text{opt}\) is not dependent on \(d\). However, it is most definitely dependent on \(n\) since if we keep \(d = 1\), but take \(n = 15\), then \(\omega_{\text{opt}}\) is between \(1.9\) and \(2\).
 In essence, this hints that \(\omega_\text{opt}\) increases as \(n\) increases and since we want \(n\) to be large as computationally possible, we want to set \(\omega\) close to \(2\). However, for the following experiments, we will use \(\omega = 1.5\). The justification for these results can be found in \texttt{protocol.py}.
 
 \subsection{Convergence of the Error}
@@ -23,3 +23,23 @@ We can further ask, if the successive over-relaxation method converges faster th
 \end{figure}
 
 As one can see, the errors are similar on the left side, but at \(n = 12\) the successive over-relaxation becomes better. As the optimal value for \(\omega\) is dependent on \(N\), this means that the SOR algorithm is preferable to the LU-decomposition if a good \(\omega\) can be chosen.
+
+\subsection{Effects of the Termination Condition}
+
+In this section, we want to explore the change in the error plot if we alter the termination condition. Specifically, what happens when we choose \(\epsilon = \frac{1}{N + 1}^k\)? For this protocol, we will evaluate for \(k = 1, 2, 4\) and \(-2\).
+If \(k = 2\), we get the following graph on figure \ref{fig:boat3}.
+
+\begin{figure}[h]
+    \begin{center}
+	    \includegraphics[width=\linewidth]{graphics/plot_comb2.png}
+        \caption{The Error for SOR and LU}\label{fig:boat3}
+    \end{center}
+\end{figure}
+
+It is clear that in this case the error converges with the speed of \(\frac{1}{n^2}\). This leads us to believe that the speed of convergence is simply \(\frac{1}{n^k}\), but this turns out to be quite false. If we take \(k = 1, 4\), we get the plots on figure \ref{fig:boat3}.
+
+As one can see, for \(k = 4\) the speed of convergence is still \(\frac{1}{n^2}\) while for \(k = 1\) it is simply \(n\).
+
+This leads us to believe that for all \(k \geq 2\) the speed of convergence stays \(\frac{1}{n^2}\).
+
+Finally, what happens if \(k = -2\)? Then the termination condition is \(\epsilon = (N + 2)^2\) which should be met quite quickly. This assumption is confirmed in figure \ref{fig:boat3} which shows the error does not converge to \(0\) at all.

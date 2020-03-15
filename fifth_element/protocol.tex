@@ -46,7 +46,44 @@
 \usepackage[document]{ragged2e}
 
 \begin{document}
+
+\begin{titlepage}
+	\centering
+	{\scshape\LARGE Humboldt University of Berlin \par}
+	\vspace{1cm}
+	{\scshape\Large Projektpraktikum \par}
+	\vspace{1.5cm}
+	{\huge\bfseries First Steps into Sucessive Over-Relaxation \par}
+	\vspace{2cm}
+	{\Large\itshape Christian Parpart \& Kei Thoma \par}
+	\vfill
+
+	\vfill
+
+% Bottom of the page
+	{\large \today\par}
+\end{titlepage}
+
+\tableofcontents
+
 \input{contents/introduction.tex}
 \input{contents/theory.tex}
+\input{contents/user_manual.tex}
 \input{contents/experiments.tex}
+\input{contents/conclusion.tex}
+
+\begin{thebibliography}{9}
+	\bibitem{protocol1}
+	Christian Parpart, Kei Thoma. 
+	\textit{Numerical Approach to the Laplace Problem}. 
+    2019.
+	\bibitem{protocol2}
+	Christian Parpart, Kei Thoma. 
+	\textit{Solving a Poisson's Equation Numerically}. 
+	2019.
+	\bibitem{nla}
+	Prof. Dr. Caren Tischendorf
+	\textit{Numerische Lineare Algebra}.
+	2020.
+\end{thebibliography}
 \end{document}

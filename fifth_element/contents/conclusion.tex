@@ -1,0 +1,5 @@
+\section{Conclusion}
+
+While the successive over-relaxation might be more challenging to implement, especially the choice of \(\omega\) is not easy, but if done well, the rate of convergence is potentially faster than the LU-decomposition. Specific to the poission problem, the choice of \(\omega\) does not seem to be dependent on the dimension and only \(N\), the number of grid points, affects \(\omega\).
+
+Another result is that if we set \(\epsilon\), one of the termination condition of the iterative algorithm, to be \(\frac{1}{(N + 1)^k}\), then the speed of convergence does not get better than \(\frac{1}{n^2}\) which means that we probably should not set \(k\) higher than \(2\).
