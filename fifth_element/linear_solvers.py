@@ -124,13 +124,28 @@ def solve_sor(A, b, x0, params=dict(eps=1e-8, max_iter=1000, min_red=1e-4), omeg
         return np.array(sol_x)
 
     def next_x2(x_k):
+        """
+            returns : numpy.array
+        """
         L = sm.tril(A, k=-1)
         D = sm.diags(A.diagonal(), shape=A.shape, format="csr")
-        U = sm.triu(A, k=-1)
+        U = sm.triu(A, k=1)
 
-        temp_mat = slina.inv( np.add(D, L.multiply(omega) ) )
-        temp_vec = b * omega - np.add(U.multiply(omega), D.multiply((omega - 1))).multiply(x_k)
-        return temp_mat.multiply(temp_vec)
+        return np.matmul(
+            slina.inv(
+                np.add(D, L.multiply(omega))
+            ).toarray(),
+            np.subtract(
+                b * omega,
+                np.matmul(
+                    np.add(
+                        U.multiply(omega),
+                        D.multiply(omega - 1)
+                    ).toarray(),
+                    x_k
+                )
+            )
+        )
 
     def residual(x_k):
         _ = A.toarray()
